@@ -8,14 +8,19 @@
     "start-watch": "nodemon --exec 'npm start' ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["react", "nodejs"],
+  "keywords": [
+    "react",
+    "nodejs"
+  ],
   "author": "gyang",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
+    "gravatar": "^1.6.0",
     "jsonwebtoken": "^8.2.1",
+    "lodash": "^4.17.10",
     "mongodb": "^3.0.8",
     "mongoose": "^5.0.17",
     "passport": "^0.4.0",
