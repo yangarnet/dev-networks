@@ -17,11 +17,12 @@ const user = {
   },
   password: {
     type: mongoose.SchemaTypes.String,
+    minlength: 7,
     required: true
   },
   avatar: {
     type: mongoose.SchemaTypes.String,
-    required: true
+    required: false
   },
   DateAdded: {
     type: mongoose.SchemaTypes.Date,
@@ -39,6 +40,9 @@ UserSchema.pre("save", function(next) {
     bcrypt.genSalt(10, (err, salt) => {
       // hashing pwd with the salt
       bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) {
+          throw err;
+        }
         // update password with hash result
         user.password = hash;
         next();
