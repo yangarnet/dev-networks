@@ -5,6 +5,7 @@ import gravatar from "gravatar";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import validateRegisterInput from "../../validation/UserRegister";
 
 const userRouter = express.Router();
 
@@ -13,6 +14,11 @@ const userRouter = express.Router();
 */
 userRouter.post("/register", async (req, res) => {
   const payload = _.pick(req.body, ["name", "email", "password"]);
+  const result = validateRegisterInput(payload);
+  if (!result.isValid) {
+    // return and end the response
+    return res.status(400).json(result.errors);
+  }
   const avatar = gravatar.url(payload.email, { s: "200", r: "pg", d: "mm" });
   try {
     const user = await UserModel.findOne({ email: payload.email });

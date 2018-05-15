@@ -8,7 +8,8 @@ const user = {
     type: mongoose.SchemaTypes.String,
     required: true,
     unique: true,
-    minlength: 2
+    minlength: 2,
+    maxlength: 15
   },
   email: {
     type: mongoose.SchemaTypes.String,
