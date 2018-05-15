@@ -4,16 +4,16 @@ import _ from "lodash";
 import gravatar from "gravatar";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import passport from "passport";
 
 const userRouter = express.Router();
 
+/*
+@user registration
+*/
 userRouter.post("/register", async (req, res) => {
   const payload = _.pick(req.body, ["name", "email", "password"]);
-  const avatar = gravatar.url(payload.email, {
-    s: "200",
-    r: "pg",
-    d: "mm"
-  });
+  const avatar = gravatar.url(payload.email, { s: "200", r: "pg", d: "mm" });
   try {
     const user = await UserModel.findOne({ email: payload.email });
     if (user) {
@@ -46,6 +46,9 @@ userRouter.post("/register", async (req, res) => {
   }
 });
 
+/*
+user login
+*/
 userRouter.post("/login", async (req, res) => {
   const payload = _.pick(req.body, ["name", "email", "password"]);
   try {
@@ -60,7 +63,8 @@ userRouter.post("/login", async (req, res) => {
         name: user.name,
         avatar: user.avatar
       };
-      // now sign the token after success login
+
+      // now sign the token after success login, this is the key to verify all other authorized req.
       const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, {
         expiresIn: 3600
       });
@@ -76,5 +80,18 @@ userRouter.post("/login", async (req, res) => {
     res.status(404).json({ errMsg: err.message });
   }
 });
+
+userRouter.get(
+  "/current-user",
+  // apply the passport.authenticate() middle for route 'current-user'
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      userId: req.user.id,
+      userEmail: req.user.email,
+      userName: req.user.name
+    });
+  }
+);
 
 export default userRouter;
