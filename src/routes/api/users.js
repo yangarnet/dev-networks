@@ -6,14 +6,21 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import validateRegisterInput from "../../validation/UserRegister";
+import validateUserLogin from "../../validation/UserLogin";
 
+// with the router object we can now define routes below.
 const userRouter = express.Router();
 
 /*
 @user registration
 */
 userRouter.post("/register", async (req, res) => {
-  const payload = _.pick(req.body, ["name", "email", "password"]);
+  const payload = _.pick(req.body, [
+    "name",
+    "email",
+    "password",
+    "confirmedPassword"
+  ]);
   const result = validateRegisterInput(payload);
   if (!result.isValid) {
     // return and end the response
@@ -56,11 +63,15 @@ userRouter.post("/register", async (req, res) => {
 user login
 */
 userRouter.post("/login", async (req, res) => {
-  const payload = _.pick(req.body, ["name", "email", "password"]);
+  const payload = _.pick(req.body, ["email", "password"]);
+  const { errors, isValid } = validateUserLogin(payload);
+
   try {
+    // user logs in by email and password.
     const user = await UserModel.findOne({ email: payload.email });
     if (!user) {
-      throw new Error(`User not found`);
+      errors.email = "User not found";
+      return res.status(404).json(errors);
     }
     const isMatch = await bcrypt.compare(payload.password, user.password);
     if (isMatch) {
@@ -77,13 +88,15 @@ userRouter.post("/login", async (req, res) => {
       if (token) {
         res.status(200).json({ success: true, token: `Bearer ${token}` });
       } else {
-        throw new Error("Error in signing the token");
+        errors.genToken = "Errors occurs when generation the token";
+        return res.status(500).json(errors);
       }
     } else {
-      throw new Error("Password incorrect");
+      errors.password = "invalid password";
+      return res.status(400).json(errors);
     }
   } catch (err) {
-    res.status(404).json({ errMsg: err.message });
+    return res.status(404).json(errors);
   }
 });
 
