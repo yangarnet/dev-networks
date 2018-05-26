@@ -6,7 +6,8 @@
   "scripts": {
     "start": "babel-node --presets es2015 server.js",
     "start-watch": "nodemon --exec 'npm start' ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel server.js src -d build --source-maps --watch",
+    "test": "mocha"
   },
   "keywords": [
     "react",

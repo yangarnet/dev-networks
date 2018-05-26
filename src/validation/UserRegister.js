@@ -11,7 +11,7 @@ const validateRegisterInput = data => {
   password = !isEmpty(password) ? password : EMPTY;
   confirmedPassword = !isEmpty(confirmedPassword) ? confirmedPassword : EMPTY;
 
-  if (!validator.isLength(data.name, { min: 2, max: 15 })) {
+  if (!validator.isLength(name, { min: 2, max: 15 })) {
     errors.name = "name length must between 2 and 15 characters";
   }
 

@@ -82,11 +82,9 @@ userRouter.post("/login", async (req, res) => {
       };
 
       // now sign the token after success login, this is the key to verify all other authorized req.
-      const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, {
-        expiresIn: 3600
-      });
+      const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: 3600 });
       if (token) {
-        res.status(200).json({ success: true, token: `Bearer ${token}` });
+        return res.status(200).json({ success: true, token: `Bearer ${token}` });
       } else {
         errors.genToken = "Errors occurs when generation the token";
         return res.status(500).json(errors);
@@ -100,17 +98,13 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-userRouter.get(
-  "/current-user",
-  // apply the passport.authenticate() middle for route 'current-user'
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.json({
-      userId: req.user.id,
-      userEmail: req.user.email,
-      userName: req.user.name
-    });
-  }
-);
+userRouter.get("/current-user", passport.authenticate("jwt", { session: false }), (req, res) => {
+  res.json({
+    userId: req.user.id,
+    userEmail: req.user.email,
+    userName: req.user.name
+  });
+});
+
 
 export default userRouter;
