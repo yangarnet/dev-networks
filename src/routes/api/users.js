@@ -15,12 +15,8 @@ const userRouter = express.Router();
 @user registration
 */
 userRouter.post("/register", async (req, res) => {
-  const payload = _.pick(req.body, [
-    "name",
-    "email",
-    "password",
-    "confirmedPassword"
-  ]);
+  const payload = _.pick(req.body, ["name", "email", "password", "confirmedPassword"]);
+
   const result = validateRegisterInput(payload);
   if (!result.isValid) {
     // return and end the response

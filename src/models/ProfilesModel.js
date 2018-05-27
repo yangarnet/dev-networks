@@ -5,12 +5,13 @@ const STRING = Schema.Types.String;
 const ProfilesSchema = new Schema({
   user: {
     type: mongoose.SchemaTypes.ObjectId,
+    unique: true,
+    required: true,
     ref: "users" // ref to user collection
   },
   handle: {
     type: STRING,
     required: true,
-    unique: true,
     maxlength: 40
   },
   company: { type: STRING },
@@ -25,8 +26,8 @@ const ProfilesSchema = new Schema({
       title: { type: STRING, required: true },
       company: { type: STRING, required: true },
       location: { type: STRING },
-      from: { type: Schema.Types.Date, required: true },
-      to: { type: Schema.Types.Date },
+      from: { type: Date },
+      to: { type: Date },
       current: { type: Schema.Types.Boolean, default: false },
       description: { type: STRING }
     }
@@ -36,8 +37,8 @@ const ProfilesSchema = new Schema({
       school: { type: STRING, required: true },
       degree: { type: STRING, required: true },
       fieldOfStudy: { type: STRING, required: true },
-      from: { type: Schema.Types.Date, required: true },
-      to: { type: Schema.Types.Date },
+      from: { type: Date },
+      to: { type: Date },
       current: { type: Schema.Types.Boolean, default: false },
       description: { type: STRING }
     }
@@ -49,10 +50,14 @@ const ProfilesSchema = new Schema({
     linkedIn: { type: STRING },
     instagram: { type: STRING }
   },
-  date: {
-    type: Schema.Types.Date,
+  dateAdded: {
+    type: Date,
     default: Date.now
-  }
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 const ProfilesModel = mongoose.model("profiles", ProfilesSchema);
