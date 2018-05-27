@@ -13,7 +13,7 @@ const profilesRouter = express.Router();
 profilesRouter.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
   const errors = {};
   try {
-    const profile = await ProfilesModel.findOne({ user: req.user.id });
+    const profile = await ProfilesModel.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
     console.log(`req userid :${req.user.id}`);
     if (!profile) {
       errors.notfound = "no profile for the user";
