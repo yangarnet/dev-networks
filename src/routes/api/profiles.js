@@ -9,7 +9,54 @@ import isEmpty from '../../validation/IsEmpty';
 
 const profilesRouter = express.Router();
 
+// a public route without the need to login
+profilesRouter.get("/handle/:handle", async (req, res) => {
+  const error = {};
+  try {
+    const profile = await ProfilesModel.findOne({ handle: req.params.handle }).populate('user', ['name', 'avatar']);
+    if (profile) {
+      return res.status(200).json(profile);
+    } else {
+      error.notfound = `cannot find any profile with handle: ${req.params.handle}`;
+      res.status(404).json(error);
+    }
+  } catch (err) {
+    error.cannot = 'cannot perform mongo db search';
+    res.status(400).json(error);
+  }
+});
+profilesRouter.get("/id/:id", async (req, res) => {
+  const error = {};
+  try {
+    const profile = await ProfilesModel.findById(req.params.id).populate('user', ['name', 'avatar']);
+    if (profile) {
+      return res.status(200).json(profile);
+    } else {
+      error.notfound = `cannot find any profile by id: ${req.params.id}`;
+      res.status(404).json(error);
+    }
+  } catch (err) {
+    error.cannot = 'cannot perform mongo db search';
+    res.status(400).json(error);
+  }
+});
 
+profilesRouter.get("/all", async (req, res) => {
+  const error = {};
+  try {
+    const profiles = await ProfilesModel.find().populate('user', ['name', 'avatar']);
+    if (profiles) {
+      res.status(200).json(profiles);
+    } else {
+      error.none = 'there is not any profile';
+      res.status(200).json(error);
+    }
+  } catch (err) {
+
+  }
+});
+
+// below are the private url
 profilesRouter.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
   const errors = {};
   try {
@@ -55,6 +102,7 @@ profilesRouter.post("/", passport.authenticate("jwt", { session: false }), async
   }
 });
 
+// this still more work to do here in the update routes.  
 profilesRouter.put('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const errors = {};
   const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status",

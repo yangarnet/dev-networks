@@ -78,7 +78,7 @@ userRouter.post("/login", async (req, res) => {
       };
 
       // now sign the token after success login, this is the key to verify all other authorized req.
-      const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: 3600 });
+      const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: 3600 * 10 }); // token expires in 10 hr
       if (token) {
         return res.status(200).json({ success: true, token: `Bearer ${token}` });
       } else {
