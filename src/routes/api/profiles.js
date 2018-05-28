@@ -158,7 +158,20 @@ profilesRouter.put('/', passport.authenticate('jwt', { session: false }), async 
 @desc delete user and linked profile
 @access private
 */
-profilesRouter.delete('/', passport.authenticate('jwt', { session: false }), async (req, res) => { });
+profilesRouter.delete('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const error = {};
+  try {
+    if (await profile.findOneAndRemove({ user: req.user.id }) && await user.findByIdAndRemove(req.user.id)) {
+      return res.status(200).json({ status: 'success' });
+    } else {
+      error.notfound = 'cannot found any profile';
+      return res.status(404).json(error);
+    }
+  } catch (err) {
+    error.cannot = 'cannot delete user and linked profile';
+    res.status(400).json(error);
+  }
+});
 
 /*
 @route api/profiles/experience
