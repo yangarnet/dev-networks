@@ -4,9 +4,9 @@ import postsRouter from "../../routes/api/posts";
 
 // root route config begins here
 const routeConfig = app => {
-  app.use("/api/users", userRouter);
-  app.use("/api/profiles", profilesRouter);
-  app.use("/api/posts", postsRouter);
+  app.use("/api/user", userRouter);
+  app.use("/api/profile", profilesRouter);
+  app.use("/api/post", postsRouter);
 };
 
 export default routeConfig;

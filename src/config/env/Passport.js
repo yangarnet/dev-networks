@@ -1,6 +1,6 @@
 import passport from "passport-jwt";
 import mongoose from "mongoose";
-import UserModel from "../../../src/models/UserModel";
+import user from "../../../src/models/user";
 
 const JwtStrategy = passport.Strategy;
 const ExtractJwt = passport.ExtractJwt;
@@ -13,9 +13,9 @@ const passportConfig = passport => {
   passport.use(
     new JwtStrategy(options, async (jwt_payload, done) => {
       try {
-        const user = await UserModel.findById(jwt_payload.id);
-        if (user) {
-          return done(null, user);
+        const result = await user.findById(jwt_payload.id);
+        if (result) {
+          return done(null, result);
         }
       } catch (e) {
         console.log(e);

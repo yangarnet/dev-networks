@@ -1,5 +1,5 @@
 import express from "express";
-import UserModel from "../../models/UserModel";
+import user from '../../models/user';
 import _ from "lodash";
 import gravatar from "gravatar";
 import bcrypt from "bcryptjs";
@@ -24,11 +24,11 @@ userRouter.post("/register", async (req, res) => {
   }
   const avatar = gravatar.url(payload.email, { s: "200", r: "pg", d: "mm" });
   try {
-    const user = await UserModel.findOne({ email: payload.email });
-    if (user) {
-      throw new Error(`Error: email ${user.email} already registered`);
+    const result = await user.findOne({ email: payload.email });
+    if (result) {
+      throw new Error(`Error: email ${result.email} already registered`);
     } else {
-      const newUser = new UserModel({
+      const newUser = new user({
         name: payload.name,
         email: payload.email,
         password: payload.password,
@@ -64,17 +64,17 @@ userRouter.post("/login", async (req, res) => {
 
   try {
     // user logs in by email and password.
-    const user = await UserModel.findOne({ email: payload.email });
-    if (!user) {
+    const result = await user.findOne({ email: payload.email });
+    if (!result) {
       errors.email = "User not found";
       return res.status(404).json(errors);
     }
-    const isMatch = await bcrypt.compare(payload.password, user.password);
+    const isMatch = await bcrypt.compare(payload.password, result.password);
     if (isMatch) {
       const tokenPayload = {
-        id: user.id,
-        name: user.name,
-        avatar: user.avatar
+        id: result.id,
+        name: result.name,
+        avatar: result.avatar
       };
 
       // now sign the token after success login, this is the key to verify all other authorized req.

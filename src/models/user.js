@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const Schema = mongoose.Schema;
 
-const user = {
+const userObject = {
   name: {
     type: mongoose.SchemaTypes.String,
     required: true,
@@ -31,21 +31,21 @@ const user = {
   }
 };
 
-const UserSchema = new Schema(user);
+const UserSchema = new Schema(userObject);
 
 // cannot use arrow function in this cb
-UserSchema.pre("save", function(next) {
-  let user = this;
-  if (user.isModified("password")) {
+UserSchema.pre("save", function (next) {
+  let currentUser = this;
+  if (currentUser.isModified("password")) {
     // gen salt
     bcrypt.genSalt(10, (err, salt) => {
       // hashing pwd with the salt
-      bcrypt.hash(user.password, salt, (err, hash) => {
+      bcrypt.hash(currentUser.password, salt, (err, hash) => {
         if (err) {
           throw err;
         }
         // update password with hash result
-        user.password = hash;
+        currentUser.password = hash;
         next();
       });
     });
@@ -54,6 +54,6 @@ UserSchema.pre("save", function(next) {
   }
 });
 
-const UserModel = mongoose.model("users", UserSchema);
+const user = mongoose.model("users", UserSchema);
 
-export default UserModel;
+export default user;

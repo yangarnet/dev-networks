@@ -1,11 +1,11 @@
 import express from "express";
-import ProfilesModel from "../../models/ProfilesModel";
-import UserModel from "../../models/UserModel";
+import profile from "../../models/profile";
+import user from "../../models/user";
 import passport from "passport";
 import mongoose from "mongoose";
 import _ from "lodash";
 import validateNewProfiles from "../../validation/Profiles";
-import isEmpty from '../../validation/IsEmpty';
+
 import setProfilesToUpdate from './helper';
 const profilesRouter = express.Router();
 
@@ -17,9 +17,9 @@ const profilesRouter = express.Router();
 profilesRouter.get("/handle/:handle", async (req, res) => {
   const error = {};
   try {
-    const profile = await profile.findOne({ handle: req.params.handle }).populate('user', ['name', 'avatar']);
-    if (profile) {
-      return res.status(200).json(profile);
+    const result = await profile.findOne({ handle: req.params.handle }).populate('user', ['name', 'avatar']);
+    if (result) {
+      return res.status(200).json(result);
     } else {
       error.notfound = `cannot find any profile with handle: ${req.params.handle}`;
       res.status(404).json(error);
@@ -39,9 +39,9 @@ profilesRouter.get("/id/:id", async (req, res) => {
   const error = {};
   try {
     // the populate method is used to fetch details from ref defined in the profile schema
-    const profile = await profile.findById(req.params.id).populate('user', ['name', 'avatar']);
-    if (profile) {
-      return res.status(200).json(profile);
+    const result = await profile.findById(req.params.id).populate('user', ['name', 'avatar']);
+    if (result) {
+      return res.status(200).json(result);
     } else {
       error.notfound = `cannot find any profile by id: ${req.params.id}`;
       res.status(404).json(error);
@@ -80,13 +80,13 @@ profilesRouter.get("/all", async (req, res) => {
 profilesRouter.get("/", passport.authenticate("jwt", { session: false }), async (req, res) => {
   const errors = {};
   try {
-    const profile = await profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
+    const result = await profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
     console.log(`req userid :${req.user.id}`);
-    if (!profile) {
+    if (!result) {
       errors.notfound = "no profile for the user";
       return res.status(404).json(errors);
     }
-    res.status(200).json(profile);
+    res.status(200).json(result);
   } catch (err) {
     res.status(404).json(err);
   }
@@ -105,8 +105,7 @@ profilesRouter.post("/", passport.authenticate("jwt", { session: false }), async
 
   const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status", "skills", "bio", "githubusername", "social"]);
   try {
-    const profile = await profile.findOne({ user: req.user.id });
-    if (profile) {
+    if (await profile.findOne({ user: req.user.id })) {
       errors.unable = 'user profile already exists';
       return res.status(400).json(errors);
     } else {
@@ -134,13 +133,12 @@ profilesRouter.post("/", passport.authenticate("jwt", { session: false }), async
 */
 profilesRouter.put('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const errors = {};
-  const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status",
-    "skills", "bio", "githubusername", "social", "education", "experiences"]);
+  const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status", "skills", "bio", "githubusername", "social"]);
   if (payloads.skills) { payloads.skills = payloads.skills.split(',') };
   try {
-    const profile = await profile.findOne({ user: req.user.id });
-    if (profile) {
-      const payloadToUpdate = setProfilesToUpdate(payloads, profile);
+    const result = await profile.findOne({ user: req.user.id });
+    if (result) {
+      const payloadToUpdate = setProfilesToUpdate(payloads, result);
       const updatedProfiles = await profile.findOneAndUpdate({ user: req.user.id }, { $set: payloadToUpdate }, { new: true });
       if (updatedProfiles) {
         return res.status(200).json(updatedProfiles);
