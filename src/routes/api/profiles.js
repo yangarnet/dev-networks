@@ -4,9 +4,9 @@ import user from "../../models/user";
 import passport from "passport";
 import mongoose from "mongoose";
 import _ from "lodash";
-import validateNewProfiles from "../../validation/Profiles";
-
+import validateNewProfiles from "../../validation/profiles";
 import setProfilesToUpdate from './helper';
+
 const profilesRouter = express.Router();
 
 /*

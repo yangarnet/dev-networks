@@ -5,8 +5,8 @@ import gravatar from "gravatar";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import passport from "passport";
-import validateRegisterInput from "../../validation/UserRegister";
-import validateUserLogin from "../../validation/UserLogin";
+import validateRegisterInput from "../../validation/user-register";
+import validateUserLogin from "../../validation/user-login";
 
 // with the router object we can now define routes below.
 const userRouter = express.Router();

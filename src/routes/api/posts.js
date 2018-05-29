@@ -1,9 +1,16 @@
 import express from "express";
+import passport from 'passport';
+import post from '../../models/post';
 
-const postsRouter = express.Router();
-
-postsRouter.get("/test", (req, res) => {
-  res.status(200).json({ msg: "hello postsRouter" });
+const postRouter = express.Router();
+/*
+@route POST api/post/
+@desc add new post
+@access private authentication required
+*/
+postRouter.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  // pull in validation first
 });
 
-export default postsRouter;
+
+export default postRouter;
