@@ -1,6 +1,6 @@
-import passport from "passport";
-import bodyParser from "body-parser";
-import passportConfig from "../env/passport";
+import passport from 'passport';
+import bodyParser from 'body-parser';
+import passportConfig from '../env/passport';
 
 const configMiddleware = app => {
     // body parse

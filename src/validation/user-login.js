@@ -1,8 +1,8 @@
-import validator from "validator";
-import isEmpty from "./IsEmpty";
+import validator from 'validator';
+import isEmpty from './IsEmpty';
 
 const validateUserLogin = data => {
-    const EMPTY = "";
+    const EMPTY = '';
     // return an error object
     let errors = {};
     let {
@@ -14,22 +14,22 @@ const validateUserLogin = data => {
     password = !isEmpty(password) ? password : EMPTY;
 
     if (validator.isEmpty(email)) {
-        errors.email = "please input an email address";
+        errors.email = 'please input an email address';
     }
 
     if (!validator.isEmail(email)) {
-        errors.email = "please provide a valid email address";
+        errors.email = 'please provide a valid email address';
     }
 
     if (validator.isEmpty(password)) {
-        errors.password = "please input a password";
+        errors.password = 'please input a password';
     }
 
     if (!validator.isLength(password, {
             min: 6,
             max: 30
         })) {
-        errors.password = "password must be at least 6 characters";
+        errors.password = 'password must be at least 6 characters';
     }
 
     return {

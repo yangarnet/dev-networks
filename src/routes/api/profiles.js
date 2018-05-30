@@ -1,10 +1,10 @@
-import express from "express";
-import profile from "../../models/profile";
-import user from "../../models/user";
-import passport from "passport";
-import mongoose from "mongoose";
-import _ from "lodash";
-import validateNewProfiles from "../../validation/profiles";
+import express from 'express';
+import profile from '../../models/profile';
+import user from '../../models/user';
+import passport from 'passport';
+import mongoose from 'mongoose';
+import _ from 'lodash';
+import validateNewProfiles from '../../validation/profiles';
 import setProfilesToUpdate from './helper';
 
 const profilesRouter = express.Router();
@@ -14,7 +14,7 @@ const profilesRouter = express.Router();
 @desc return user profile by handle name
 @access public
 */
-profilesRouter.get("/handle/:handle", async (req, res) => {
+profilesRouter.get('/handle/:handle', async (req, res) => {
     const error = {};
     try {
         const result = await profile.findOne({
@@ -37,7 +37,7 @@ profilesRouter.get("/handle/:handle", async (req, res) => {
 @desc return user profile by profile id
 @access public
 */
-profilesRouter.get("/id/:id", async (req, res) => {
+profilesRouter.get('/id/:id', async (req, res) => {
     const error = {};
     try {
         // the populate method is used to fetch details from ref defined in the profile schema
@@ -59,7 +59,7 @@ profilesRouter.get("/id/:id", async (req, res) => {
 @desc return all existing profiles of users
 @access public
 */
-profilesRouter.get("/all", async (req, res) => {
+profilesRouter.get('/all', async (req, res) => {
     const error = {};
     try {
         const profiles = await profile.find().populate('user', ['name', 'avatar']);
@@ -79,7 +79,7 @@ profilesRouter.get("/all", async (req, res) => {
 @desc get full profile information for login user
 @access private
 */
-profilesRouter.get("/", passport.authenticate("jwt", {
+profilesRouter.get('/', passport.authenticate('jwt', {
     session: false
 }), async (req, res) => {
     const errors = {};
@@ -89,7 +89,7 @@ profilesRouter.get("/", passport.authenticate("jwt", {
         }).populate('user', ['name', 'avatar']);
         console.log(`req userid :${req.user.id}`);
         if (!result) {
-            errors.notfound = "no profile for the user";
+            errors.notfound = 'no profile for the user';
             return res.status(404).json(errors);
         }
         res.status(200).json(result);
@@ -103,7 +103,7 @@ profilesRouter.get("/", passport.authenticate("jwt", {
 @desc add new profile for login user
 @access private
 */
-profilesRouter.post("/", passport.authenticate("jwt", {
+profilesRouter.post('/', passport.authenticate('jwt', {
     session: false
 }), async (req, res) => {
     const {
@@ -114,7 +114,7 @@ profilesRouter.post("/", passport.authenticate("jwt", {
         return res.status(400).json(errors);
     }
 
-    const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status", "skills", "bio", "githubusername", "social"]);
+    const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
     try {
         if (await profile.findOne({
                 user: req.user.id
@@ -132,7 +132,7 @@ profilesRouter.post("/", passport.authenticate("jwt", {
             if (result) {
                 return res.status(201).json(result);
             } else {
-                errors.cannotsave = "fail to save new user profles";
+                errors.cannotsave = 'fail to save new user profles';
                 res.status(400).json(errors);
             }
         }
@@ -150,7 +150,7 @@ profilesRouter.put('/', passport.authenticate('jwt', {
     session: false
 }), async (req, res) => {
     const errors = {};
-    const payloads = _.pick(req.body, ["handle", "company", "webSite", "location", "status", "skills", "bio", "githubusername", "social"]);
+    const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
     if (payloads.skills) {
         payloads.skills = payloads.skills.split(',')
     };

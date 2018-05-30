@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const Schema = mongoose.Schema;
 
@@ -34,9 +34,9 @@ const userObject = {
 const UserSchema = new Schema(userObject);
 
 // cannot use arrow function in this cb
-UserSchema.pre("save", function (next) {
+UserSchema.pre('save', function (next) {
   let currentUser = this;
-  if (currentUser.isModified("password")) {
+  if (currentUser.isModified('password')) {
     // gen salt
     bcrypt.genSalt(10, (err, salt) => {
       // hashing pwd with the salt
@@ -54,6 +54,6 @@ UserSchema.pre("save", function (next) {
   }
 });
 
-const user = mongoose.model("users", UserSchema);
+const user = mongoose.model('users', UserSchema);
 
 export default user;

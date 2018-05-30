@@ -1,5 +1,5 @@
-import config from "./Config.json";
-import mongoose from "mongoose";
+import config from './config.json';
+import mongoose from 'mongoose';
 
 const mongoDb = {
     production: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}${
@@ -18,10 +18,10 @@ const envConfig = env => {
 
     mongoose.connect(mongoDb[env] || process.env.MONGODB_URL).then(
         () => {
-            console.log("you are connected to mongodb!");
+            console.log('you are connected to mongodb!');
         },
         err => {
-            console.log("[Sorry] - mongodb connection error");
+            console.log('[Sorry] - mongodb connection error');
         }
     );
 };

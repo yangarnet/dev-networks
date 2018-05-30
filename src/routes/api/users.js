@@ -1,12 +1,12 @@
-import express from "express";
+import express from 'express';
 import user from '../../models/user';
-import _ from "lodash";
-import gravatar from "gravatar";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import passport from "passport";
-import validateRegisterInput from "../../validation/user-register";
-import validateUserLogin from "../../validation/user-login";
+import _ from 'lodash';
+import gravatar from 'gravatar';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
+import validateRegisterInput from '../../validation/user-register';
+import validateUserLogin from '../../validation/user-login';
 
 // with the router object we can now define routes below.
 const userRouter = express.Router();
@@ -14,8 +14,8 @@ const userRouter = express.Router();
 /*
 @user registration
 */
-userRouter.post("/register", async (req, res) => {
-    const payload = _.pick(req.body, ["name", "email", "password", "confirmedPassword"]);
+userRouter.post('/register', async (req, res) => {
+    const payload = _.pick(req.body, ['name', 'email', 'password', 'confirmedPassword']);
 
     const result = validateRegisterInput(payload);
     if (!result.isValid) {
@@ -23,9 +23,9 @@ userRouter.post("/register", async (req, res) => {
         return res.status(400).json(result.errors);
     }
     const avatar = gravatar.url(payload.email, {
-        s: "200",
-        r: "pg",
-        d: "mm"
+        s: '200',
+        r: 'pg',
+        d: 'mm'
     });
     try {
         const result = await user.findOne({
@@ -41,7 +41,7 @@ userRouter.post("/register", async (req, res) => {
                 avatar
             });
             try {
-                // password hashing takes place in UserSchema.pre("save", next)
+                // password hashing takes place in UserSchema.pre('save', next)
                 const result = await newUser.save();
                 res.status(200).json({
                     user: {
@@ -64,8 +64,8 @@ userRouter.post("/register", async (req, res) => {
 /*
 user login
 */
-userRouter.post("/login", async (req, res) => {
-    const payload = _.pick(req.body, ["email", "password"]);
+userRouter.post('/login', async (req, res) => {
+    const payload = _.pick(req.body, ['email', 'password']);
     const {
         errors,
         isValid
@@ -77,7 +77,7 @@ userRouter.post("/login", async (req, res) => {
             email: payload.email
         });
         if (!result) {
-            errors.email = "User not found";
+            errors.email = 'User not found';
             return res.status(404).json(errors);
         }
         const isMatch = await bcrypt.compare(payload.password, result.password);
@@ -98,11 +98,11 @@ userRouter.post("/login", async (req, res) => {
                     token: `Bearer ${token}`
                 });
             } else {
-                errors.genToken = "Errors occurs when generation the token";
+                errors.genToken = 'Errors occurs when generation the token';
                 return res.status(500).json(errors);
             }
         } else {
-            errors.password = "invalid password";
+            errors.password = 'invalid password';
             return res.status(400).json(errors);
         }
     } catch (err) {
@@ -110,7 +110,7 @@ userRouter.post("/login", async (req, res) => {
     }
 });
 
-userRouter.get("/current-user", passport.authenticate("jwt", {
+userRouter.get('/current-user', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
     res.json({

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const STRING = Schema.Types.String;
 
@@ -7,7 +7,7 @@ const ProfilesSchema = new Schema({
     type: mongoose.SchemaTypes.ObjectId,
     unique: true,
     required: true,
-    ref: "users" // ref to user collection
+    ref: 'users' // ref to user collection
   },
   handle: {
     type: STRING,
@@ -60,6 +60,6 @@ const ProfilesSchema = new Schema({
   },
 });
 
-const profile = mongoose.model("profiles", ProfilesSchema);
+const profile = mongoose.model('profiles', ProfilesSchema);
 
 export default profile;
