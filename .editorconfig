@@ -1,33 +1,24 @@
-# EditorConfig is awesome: http://EditorConfig.org
-
-# top-most EditorConfig file
+# http://editorconfig.org
 root = true
 
-# Unix-style newlines with a newline ending every file
 [*]
+indent_style = space
+indent_size = 4
 end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
 insert_final_newline = true
 
-# Set default charset
-[*.{js,py}]
-charset = utf-8
+[*.md]
+trim_trailing_whitespace = false
 
-# 4 space indentation
-[*.py]
-indent_style = space
-indent_size = 4
-
-# Tab indentation (no size specified)
-[Makefile]
+[*.mk]
 indent_style = tab
 
-# Indentation override for all JS, you can limit dir as well
-[*.js]
-indent_style = space
-indent_size = 4
-trim_trailing_whitespace = true
+[{.babelrc,.stylelintrc,.eslintrc,jest.config,*.json,*.jsb3,*.jsb2,*.bowerrc,.npmrc,.yarnrc}]
+indent_style=space
+indent_size=2
 
-# Matches the exact files either package.json or .travis.yml
-[{package.json,.travis.yml}]
-indent_style = space
-indent_size = 2
+[*.less]
+indent_style=space
+indent_size=4
