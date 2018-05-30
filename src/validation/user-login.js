@@ -26,9 +26,9 @@ const validateUserLogin = data => {
     }
 
     if (!validator.isLength(password, {
-            min: 6,
-            max: 30
-        })) {
+        min: 6,
+        max: 30
+    })) {
         errors.password = 'password must be at least 6 characters';
     }
 

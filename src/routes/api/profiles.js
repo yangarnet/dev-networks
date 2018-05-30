@@ -1,11 +1,12 @@
 import express from 'express';
-import profile from '../../models/profile';
-import user from '../../models/user';
 import passport from 'passport';
 import mongoose from 'mongoose';
 import _ from 'lodash';
+import profile from '../../models/profile';
+import user from '../../models/user';
 import validateNewProfiles from '../../validation/profiles';
-import setProfilesToUpdate from './helper';
+import validateNewExperience from '../../validation/experiences';
+import { setProfilesToUpdate } from './helper';
 
 const profilesRouter = express.Router();
 
@@ -17,9 +18,7 @@ const profilesRouter = express.Router();
 profilesRouter.get('/handle/:handle', async (req, res) => {
     const error = {};
     try {
-        const result = await profile.findOne({
-            handle: req.params.handle
-        }).populate('user', ['name', 'avatar']);
+        const result = await profile.findOne({ handle: req.params.handle }).populate('user', ['name', 'avatar']);
         if (result) {
             return res.status(200).json(result);
         } else {
@@ -79,14 +78,10 @@ profilesRouter.get('/all', async (req, res) => {
 @desc get full profile information for login user
 @access private
 */
-profilesRouter.get('/', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {
+profilesRouter.get('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const errors = {};
     try {
-        const result = await profile.findOne({
-            user: req.user.id
-        }).populate('user', ['name', 'avatar']);
+        const result = await profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
         console.log(`req userid :${req.user.id}`);
         if (!result) {
             errors.notfound = 'no profile for the user';
@@ -103,29 +98,18 @@ profilesRouter.get('/', passport.authenticate('jwt', {
 @desc add new profile for login user
 @access private
 */
-profilesRouter.post('/', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {
-    const {
-        errors,
-        isValid
-    } = validateNewProfiles(req.body);
+profilesRouter.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const { errors, isValid } = validateNewProfiles(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
     try {
-        if (await profile.findOne({
-                user: req.user.id
-            })) {
+        if (await profile.findOne({ user: req.user.id })) {
             errors.unable = 'user profile already exists';
             return res.status(400).json(errors);
         } else {
             payloads.user = req.user.id;
-            if (payloads.skills) {
-                payloads.skills = payloads.skills.split(',')
-            };
             payloads.dateAdded = Date.now();
             const newProfle = new profile(payloads);
             const result = await newProfle.save();
@@ -146,27 +130,14 @@ profilesRouter.post('/', passport.authenticate('jwt', {
 @desc update experience to user profile
 @access private
 */
-profilesRouter.put('/', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {
+profilesRouter.put('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const errors = {};
     const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
-    if (payloads.skills) {
-        payloads.skills = payloads.skills.split(',')
-    };
     try {
-        const result = await profile.findOne({
-            user: req.user.id
-        });
+        const result = await profile.findOne({ user: req.user.id });
         if (result) {
             const payloadToUpdate = setProfilesToUpdate(payloads, result);
-            const updatedProfiles = await profile.findOneAndUpdate({
-                user: req.user.id
-            }, {
-                $set: payloadToUpdate
-            }, {
-                new: true
-            });
+            const updatedProfiles = await profile.findOneAndUpdate({ user: req.user.id }, { $set: payloadToUpdate }, { new: true });
             if (updatedProfiles) {
                 return res.status(200).json(updatedProfiles);
             } else {
@@ -185,14 +156,10 @@ profilesRouter.put('/', passport.authenticate('jwt', {
 @desc delete user and linked profile
 @access private
 */
-profilesRouter.delete('/', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {
+profilesRouter.delete('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const error = {};
     try {
-        if (await profile.findOneAndRemove({
-                user: req.user.id
-            }) && await user.findByIdAndRemove(req.user.id)) {
+        if (await profile.findOneAndRemove({ user: req.user.id }) && await user.findByIdAndRemove(req.user.id)) {
             return res.status(200).json({
                 status: 'success'
             });
@@ -208,23 +175,70 @@ profilesRouter.delete('/', passport.authenticate('jwt', {
 
 /*
 @route api/profiles/experience
-@desc add experience to user profile
+@desc add new experience to user profile
 @access private
 */
 
-profilesRouter.post('/experience', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.post('/experience', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
+    const { errors, isValid } = validateNewExperience(payload);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (userProfile) {
+            userProfile.experiences.unshift(payload);
+            const newProfle = await profile.findOneAndUpdate({ user: req.user.id }, { $set: userProfile }, { new: true });
+            if (newProfle) {
+                return res.status(200).json(newProfle);
+            } else {
+                errors.cannot = `cannot add new experience for user: ${req.user.id}`;
+                res.status(400).json(errors);
+            }
+        } else {
+            errors.notfound = 'user profile not found';
+            return res.status(404).json(errors);
+        }
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
 /*
 @route api/profiles/experience
-@desc update experience to user profile
+@desc update experience by id to user profile
 @access private
 */
 
-profilesRouter.put('/experience', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
+    const { errors, isValid } = validateNewExperience(payload);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (!userProfile) {
+            errors.notfound = `user profile not found for id:${req.user.id}`;
+            return res.status(404).json(errors);
+        } else {
+            const newExperience = await profile.findOneAndUpdate(
+                { experiences: { _id: req.params.exp_id } },
+                { $set: payload },
+                { new: true }
+            );
+            if (newExperience) {
+                return res.status(200).json(newExperience);
+            } else {
+                errors.cannot = 'cannot update experience for user';
+                return res.status(400).json(errors);
+            }
+        }
+    } catch (err) {
+
+    }
+});
 
 /*
 @route api/profiles/experience/:exp_id
@@ -232,9 +246,7 @@ profilesRouter.put('/experience', passport.authenticate('jwt', {
 @access private
 */
 
-profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => { });
 
 
 /*
@@ -243,9 +255,7 @@ profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', {
 @access private
 */
 
-profilesRouter.post('/education', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.post('/education', passport.authenticate('jwt', { session: false }), async (req, res) => { });
 
 
 /*
@@ -254,9 +264,7 @@ profilesRouter.post('/education', passport.authenticate('jwt', {
 @access private
 */
 
-profilesRouter.put('/education', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.put('/education', passport.authenticate('jwt', { session: false }), async (req, res) => { });
 
 /*
 @route api/profiles/education/:edu_id
@@ -264,9 +272,7 @@ profilesRouter.put('/education', passport.authenticate('jwt', {
 @access private
 */
 
-profilesRouter.delete('/education/:edu_id', passport.authenticate('jwt', {
-    session: false
-}), async (req, res) => {});
+profilesRouter.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => { });
 
 
 export default profilesRouter;
