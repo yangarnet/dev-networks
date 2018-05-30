@@ -1,4 +1,3 @@
-'use strict';
 import express from 'express';
 import envConfig from './src/config/env/config';
 import configMiddleware from './src/config/middleware/config-middleware';
