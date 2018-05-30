@@ -1,4 +1,3 @@
-
 import isEmpty from '../../validation/IsEmpty';
 
 const setProfilesToUpdate = (payload, currentProfile) => {
@@ -13,7 +12,7 @@ const setProfilesToUpdate = (payload, currentProfile) => {
         githubusername: !isEmpty(payload.githubusername) ? payload.githubusername : currentProfile.githubusername,
         //experiences: !isEmpty(payload.experiences) ? currentProfile.experiences.concat(payload.experiences) : currentProfile.experiences,
         //education: !isEmpty(payload.education) ? currentProfile.education.concat(payload.education) : currentProfile.education,
-        social: Object.assign(currentProfile.social, payload.social),// merge two objects into one
+        social: Object.assign(currentProfile.social, payload.social), // merge two objects into one
         lastUpdated: Date.now()
     }
 };

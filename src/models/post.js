@@ -17,39 +17,35 @@ const PostObject = {
     avatar: {
         type: Types.String
     },
-    likes: [
-        {
-            user: {
-                type: Types.ObjectId,
-                required: true,
-                ref: 'users'
-            }
+    likes: [{
+        user: {
+            type: Types.ObjectId,
+            required: true,
+            ref: 'users'
         }
-    ],
-    comments: [
-        {
-            user: {
-                type: Types.ObjectId,
-                required: true,
-                ref: 'users'
-            },
-            text: {
-                type: Types.String,
-                required: true
-            },
-            name: {
-                type: Types.String,
-                required: true
-            },
-            avatar: {
-                type: Types.String,
-            },
-            date: {
-                type: Types.Date,
-                default: Date.now
-            }
+    }],
+    comments: [{
+        user: {
+            type: Types.ObjectId,
+            required: true,
+            ref: 'users'
+        },
+        text: {
+            type: Types.String,
+            required: true
+        },
+        name: {
+            type: Types.String,
+            required: true
+        },
+        avatar: {
+            type: Types.String,
+        },
+        date: {
+            type: Types.Date,
+            default: Date.now
         }
-    ],
+    }],
     date: {
         type: Types.Date,
         default: Date.now
