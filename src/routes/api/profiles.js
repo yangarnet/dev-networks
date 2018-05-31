@@ -312,10 +312,7 @@ profilesRouter.post('/education', passport.authenticate('jwt', { session: false 
 profilesRouter.put('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const payload = _.pick(req.body, ['school', 'degree', 'fieldOfStudy', 'from', 'to', 'current', 'description']);
     payload.id = req.params.edu_id;
-    const { errors, isValid } = validateEducation(payload);
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
+    const errors = {};
     try {
         const userProfile = await profile.findOne({ user: req.user.id });
         if (!userProfile) {
@@ -344,20 +341,19 @@ profilesRouter.put('/education/:edu_id', passport.authenticate('jwt', { session:
 */
 
 profilesRouter.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const errors = {};
     try {
         const userProfile = await profile.findOne({ user: req.user.id });
         if (!userProfile) {
             errors.notfound = `user profile not found for id:${req.user.id}`;
             return res.status(404).json(errors);
         } else {
-            const deleted = deleteFromProfile(userProfile.experiences, req.params.edu_id);
-            await userProfile.save();
-            if (deleted) {
-                deleted.status = 'deleted edu success';
+            const deleted =deleteFromProfile(userProfile.education, req.params.edu_id);
+            try {
+                await userProfile.save();
                 return res.status(200).json(deleted);
-            } else {
-                errors.cannot = 'cannot delete education for user';
-                return res.status(400).json(errors);
+            } catch (err) {
+                return res.status(400).json(err);
             }
         }
     } catch (err) {

@@ -28,13 +28,13 @@ export const setProfilesToUpdate = (payload, currentProfile) => {
 export const updateExperienceForProfile = (currentExperience, newExperience) => {
     currentExperience.forEach(exp => {
         if (exp.id === newExperience.id) {
-            exp.title = newExperience.title;
-            exp.company = newExperience.company;
-            exp.location = newExperience.location;
-            exp.from = newExperience.from;
-            exp.to = newExperience.to;
-            exp.current = newExperience.current;
-            exp.description = newExperience.description;
+            exp.title = isEmpty(newExperience.title) ? exp.title : newExperience.title;
+            exp.company = isEmpty(newExperience.company) ? exp.company : newExperience.company;
+            exp.location = isEmpty(newExperience.location) ? exp.location : newExperience.location;
+            exp.from = isEmpty(newExperience.from) ? exp.from : newExperience.from;
+            exp.to = isEmpty(newExperience.to) ? exp.to : newExperience.to;
+            exp.current = isEmpty(newExperience.current) ? exp.current : newExperience.current;
+            exp.description = isEmpty(newExperience.description) ? exp.description : newExperience.description;
         }
     });
 };
@@ -42,13 +42,13 @@ export const updateExperienceForProfile = (currentExperience, newExperience) => 
 export const updateEducationForProfile = (currentEducation, newEducation) => {
     currentEducation.forEach(edu => {
         if (edu.id === newEducation.id) {
-            edu.school = newEducation.school;
-            edu.degree = newEducation.degree;
-            edu.fieldOfStudy = newEducation.fieldOfStudy;
-            edu.from = newEducation.from;
-            edu.to = newEducation.to;
-            edu.current = newEducation.current;
-            edu.description = newEducation.description;
+            edu.school = isEmpty(newEducation.school) ? edu.school : newEducation.school;
+            edu.degree = isEmpty(newEducation.degree) ? edu.degree : newEducation.degree;
+            edu.fieldOfStudy = isEmpty(newEducation.fieldOfStudy) ? edu.fieldOfStudy : newEducation.fieldOfStudy;
+            edu.from = isEmpty(newEducation.from) ? edu.from : newEducation.from;
+            edu.to = isEmpty(newEducation.to) ? edu.to : newEducation.to;
+            edu.current = isEmpty(newEducation.current) ? edu.current : newEducation.current;
+            edu.description = isEmpty(newEducation.description) ? edu.description : newEducation.description;
         }
     });
 };
