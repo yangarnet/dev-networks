@@ -1,7 +1,7 @@
 import validator from 'validator';
 import isEmpty from './IsEmpty';
 
-const validateNewExperience = exp => {
+const validateExperience = exp => {
     const EMPTY = '';
     // return an error object
     let errors = {};
@@ -23,4 +23,4 @@ const validateNewExperience = exp => {
     };
 };
 
-export default validateNewExperience;
+export default validateExperience;

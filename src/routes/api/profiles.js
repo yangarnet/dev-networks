@@ -5,8 +5,9 @@ import _ from 'lodash';
 import profile from '../../models/profile';
 import user from '../../models/user';
 import validateNewProfiles from '../../validation/profiles';
-import validateNewExperience from '../../validation/experiences';
-import { setProfilesToUpdate, updateExperienceForProfile, deleteExperienceForProfile } from './helper';
+import validateExperience from '../../validation/experiences';
+import validateEducation from '../../validation/education';
+import { setProfilesToUpdate, updateExperienceForProfile, updateEducationForProfile, deleteFromProfile } from './helper';
 
 const profilesRouter = express.Router();
 
@@ -181,7 +182,7 @@ profilesRouter.delete('/', passport.authenticate('jwt', { session: false }), asy
 
 profilesRouter.post('/experience', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
-    const { errors, isValid } = validateNewExperience(payload);
+    const { errors, isValid } = validateExperience(payload);
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -214,7 +215,7 @@ profilesRouter.post('/experience', passport.authenticate('jwt', { session: false
 profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
     payload.id = req.params.exp_id;
-    const { errors, isValid } = validateNewExperience(payload);
+    const { errors, isValid } = validateExperience(payload);
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -252,13 +253,13 @@ profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', { sess
             errors.notfound = `user profile not found for id:${req.user.id}`;
             return res.status(404).json(errors);
         } else {
-            const deleted = deleteExperienceForProfile(userProfile.experiences, req.params.exp_id);
+            const deleted = deleteFromProfile(userProfile.experiences, req.params.exp_id);
             await userProfile.save();
             if (deleted) {
                 deleted.status = 'deleted exp success';
                 return res.status(200).json(deleted);
             } else {
-                errors.cannot = 'cannot update experience for user';
+                errors.cannot = 'cannot delete experience for user';
                 return res.status(400).json(errors);
             }
         }
@@ -275,7 +276,31 @@ profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', { sess
 @access private
 */
 
-profilesRouter.post('/education', passport.authenticate('jwt', { session: false }), async (req, res) => { });
+profilesRouter.post('/education', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const payload = _.pick(req.body, ['school', 'degree', 'fieldOfStudy', 'from', 'to', 'current', 'description']);
+    const { errors, isValid } = validateEducation(payload);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (userProfile) {
+            userProfile.education.unshift(payload);
+            const newProfle = await userProfile.save();
+            if (newProfle) {
+                return res.status(200).json(newProfle);
+            } else {
+                errors.cannot = `cannot add new education for user: ${req.user.id}`;
+                res.status(400).json(errors);
+            }
+        } else {
+            errors.notfound = 'user profile not found';
+            return res.status(404).json(errors);
+        }
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
 
 /*
@@ -284,7 +309,33 @@ profilesRouter.post('/education', passport.authenticate('jwt', { session: false 
 @access private
 */
 
-profilesRouter.put('/education', passport.authenticate('jwt', { session: false }), async (req, res) => { });
+profilesRouter.put('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const payload = _.pick(req.body, ['school', 'degree', 'fieldOfStudy', 'from', 'to', 'current', 'description']);
+    payload.id = req.params.edu_id;
+    const { errors, isValid } = validateEducation(payload);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (!userProfile) {
+            errors.notfound = `user profile not found for id:${req.user.id}`;
+            return res.status(404).json(errors);
+        } else {
+            updateEducationForProfile(userProfile.education, payload);
+            const newEducation = await userProfile.save();
+            if (newEducation) {
+                return res.status(200).json(newEducation);
+            } else {
+                errors.cannot = 'cannot update education for user';
+                return res.status(400).json(errors);
+            }
+        }
+    } catch (err) {
+        errors.notfound = `cannot find user by id: ${req.user.id}`;
+        res.status(404).json(errors);
+    }
+});
 
 /*
 @route api/profiles/education/:edu_id
@@ -292,7 +343,28 @@ profilesRouter.put('/education', passport.authenticate('jwt', { session: false }
 @access private
 */
 
-profilesRouter.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => { });
+profilesRouter.delete('/education/:edu_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (!userProfile) {
+            errors.notfound = `user profile not found for id:${req.user.id}`;
+            return res.status(404).json(errors);
+        } else {
+            const deleted = deleteFromProfile(userProfile.experiences, req.params.edu_id);
+            await userProfile.save();
+            if (deleted) {
+                deleted.status = 'deleted edu success';
+                return res.status(200).json(deleted);
+            } else {
+                errors.cannot = 'cannot delete education for user';
+                return res.status(400).json(errors);
+            }
+        }
+    } catch (err) {
+        errors.notfound = `cannot find user by id: ${req.user.id}`;
+        res.status(404).json(errors);
+    }
+});
 
 
 export default profilesRouter;

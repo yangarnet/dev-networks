@@ -39,10 +39,23 @@ export const updateExperienceForProfile = (currentExperience, newExperience) => 
     });
 };
 
+export const updateEducationForProfile = (currentEducation, newEducation) => {
+    currentEducation.forEach(edu => {
+        if (edu.id === newEducation.id) {
+            edu.school = newEducation.school;
+            edu.degree = newEducation.degree;
+            edu.fieldOfStudy = newEducation.fieldOfStudy;
+            edu.from = newEducation.from;
+            edu.to = newEducation.to;
+            edu.current = newEducation.current;
+            edu.description = newEducation.description;
+        }
+    });
+};
 
-export const deleteExperienceForProfile = (currentExperience, idToDelete) => {
-    const index = currentExperience.findIndex(exp => exp.id === idToDelete);
-    const result = currentExperience[index];
-    currentExperience.splice(index, 1);
+export const deleteFromProfile = (current, idToDelete) => {
+    const index = current.findIndex(exp => exp.id === idToDelete);
+    const result = current[index];
+    current.splice(index, 1);
     return result;
 };
