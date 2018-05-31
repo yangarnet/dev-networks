@@ -6,7 +6,7 @@ import profile from '../../models/profile';
 import user from '../../models/user';
 import validateNewProfiles from '../../validation/profiles';
 import validateNewExperience from '../../validation/experiences';
-import { setProfilesToUpdate } from './helper';
+import { setProfilesToUpdate, updateExperienceForProfile, deleteExperienceForProfile } from './helper';
 
 const profilesRouter = express.Router();
 
@@ -213,6 +213,7 @@ profilesRouter.post('/experience', passport.authenticate('jwt', { session: false
 
 profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
+    payload.id = req.params.exp_id;
     const { errors, isValid } = validateNewExperience(payload);
     if (!isValid) {
         return res.status(400).json(errors);
@@ -223,11 +224,8 @@ profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session
             errors.notfound = `user profile not found for id:${req.user.id}`;
             return res.status(404).json(errors);
         } else {
-            const newExperience = await profile.findOneAndUpdate(
-                { experiences: { _id: req.params.exp_id } },
-                { $set: payload },
-                { new: true }
-            );
+            updateExperienceForProfile(userProfile.experiences, payload);
+            const newExperience = await userProfile.save();
             if (newExperience) {
                 return res.status(200).json(newExperience);
             } else {
@@ -236,7 +234,8 @@ profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session
             }
         }
     } catch (err) {
-
+        errors.notfound = `cannot find user by id: ${req.user.id}`;
+        res.status(404).json(errors);
     }
 });
 
@@ -246,7 +245,28 @@ profilesRouter.put('/experience/:exp_id', passport.authenticate('jwt', { session
 @access private
 */
 
-profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => { });
+profilesRouter.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const userProfile = await profile.findOne({ user: req.user.id });
+        if (!userProfile) {
+            errors.notfound = `user profile not found for id:${req.user.id}`;
+            return res.status(404).json(errors);
+        } else {
+            const deleted = deleteExperienceForProfile(userProfile.experiences, req.params.exp_id);
+            await userProfile.save();
+            if (deleted) {
+                deleted.status = 'deleted exp success';
+                return res.status(200).json(deleted);
+            } else {
+                errors.cannot = 'cannot update experience for user';
+                return res.status(400).json(errors);
+            }
+        }
+    } catch (err) {
+        errors.notfound = `cannot find user by id: ${req.user.id}`;
+        res.status(404).json(errors);
+    }
+});
 
 
 /*

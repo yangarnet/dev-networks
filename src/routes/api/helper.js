@@ -1,6 +1,6 @@
 import isEmpty from '../../validation/IsEmpty';
 
-// FIXME  what about remove skill? 
+// FIXME  what about remove skill?
 const updateSkillSet = (currentSkills, newSkills) => {
     newSkills.forEach(skill => {
         if (currentSkills.indexOf(skill) === -1) {
@@ -23,4 +23,26 @@ export const setProfilesToUpdate = (payload, currentProfile) => {
         social: Object.assign(currentProfile.social, payload.social),
         lastUpdated: Date.now()
     }
+};
+
+export const updateExperienceForProfile = (currentExperience, newExperience) => {
+    currentExperience.forEach(exp => {
+        if (exp.id === newExperience.id) {
+            exp.title = newExperience.title;
+            exp.company = newExperience.company;
+            exp.location = newExperience.location;
+            exp.from = newExperience.from;
+            exp.to = newExperience.to;
+            exp.current = newExperience.current;
+            exp.description = newExperience.description;
+        }
+    });
+};
+
+
+export const deleteExperienceForProfile = (currentExperience, idToDelete) => {
+    const index = currentExperience.findIndex(exp => exp.id === idToDelete);
+    const result = currentExperience[index];
+    currentExperience.splice(index, 1);
+    return result;
 };

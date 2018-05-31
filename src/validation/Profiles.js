@@ -15,7 +15,7 @@ const validateNewProfiles = data => {
     handle = !isEmpty(handle) ? handle : EMPTY;
     status = !isEmpty(status) ? status : EMPTY;
     bio = !isEmpty(bio) ? bio : EMPTY;
-    skills = !isEmpty(skills) ? skills : EMPTY;
+    skills = !isEmpty(skills) ? skills.join(',') : EMPTY;
 
     if (!validator.isLength(handle, {
             min: 2,
