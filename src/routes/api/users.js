@@ -28,9 +28,7 @@ userRouter.post('/register', async (req, res) => {
         d: 'mm'
     });
     try {
-        const result = await user.findOne({
-            email: payload.email
-        });
+        const result = await user.findOne({ email: payload.email });
         if (result) {
             throw new Error(`Error: email ${result.email} already registered`);
         } else {
@@ -66,21 +64,17 @@ user login
 */
 userRouter.post('/login', async (req, res) => {
     const payload = _.pick(req.body, ['email', 'password']);
-    const {
-        errors,
-        isValid
-    } = validateUserLogin(payload);
+    const { errors, isValid } = validateUserLogin(payload);
 
     try {
         // user logs in by email and password.
-        const result = await user.findOne({
-            email: payload.email
-        });
+        const result = await user.findOne({ email: payload.email });
         if (!result) {
             errors.email = 'User not found';
             return res.status(404).json(errors);
         }
-        const isMatch = await bcrypt.compare(payload.password, result.password);
+        // compare the user input pwd with hashed password.
+        const isMatch = bcrypt.compareSync(payload.password, result.password);
         if (isMatch) {
             const tokenPayload = {
                 id: result.id,
@@ -89,9 +83,7 @@ userRouter.post('/login', async (req, res) => {
             };
 
             // now sign the token after success login, this is the key to verify all other authorized req.
-            const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, {
-                expiresIn: 3600 * 10
-            }); // token expires in 10 hr
+            const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '3h' });
             if (token) {
                 return res.status(200).json({
                     success: true,
@@ -109,10 +101,8 @@ userRouter.post('/login', async (req, res) => {
         return res.status(404).json(errors);
     }
 });
-
-userRouter.get('/current-user', passport.authenticate('jwt', {
-    session: false
-}), (req, res) => {
+console.log(JSON.stringify(process.env, null, 3));
+userRouter.get('/current-user', passport.authenticate('jwt', {session: false}), (req, res) => {
     res.json({
         userId: req.user.id,
         userEmail: req.user.email,

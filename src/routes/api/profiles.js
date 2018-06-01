@@ -49,7 +49,7 @@ profilesRouter.get('/id/:id', async (req, res) => {
             res.status(404).json(error);
         }
     } catch (err) {
-        error.cannot = 'cannot perform mongo db search';
+        error.cannot = 'invalid id';
         res.status(400).json(error);
     }
 });
