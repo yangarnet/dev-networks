@@ -1,29 +1,28 @@
-import { buildSchema } from 'graphql';
-const graphqlSchema = buildSchema(`
-    type Friend {
-        id: ID,
-        firstName: String
-        lastName: String
-        gender: String
-        language: String
+import { makeExecutableSchema } from 'graphql-tools';
+import resolvers from '../graphql/resolvers/resolver';
+
+// be sure the getUserById  and updateUser are consistent with resovler definiton
+// not sure why for now, I will figure it for sure
+const typeDefs = `
+    type User {
+        name: String
         email: String
     }
+
     type Query {
-        friend: Friend
+        getUserById(id: ID!): User
     }
 
-    input FriendInput {
-        id: ID,
-        firstName: String
-        lastName: String
-        gender: String
-        language: String
+    input UserInput {
+        id: String
+        name: String
         email: String
     }
 
     type Mutation {
-        createFriend(input: FriendInput): Friend
-    }
-`);
+        updateUser(input: UserInput): User
+    }`;
+
+const graphqlSchema = makeExecutableSchema({ typeDefs, resolvers });
 
 export default graphqlSchema;
