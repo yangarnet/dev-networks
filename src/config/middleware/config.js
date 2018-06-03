@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import passportConfig from '../env/passport';
 import graphqlSchema from '../../graphql/schema';
 
-const configMiddleware = app => {
+const middlewareConfig = app => {
     // body parse
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
@@ -20,4 +20,4 @@ const configMiddleware = app => {
     }));
 };
 
-export default configMiddleware;
+export default middlewareConfig;

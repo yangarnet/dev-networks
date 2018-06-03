@@ -3,24 +3,14 @@ import isEmpty from './IsEmpty';
 
 const validateNewProfiles = data => {
     const EMPTY = '';
-    // return an error object
     let errors = {};
-    let {
-        handle,
-        status,
-        bio,
-        skills,
-        webSite
-    } = data;
+    let { handle, status, bio, skills, webSite } = data;
     handle = !isEmpty(handle) ? handle : EMPTY;
     status = !isEmpty(status) ? status : EMPTY;
     bio = !isEmpty(bio) ? bio : EMPTY;
     skills = !isEmpty(skills) ? skills : EMPTY;
 
-    if (!validator.isLength(handle, {
-        min: 2,
-        max: 40
-    })) {
+    if (!validator.isLength(handle, { min: 2, max: 40 })) {
         errors.handle = 'name length must between 2 and 40 characters';
     }
 

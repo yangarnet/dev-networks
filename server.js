@@ -1,13 +1,13 @@
 import express from 'express';
 import envConfig from './src/config/env/config';
-import configMiddleware from './src/config/middleware/config';
+import middlewareConfig from './src/config/middleware/config';
 import routeConfig from './src/config/route/config';
 const dev = 'development';
 const env = process.env.NODE_ENV || dev;
 const app = express();
 
 envConfig(env);
-configMiddleware(app);
+middlewareConfig(app);
 routeConfig(app);
 
 app.get('/', (req, res) => {
