@@ -15,12 +15,12 @@ const validateNewProfiles = data => {
     handle = !isEmpty(handle) ? handle : EMPTY;
     status = !isEmpty(status) ? status : EMPTY;
     bio = !isEmpty(bio) ? bio : EMPTY;
-    skills = !isEmpty(skills) ? skills.join(',') : EMPTY;
+    skills = !isEmpty(skills) ? skills : EMPTY;
 
     if (!validator.isLength(handle, {
-            min: 2,
-            max: 40
-        })) {
+        min: 2,
+        max: 40
+    })) {
         errors.handle = 'name length must between 2 and 40 characters';
     }
 
