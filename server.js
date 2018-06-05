@@ -17,3 +17,5 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`server running @ port: ${process.env.PORT}`);
 });
+
+export default app;
