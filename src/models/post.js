@@ -5,14 +5,18 @@ const Types = Schema.Types;
 const PostObject = {
     user: {
         type: Types.ObjectId,
+        required: true,
         ref: 'users'
     },
     text: {
         type: Types.String,
-        required: true
+        required: true,
+        trim: true
     },
     name: {
-        type: Types.String
+        type: Types.String,
+        required: true,
+        trim: true
     },
     avatar: {
         type: Types.String
@@ -20,23 +24,19 @@ const PostObject = {
     likes: [{
         user: {
             type: Types.ObjectId,
-            required: true,
             ref: 'users'
         }
     }],
     comments: [{
         user: {
             type: Types.ObjectId,
-            required: true,
             ref: 'users'
         },
         text: {
             type: Types.String,
-            required: true
         },
         name: {
             type: Types.String,
-            required: true
         },
         avatar: {
             type: Types.String,
