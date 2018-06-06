@@ -5,21 +5,13 @@ const validateRegisterInput = data => {
     const EMPTY = '';
     // return an error object
     let errors = {};
-    let {
-        name,
-        email,
-        password,
-        confirmedPassword
-    } = data;
+    let { name, email, password, confirmedPassword } = data;
     name = !isEmpty(name) ? name : EMPTY;
     email = !isEmpty(email) ? email : EMPTY;
     password = !isEmpty(password) ? password : EMPTY;
     confirmedPassword = !isEmpty(confirmedPassword) ? confirmedPassword : EMPTY;
 
-    if (!validator.isLength(name, {
-            min: 2,
-            max: 15
-        })) {
+    if (!validator.isLength(name, { min: 2, max: 15 })) {
         errors.name = 'name length must between 2 and 15 characters';
     }
 
@@ -39,10 +31,7 @@ const validateRegisterInput = data => {
         errors.password = 'please input a password';
     }
 
-    if (!validator.isLength(password, {
-            min: 6,
-            max: 30
-        })) {
+    if (!validator.isLength(password, { min: 6, max: 30 })) {
         errors.password = 'password must be at least 6 characters';
     }
 
