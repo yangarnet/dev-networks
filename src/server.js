@@ -1,7 +1,8 @@
 import express from 'express';
-import envConfig from './src/config/env/config';
-import middlewareConfig from './src/config/middleware/config';
-import routeConfig from './src/config/route/config';
+import envConfig from './config/env/config';
+import middlewareConfig from './config/middleware/config';
+import routeConfig from './config/route/config';
+
 const dev = 'development';
 const env = process.env.NODE_ENV || dev;
 const app = express();
