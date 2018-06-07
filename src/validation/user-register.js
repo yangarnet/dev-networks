@@ -24,7 +24,7 @@ const validateRegisterInput = data => {
     }
 
     if (!validator.isEmail(email)) {
-        errors.email = 'please provide a valid email address';
+        errors.email = errors.email || 'please provide a valid email address';
     }
 
     if (validator.isEmpty(password)) {
@@ -32,7 +32,7 @@ const validateRegisterInput = data => {
     }
 
     if (!validator.isLength(password, { min: 6, max: 30 })) {
-        errors.password = 'password must be at least 6 characters';
+        errors.password = errors.password || 'password must be at least 6 characters';
     }
 
     if (validator.isEmpty(confirmedPassword)) {
