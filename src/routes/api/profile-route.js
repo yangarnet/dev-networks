@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import ProfileController from '../../../controllers/profile';
+import ProfileController from '../../controllers/profile';
 
 const profileRoute = express.Router();
 const profileController = new ProfileController();

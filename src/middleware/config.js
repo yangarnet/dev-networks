@@ -1,8 +1,8 @@
 import graphqlHTTP from 'express-graphql';
 import passport from 'passport';
 import bodyParser from 'body-parser';
-import passportConfig from '../env/passport';
-import graphqlSchema from '../../graphql/schema';
+import passportConfig from './passport';
+import graphqlSchema from '../graphql/schema';
 
 const middlewareConfig = app => {
     // body parse

@@ -8,7 +8,7 @@
     "start-watch": "npm run start",
     "clean:build": "rm -rf build && mkdir build",
     "clean": "npm run clean:build",
-    "copy:build": "cp src/config/env/settings.json build/config/env/",
+    "copy:build": "cp src/config/settings.json build/config/",
     "copy": "npm run copy:build",
     "build": "npm run clean && babel src -d build --presets es2015,stage-0 --ignore *.spec.js && npm run copy",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/**/*.spec.js **/**/**/*.spec.js --require babel-core/register --require babel-polyfill",

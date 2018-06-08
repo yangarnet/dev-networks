@@ -1,7 +1,7 @@
 
-import userRoute from './routes/user-route';
-import profileRoute from './routes/profile-route';
-import postRoute from './routes/post-route';
+import userRoute from './api/user-route';
+import profileRoute from './api/profile-route';
+import postRoute from './api/post-route';
 
 // root route config begins here
 const routeConfig = app => {

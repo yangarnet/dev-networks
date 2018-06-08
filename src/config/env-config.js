@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 
 const mongoDb = {
     production: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}${
-    process.env.MONGODB
-  }`
+        process.env.MONGODB
+        }`
 };
 
 const envConfig = env => {

@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import PostController from '../../../controllers/post';
+import PostController from '../../controllers/post';
 
 const postRoute = express.Router();
 const postController = new PostController();
