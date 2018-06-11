@@ -10,12 +10,12 @@ const validateNewProfiles = data => {
     bio = !isEmpty(bio) ? bio : EMPTY;
     skills = !isEmpty(skills) ? skills : EMPTY;
 
-    if (!validator.isLength(handle, { min: 2, max: 40 })) {
-        errors.handle = 'name length must between 2 and 40 characters';
-    }
-
     if (validator.isEmpty(handle)) {
         errors.handle = 'user profile handle is required';
+    }
+
+    if (!validator.isEmpty(handle) && !validator.isLength(handle, { min: 2, max: 40 })) {
+        errors.handle = errors.handle || 'handle length must between 2 and 40 characters';
     }
 
     if (validator.isEmpty(status)) {
@@ -30,10 +30,8 @@ const validateNewProfiles = data => {
         errors.skills = 'user profile skills is required';
     }
 
-    if (!isEmpty(webSite)) {
-        if (!validator.isURL(webSite)) {
-            errors.webSite = 'not a valid URL';
-        }
+    if (isEmpty(webSite) && !validator.isURL(webSite)) {
+        errors.webSite = 'not a valid URL';
     }
     // can do similar stuff for twitter etc.
     return {

@@ -7,6 +7,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+      "args": [
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/src/validation/test/profile.spec.js"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/server.js",
       "stopOnEntry": false,

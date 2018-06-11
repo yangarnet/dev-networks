@@ -17,7 +17,7 @@ const validateUserLogin = data => {
         errors.email = 'please input an email address';
     }
 
-    if (!validator.isEmail(email)) {
+    if (!validator.isEmpty(email) && !validator.isEmail(email)) {
         errors.email = 'please provide a valid email address';
     }
 
@@ -25,11 +25,8 @@ const validateUserLogin = data => {
         errors.password = 'please input a password';
     }
 
-    if (!validator.isLength(password, {
-        min: 6,
-        max: 30
-    })) {
-        errors.password = 'password must be at least 6 characters';
+    if (!validator.isLength(password, { min: 6, max: 30 })) {
+        errors.password = errors.password || 'password must be at least 6 characters';
     }
 
     return {

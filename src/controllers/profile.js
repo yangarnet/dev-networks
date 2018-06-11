@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import _ from 'lodash';
 import profile from '../models/profile';
 import validateNewProfiles from '../validation/profile';
-import validateExperience from '../validation/experiences';
+import validateExperience from '../validation/experience';
 import validateEducation from '../validation/education';
 import { setProfilesToUpdate, updateExperienceForProfile, updateEducationForProfile, deleteFromProfile } from './helper/helper';
 
