@@ -9,6 +9,7 @@ const validateNewProfiles = data => {
     status = !isEmpty(status) ? status : EMPTY;
     bio = !isEmpty(bio) ? bio : EMPTY;
     skills = !isEmpty(skills) ? skills : EMPTY;
+    webSite = !isEmpty(webSite) ? webSite : EMPTY;
 
     if (validator.isEmpty(handle)) {
         errors.handle = 'user profile handle is required';

@@ -5,17 +5,13 @@ import server from '../server';
 import user from '../models/user';
 import profile from '../models/profile';
 import post from '../models/post';
+import prepareUser from './seeds/user-seed';
 
-
-describe('test user route and user controller', () => {
+describe('test USER route and user controller', () => {
 
     before(done => {
         user.remove().then(() => done());
     });
-
-    // after(done => {
-    //     user.remove().then(() => done());
-    // });
 
     describe('test cases of user registeration', () => {
         it('should register a valid user', (done) => {
@@ -308,3 +304,15 @@ describe('test user route and user controller', () => {
         });
     });
 });
+
+
+describe('test PROFILE route and profile controller', () => {
+    before(done => {
+        prepareUser();
+        done();
+    });
+
+    it('should allow new user to create a new profile', () => { });
+});
+
+describe('test POST route and profile controller', () => { });
