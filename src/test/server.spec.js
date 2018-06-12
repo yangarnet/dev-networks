@@ -13,6 +13,10 @@ describe('test USER route and user controller', () => {
         user.remove().then(() => done());
     });
 
+    after(done => {
+        user.remove().then(() => done());
+    });
+
     describe('test cases of user registeration', () => {
         it('should register a valid user', (done) => {
             let user = {
@@ -199,6 +203,7 @@ describe('test USER route and user controller', () => {
     });
 
     describe('test cases of user login', () => {
+
         it('should login the user with correct details', (done) => {
             let login = {
                 email: 'john.doe@gmail.com',
@@ -307,12 +312,44 @@ describe('test USER route and user controller', () => {
 
 
 describe('test PROFILE route and profile controller', () => {
-    before(done => {
-        prepareUser();
-        done();
-    });
+    before(prepareUser);
 
-    it('should allow new user to create a new profile', () => { });
+    it('should allow new user to create a new profile', (done) => {
+        let login = {
+            email: 'john.kelly@gmail.com',
+            password: '1234567890'
+        };
+        let token = '';
+        request(server)
+            .post('/api/user/login')
+            .set('Content-Type', 'application/json')
+            .send(login)
+            .expect(404)
+            .expect(response => {
+                console.log(response.body);
+                expect(response.body).to.be.not.null;
+                expect(response.body).to.have.property('success', true);
+                assert.isTrue(response.body.success);
+                expect(response.body.token).to.be.not.empty;
+                expect(response.body.token).to.contain('Bearer', 'the token begins with Bearer');
+            })
+            .end(done);
+
+        // let profile = {
+        //     handle: 'John Kelly',
+        //     status: 'developer',
+        //     skills: 'javascript, react, nodejs',
+        //     bio: 'male',
+        //     webSite: 'https://www.youtube.com'
+        // };
+        // request(server)
+        //     .post('/api/profile')
+        //     .set('Content-Type', 'application/json')
+        //     .set('Authorization', token)
+        //     .send(profile)
+        //     .expect(200)
+        //.end(done);
+    });
 });
 
 describe('test POST route and profile controller', () => { });
