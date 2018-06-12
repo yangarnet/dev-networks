@@ -10,14 +10,19 @@
       "name": "Mocha Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
+      "env": {
+        "NODE_ENV": "test"
+      },
       "args": [
         "-u",
         "tdd",
         "--timeout",
         "999999",
         "--colors",
-        "${workspaceFolder}/src/validation/test/profile.spec.js"
+        "${workspaceFolder}/src/test/server.spec.js"
       ],
+      "stopOnEntry": false,
+      "sourceMaps": false,
       "internalConsoleOptions": "openOnSessionStart"
     },
     {

@@ -15,7 +15,7 @@ class UserController {
         const result = validateRegisterInput(payload);
         if (!result.isValid) {
             // return and end the response
-            return res.status(400).json(result.errors);
+            return res.status(400).json(result);
         }
         const avatar = gravatar.url(payload.email, {
             s: '200',
@@ -58,6 +58,9 @@ class UserController {
     async login(req, res) {
         const payload = _.pick(req.body, ['email', 'password']);
         const { errors, isValid } = validateUserLogin(payload);
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
 
         try {
             // user logs in by email and password.
