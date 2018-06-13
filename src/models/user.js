@@ -34,21 +34,19 @@ const userObject = {
 const UserSchema = new Schema(userObject);
 
 // cannot use arrow function in this cb
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function (next) {
     let currentUser = this;
     if (currentUser.isModified('password')) {
-        // gen salt
-        bcrypt.genSalt(10, (err, salt) => {
-            // hashing pwd with the salt
-            bcrypt.hash(currentUser.password, salt, (err, hash) => {
-                if (err) {
-                    throw err;
-                }
-                // update password with hash result
+        try {
+            const salt = await bcrypt.genSalt(10);
+            if (salt) {
+                const hash = await bcrypt.hash(currentUser.password, salt);
                 currentUser.password = hash;
                 next();
-            });
-        });
+            }
+        } catch (err) {
+            next();
+        }
     } else {
         next();
     }
