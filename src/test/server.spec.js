@@ -324,31 +324,61 @@ describe('test PROFILE route and profile controller', () => {
             .post('/api/user/login')
             .set('Content-Type', 'application/json')
             .send(login)
-            .expect(404)
+            .expect(200)
             .expect(response => {
-                console.log(response.body);
                 expect(response.body).to.be.not.null;
                 expect(response.body).to.have.property('success', true);
                 assert.isTrue(response.body.success);
                 expect(response.body.token).to.be.not.empty;
                 expect(response.body.token).to.contain('Bearer', 'the token begins with Bearer');
+                token = response.body.token;
+                // get the authorization token first
             })
-            .end(done);
+            .end(() => {
+                // then do other request in the end()
+                let userProfile = {
+                    handle: 'John Kelly',
+                    status: 'developer',
+                    skills: 'javascript, react, nodejs',
+                    bio: 'male',
+                    webSite: 'https://www.youtube.com'
+                };
+                request(server)
+                    .post('/api/profile')
+                    .set('Content-Type', 'application/json')
+                    .set('Authorization', token)
+                    .send(userProfile)
+                    .expect(201)
+                    .end((err, response) => {
+                        if (err) {
+                            done(err);
+                        }
+                        expect(response.body).to.be.not.empty;
+                        expect(response.body.handle).to.be.equal('John Kelly');
+                        expect(response.body.status).to.be.equal('developer');
+                        expect(response.body.bio).to.be.equal('male');
+                        expect(response.body.skills).to.be.a('array').with.lengthOf(3);
+                        expect(response.body.experiences).to.be.a('array').with.lengthOf(0);
+                        expect(response.body.education).to.be.a('array').with.lengthOf(0);
+                        expect(response.body.user).to.be.not.null;
 
-        // let profile = {
-        //     handle: 'John Kelly',
-        //     status: 'developer',
-        //     skills: 'javascript, react, nodejs',
-        //     bio: 'male',
-        //     webSite: 'https://www.youtube.com'
-        // };
-        // request(server)
-        //     .post('/api/profile')
-        //     .set('Content-Type', 'application/json')
-        //     .set('Authorization', token)
-        //     .send(profile)
-        //     .expect(200)
-        //.end(done);
+                        // check to make sure the profile had been written into db
+                        let userId = response.body.user;
+                        profile.find({ user: userId })
+                            .then((result) => {
+                                expect(result).to.be.not.null;
+                                expect(result).to.be.a('array').with.lengthOf(1);
+                                expect(result[0].handle).to.be.equal('John Kelly');
+                                expect(result[0].status).to.be.equal('developer');
+                                expect(result[0].bio).to.be.equal('male');
+                                expect(result[0].skills).to.be.a('array').with.lengthOf(3);
+                                expect(result[0].experiences).to.be.a('array').with.lengthOf(0);
+                                expect(result[0].education).to.be.a('array').with.lengthOf(0);
+                                done();
+                            })
+                            .catch(err => done(err));
+                    });
+            });
     });
 });
 

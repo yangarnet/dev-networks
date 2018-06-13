@@ -11,7 +11,7 @@ envConfig(env);
 middlewareConfig(server);
 routeConfig(server);
 
-server.get('/demo', (req, res) => {
+server.get('/', (req, res) => {
     res.status(200).json({ greeting: 'hello' });
 });
 

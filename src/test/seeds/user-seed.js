@@ -1,5 +1,6 @@
 import { ObjectID } from 'mongodb';
 import user from '../../models/user';
+import profile from '../../models/profile'
 
 const users = [
     {
@@ -18,6 +19,7 @@ const users = [
 
 const prepareUser = async () => {
     await user.remove();
+    await profile.remove();
     const user1 = new user(users[0]);
     const user2 = new user(users[1]);
     await user1.save();
