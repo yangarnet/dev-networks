@@ -4,9 +4,16 @@
     "es6": true,
     "browser": true
   },
+  "plugins": [
+    "react"
+  ],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2017
+    "ecmaVersion": 2017,
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
   },
   "ecmaFeatures": {
     "arrowFunctions": true,
