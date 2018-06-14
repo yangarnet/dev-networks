@@ -2,13 +2,18 @@ import express from 'express';
 import passport from 'passport';
 import UserController from '../../controllers/user';
 
-const userRoute = express.Router();
-const userCtrl = new UserController();
+const userRoute = () => {
 
-userRoute.post('/register', userCtrl.register);
-userRoute.post('/login', userCtrl.login);
-// store the logged in user in request, NOT in session, by { session: false }
-// client will store the token and sends it back each subsequent request
-userRoute.get('/current-user', passport.authenticate('jwt', { session: false }), userCtrl.getCurrentUser);
+    const userRouter = express.Router();
+    const userCtrl = new UserController();
+
+    userRouter.post('/register', userCtrl.register);
+    userRouter.post('/login', userCtrl.login);
+    // store the logged in user in request, NOT in session, by { session: false }
+    // client will store the token and sends it back each subsequent request
+    userRouter.get('/current-user', passport.authenticate(process.env.AUTH_TYPE, { session: false }), userCtrl.getCurrentUser);
+
+    return userRouter;
+};
 
 export default userRoute;
