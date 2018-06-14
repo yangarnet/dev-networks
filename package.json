@@ -4,8 +4,11 @@
   "description": "full stack nodejs react",
   "main": "server.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
+    "client": "npm start --prefix client",
     "start": "npm run build && node build/server.js",
     "start-watch": "npm run start",
+    "dev": "concurrently \"npm run start\" \"npm run client\"",
     "clean:build": "rm -rf build && mkdir build",
     "clean": "npm run clean:build",
     "copy:build": "cp src/config/settings.json build/config/",
@@ -23,6 +26,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
     "express": "^4.16.3",
     "express-graphql": "0.6.12",
     "graphql": "0.13.2",
