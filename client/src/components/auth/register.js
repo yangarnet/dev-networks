@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class Register extends Component {
     constructor(props) {
@@ -11,11 +12,28 @@ class Register extends Component {
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+        const newUser = {
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            confirmedPassword: this.state.confirmedPassword
+        };
+        console.log('new user', newUser);
+
+        axios.post('/api/user/register', newUser)
+            .then(res => console.log(res))
+            .catch(err => console.log(err.errors));
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
+
     render() {
         return (
             <div className="register">
@@ -24,13 +42,13 @@ class Register extends Component {
                         <div className="col-md-8 m-auto">
                             <h1 className="display-4 text-center">Sign Up</h1>
                             <p className="lead text-center">Create your DevConnector account</p>
-                            <form onSubmit={this.submit}>
+                            <form onSubmit={this.onSubmit}>
                                 <div className="form-group">
                                     <input
                                         type="text"
                                         className="form-control form-control-lg"
                                         placeholder="Name"
-                                        name="name" required
+                                        name="name"
                                         value={this.state.name}
                                         onChange={this.onChange}
                                     />
@@ -52,7 +70,6 @@ class Register extends Component {
                                         className="form-control form-control-lg"
                                         placeholder="Password"
                                         name="password"
-                                        value={this.state.password}
                                         onChange={this.onChange}
                                     />
                                 </div>
@@ -62,7 +79,6 @@ class Register extends Component {
                                         className="form-control form-control-lg"
                                         placeholder="Confirm Password"
                                         name="confirmedPassword"
-                                        value={this.state.confirmedPassword}
                                         onChange={this.onChange}
                                     />
                                 </div>
