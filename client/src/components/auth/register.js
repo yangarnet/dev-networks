@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { registerUser } from '../../action/authAction';
@@ -27,7 +28,7 @@ class Register extends Component {
             confirmedPassword: this.state.confirmedPassword
         };
 
-        this.props.registerUser(newUser);
+        this.props.registerUser(newUser, this.props.history);
     }
 
     onChange(e) {
@@ -123,4 +124,4 @@ const mapStateToProps = (state) => ({
     errors: state.regErrors
 });
 // just use connect to link any component that need data feeds from redux
-export default connect(mapStateToProps, { registerUser })(Register);
+export default connect(mapStateToProps, { registerUser })(withRouter(Register));
