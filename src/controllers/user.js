@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import validateRegisterInput from '../validation/user-register';
 import validateUserLogin from '../validation/user-login';
+import { EmailAlreadyRegisteredError } from './helper/helper';
 
 class UserController {
 
@@ -25,7 +26,7 @@ class UserController {
         try {
             const result = await user.findOne({ email: payload.email });
             if (result) {
-                throw new Error(`Error: email ${result.email} already registered`);
+                throw new EmailAlreadyRegisteredError(`Error: email ${result.email} already registered`);
             } else {
                 const newUser = new user({
                     name: payload.name,
@@ -47,10 +48,16 @@ class UserController {
                 }
             }
         } catch (exception) {
-            res.status(400).json({
-                name: exception.name,
-                msg: exception.message
-            });
+            if (exception.email) {
+                return res.status(400).json({
+                    email: exception.message
+                });
+            } else {
+                return res.status(400).json({
+                    name: exception.name,
+                    msg: exception.message
+                });
+            }
         }
 
     }

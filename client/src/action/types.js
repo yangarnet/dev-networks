@@ -1,0 +1,2 @@
+
+export const USER_REGISTER_ERROR = 'USER_REGISTER_ERROR';

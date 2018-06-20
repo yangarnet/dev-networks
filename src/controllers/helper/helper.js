@@ -59,3 +59,12 @@ export const deleteFromProfile = (current, idToDelete) => {
     current.splice(index, 1);
     return result;
 };
+
+export class EmailAlreadyRegisteredError extends Error {
+    constructor(message, status) {
+        super(message);
+        this.email = 'email';
+        this.status = status;
+        Error.captureStackTrace(this, this.constructor);
+    }
+};

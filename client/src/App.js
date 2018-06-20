@@ -11,8 +11,9 @@ import appStore from './store/store';
 
 class App extends Component {
     render() {
+        //{/*the Provider here provides redux store to the app*/ }
         return (
-            <Provider store={appStore}>
+            < Provider store={appStore} >
                 <BrowserRouter>
                     <div className="App">
                         <NavBar />
@@ -24,7 +25,7 @@ class App extends Component {
                         <Footer />
                     </div>
                 </BrowserRouter>
-            </Provider>
+            </Provider >
         )
     }
 }
