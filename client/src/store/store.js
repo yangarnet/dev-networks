@@ -5,13 +5,12 @@ import rootReducer from '../reducers/index';
 
 const middleware = [thunk];
 const initialState = {};
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const appStore = createStore(
     rootReducer,
-    initialState, compose(
-        applyMiddleware(...middleware),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
+    initialState,
+    composeEnhancers(applyMiddleware(...middleware))
 );
 
 export default appStore;

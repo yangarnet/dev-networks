@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch React App",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/client"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Mocha Tests",
@@ -28,7 +35,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Node Server",
       "program": "${workspaceFolder}/src/server.js",
       "stopOnEntry": false,
       "sourceMaps": false,

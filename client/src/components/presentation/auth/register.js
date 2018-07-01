@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import { registerUser } from '../../action/authAction';
+
 
 class Register extends Component {
     constructor(props) {
@@ -12,8 +11,7 @@ class Register extends Component {
             name: '',
             email: '',
             password: '',
-            confirmedPassword: '',
-            errors: {}
+            confirmedPassword: ''
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -28,7 +26,7 @@ class Register extends Component {
             confirmedPassword: this.state.confirmedPassword
         };
 
-        this.props.registerUser(newUser, this.props.history);
+        this.props.performRegister(newUser, this.props.history);
     }
 
     onChange(e) {
@@ -43,7 +41,9 @@ class Register extends Component {
     }
 
     render() {
-        const { errors } = this.state;
+        console.log('presentaion props', this.props);
+        const errors = this.props.errors ? this.props.errors : {};
+        console.log('errossss', errors);
         return (
             <div className="register">
                 <div className="container">
@@ -114,14 +114,13 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-    registerUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
+    performRegister: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state) => ({
-    auth: state.myAuth,
-    errors: state.regErrors
-});
+
 // just use connect to link any component that need data feeds from redux
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+//export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default withRouter(Register);
+
+
