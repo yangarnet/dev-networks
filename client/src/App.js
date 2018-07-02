@@ -7,8 +7,6 @@ import Landing from './components/presentation/layout/landing';
 import Footer from './components/presentation/layout/footer';
 import Login from './components/presentation/auth/login';
 import UserRegisterContainer from './components/containers/user-register-container';
-// import Register from './components/presentation/auth/register';
-
 import appStore from './store/store';
 
 class App extends Component {

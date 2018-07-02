@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 
-class Register extends Component {
+class UserRegister extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -113,7 +113,7 @@ class Register extends Component {
     }
 }
 
-Register.propTypes = {
+UserRegister.propTypes = {
     performRegister: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
 };
@@ -121,6 +121,4 @@ Register.propTypes = {
 
 // just use connect to link any component that need data feeds from redux
 //export default connect(mapStateToProps, { registerUser })(withRouter(Register));
-export default withRouter(Register);
-
-
+export default withRouter(UserRegister);

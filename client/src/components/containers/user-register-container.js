@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Register from '../presentation/auth/register';
 import { registerUser } from '../../action/authAction';
+import UserRegister from '../presentation/auth/user-register';
 
-class UserRegisterContainer extends Component {
-
-    render() {
-        console.log('container props', this.props);
-        return (
-            <Register
-                performRegister={this.props.performRegister}
-                auth={this.props.auth}
-                errors={this.props.errors}
-            />
-        );
-    }
+// this is higher order component(HOC): receives one component and return another one
+const UserRegisterContainer = (props) => {
+    return (
+        <UserRegister
+            performRegister={props.performRegister}
+            auth={props.auth}
+            errors={props.errors}
+        />
+    );
 };
-
 const mapStateToProps = (state, ownProps) => ({
     auth: state.myAuth,
     errors: state.regErrors.errors
@@ -36,4 +32,5 @@ UserRegisterContainer.propTypes = {
     auth: PropTypes.object.isRequired
 };
 
+//Higher Order Component(HOC): a function takes a component and returns a new component.
 export default connect(mapStateToProps, mapDispatchToProps)(UserRegisterContainer);
