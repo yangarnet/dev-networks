@@ -25,7 +25,7 @@ class UserRegister extends Component {
             password: this.state.password,
             confirmedPassword: this.state.confirmedPassword
         };
-
+        // withRouter() wraps the component will come with this.props.history object
         this.props.performRegister(newUser, this.props.history);
     }
 
@@ -41,9 +41,7 @@ class UserRegister extends Component {
     }
 
     render() {
-        console.log('presentaion props', this.props);
         const errors = this.props.errors ? this.props.errors : {};
-        console.log('errossss', errors);
         return (
             <div className="register">
                 <div className="container">
@@ -60,7 +58,6 @@ class UserRegister extends Component {
                                         })}
                                         placeholder="Name"
                                         name="name"
-                                        value={this.state.name}
                                         onChange={this.onChange}
                                     />
                                     {errors.name && (<div className='invalid-feedback'>{errors.name}</div>)}
@@ -73,7 +70,6 @@ class UserRegister extends Component {
                                         })}
                                         placeholder="Email Address"
                                         name="email"
-                                        value={this.state.email}
                                         onChange={this.onChange}
                                     />
                                     {errors.email && (<div className='invalid-feedback'>{errors.email}</div>)}

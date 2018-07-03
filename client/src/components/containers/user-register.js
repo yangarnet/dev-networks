@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { registerUser } from '../../action/authAction';
@@ -16,7 +16,7 @@ const UserRegisterContainer = (props) => {
 };
 const mapStateToProps = (state, ownProps) => ({
     auth: state.myAuth,
-    errors: state.regErrors.errors
+    errors: state.errors.errors
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
