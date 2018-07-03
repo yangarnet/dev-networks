@@ -31,7 +31,7 @@ export const registerUser = (userData, history) => (dispatch) => {
         });
 };
 
-const setCurrentLoggedInUser = decoded => {
+export const setCurrentLoggedInUser = decoded => {
     return {
         type: SET_CURRENT_USER,
         payload: decoded
@@ -50,6 +50,7 @@ export const userLogin = userData => dispatch => {
             setAuthToken(token);
             // decode the token and set current logged in user
             const decoded = jwt_decode(token);
+            // set the current login user.
             dispatch(setCurrentLoggedInUser(decoded));
             dispatch({ type: USER_LOGIN_RESOLVE });
         }, err => {

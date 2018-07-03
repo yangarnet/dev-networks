@@ -13,9 +13,10 @@ class Login extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    // add the change to the react life cicle.
+    // add the change to the react life cicle
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
+            // the this.props.history become available because withRouter() wrapper
             this.props.history.push('/dashboard');
         }
     }
