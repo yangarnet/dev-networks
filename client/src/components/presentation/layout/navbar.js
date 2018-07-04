@@ -1,8 +1,45 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { userLogout } from '../../../action/authAction';
 
 class NavBar extends Component {
+
+    onLogoutClick(e) {
+        e.preventDefault();
+        this.props.userLogout();
+    }
+
     render() {
+        const { isAuthenticated, user } = this.props.auth;
+
+        const authLinks = (
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                    <a href="" className="nav-link" onClick={this.onLogoutClick.bind(this)}>
+                        <img
+                            className="rounded-circle"
+                            src={user.avatar}
+                            alt={user.name}
+                            style={{ width: '25px', marginRight: '5px' }}
+                            title='need your gravtar image'
+                        />
+                    </a>
+                </li>
+            </ul>
+        );
+        const guestLinks = (
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/register">Sign Up</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/login">Login</Link>
+                </li>
+            </ul>
+        );
+
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
                 <div className="container">
@@ -14,18 +51,10 @@ class NavBar extends Component {
                     <div className="collapse navbar-collapse" id="mobile-nav">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item">
-                                <Link className="nav-link" to="/profiles"> Developers</Link>
+                                <Link className="nav-link" to="/profiles">{' '} Developers</Link>
                             </li>
                         </ul>
-
-                        <ul className="navbar-nav ml-auto">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/register">Sign Up</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/login">Login</Link>
-                            </li>
-                        </ul>
+                        {isAuthenticated ? authLinks : guestLinks}
                     </div>
                 </div>
             </nav>
@@ -33,4 +62,21 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        auth: state.myAuth
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        userLogout: () => { dispatch(userLogout()) }
+    };
+};
+
+NavBar.propTypes = {
+    auth: PropTypes.object.isRequired,
+    userLogout: PropTypes.func.isRequired
+};
+
+// connect the redux store to user component.
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

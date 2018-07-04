@@ -9,7 +9,8 @@ import {
     USER_LOGIN_PENDING,
     USER_LOGIN_RESOLVE,
     USER_LOGIN_REJECT,
-    SET_CURRENT_USER
+    SET_CURRENT_USER,
+    USER_LOGOUT
 } from './types';
 
 const userRegisterResolve = (payload) => ({
@@ -59,4 +60,14 @@ export const userLogin = userData => dispatch => {
                 payload: err.response.data
             })
         })
+};
+
+export const userLogout = () => dispatch => {
+    dispatch({ type: USER_LOGOUT });
+    // remove the token from local storage
+    localStorage.removeItem('jwt');
+    // remove auth header for future req
+    setAuthToken(false);
+    // set isAuthenticated false and user {}, so isAuthenticated will be false
+    dispatch(setCurrentLoggedInUser({}));
 };
