@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { registerUser } from '../../action/authAction';
-import UserRegister from '../presentation/auth/user-register';
+import UserRegister from '../presentation/auth/UserRegister';
 
 // this is higher order component(HOC): receives one component and return another one
 const UserRegisterContainer = (props) => {

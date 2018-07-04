@@ -3,11 +3,11 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux'; // this is where the redux store
 import jwt_decode from 'jwt-decode';
 import './App.css';
-import NavBar from './components/presentation/layout/navbar';
-import Landing from './components/presentation/layout/landing';
-import Footer from './components/presentation/layout/footer';
-import UserRegisterContainer from './components/containers/user-register';
-import UserLogin from './components/containers/user-login';
+import NavBar from './components/presentation/layout/NavBar';
+import Landing from './components/presentation/layout/Landing';
+import Footer from './components/presentation/layout/Footer';
+import UserRegisterContainer from './components/containers/UserRegister';
+import UserLogin from './components/containers/UserLogin';
 import appStore from './store/store';
 import { setAuthToken } from './utils/helper';
 import { setCurrentLoggedInUser, userLogout } from './action/authAction';
@@ -45,7 +45,7 @@ class App extends Component {
                     </div>
                 </BrowserRouter>
             </Provider >
-        )
+        );
     }
 }
 

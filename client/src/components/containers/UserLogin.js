@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Login from '../presentation/auth/login';
+import Login from '../presentation/auth/Login';
 import { userLogin } from '../../action/authAction';
 
 const UserLogin = (props) => {
