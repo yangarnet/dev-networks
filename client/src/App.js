@@ -10,7 +10,7 @@ import UserRegisterContainer from './components/containers/user-register';
 import UserLogin from './components/containers/user-login';
 import appStore from './store/store';
 import { setAuthToken } from './utils/helper';
-import { setCurrentLoggedInUser } from './action/authAction';
+import { setCurrentLoggedInUser, userLogout } from './action/authAction';
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
@@ -20,6 +20,13 @@ if (localStorage.jwt) {
     // decode the token to get user info
     const decoded = jwt_decode(localStorage.jwt);
     appStore.dispatch(setCurrentLoggedInUser(decoded));
+
+    // check for expire token
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+        appStore.dispatch(userLogout());
+        window.location.href = '/login';
+    }
 }
 class App extends Component {
     render() {

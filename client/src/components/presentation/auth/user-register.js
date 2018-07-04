@@ -33,6 +33,11 @@ class UserRegister extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    componentDidMount() {
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push('/dashboard');
+        }
+    }
     // when receive new props from redux, this will get called
     componentWillReceiveProps(nextProps) {
         if (nextProps) {
