@@ -8,6 +8,7 @@ import Landing from './components/presentation/layout/Landing';
 import Footer from './components/presentation/layout/Footer';
 import UserRegisterContainer from './components/containers/UserRegister';
 import UserLogin from './components/containers/UserLogin';
+import DashBoard from './components/dashboard/DashBoard';
 import appStore from './store/store';
 import { setAuthToken } from './utils/helper';
 import { setCurrentLoggedInUser, userLogout } from './action/authAction';
@@ -40,6 +41,7 @@ class App extends Component {
                         <div className="container">
                             <Route exact path='/login' component={UserLogin} />
                             <Route exact path='/register' component={UserRegisterContainer} />
+                            <Route exact path='/dashboard' component={DashBoard} />
                         </div>
                         <Footer />
                     </div>
