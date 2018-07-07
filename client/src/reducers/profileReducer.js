@@ -1,5 +1,9 @@
-
-import { GET_PROFILE_PENDING, GET_PROFILE_RESOLVE, GET_PROFILE_REJECT } from '../action/types';
+import {
+    GET_PROFILE_PENDING,
+    GET_PROFILE_RESOLVE,
+    GET_PROFILE_REJECT,
+    CLEAR_CURRENT_USER_PROFILE
+} from "../action/types";
 
 const initState = {
     profile: null,
@@ -8,15 +12,17 @@ const initState = {
 };
 
 const profileReducer = (state = initState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case GET_PROFILE_PENDING:
             return Object.assign({}, state, { loading: true });
         case GET_PROFILE_RESOLVE:
-            return Object.assign({}, state, { profile: action.payload, loading: false });
+            return Object.assign({}, state, {
+                profile: action.payload,
+                loading: false
+            });
         case GET_PROFILE_REJECT:
+        case CLEAR_CURRENT_USER_PROFILE:
             return Object.assign({}, state, { profile: null, loading: false });
-        case CLEAR_CURRENT_PROFILE:
-            return Object.assign({}, state, { profile: null });
         default:
             return state;
     }

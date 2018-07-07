@@ -79,8 +79,7 @@ class ProfileController {
             const result = await profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
             console.log(`req userid :${req.user.id}`);
             if (!result) {
-                errors.notfound = 'no profile for the user';
-                return res.status(404).json(errors);
+                return res.status(200).json({});
             }
             res.status(200).json(result);
         } catch (err) {

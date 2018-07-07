@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { userLogout } from '../../../action/authAction';
+import { clearCurrentUserProfile } from '../../../action/profileAction';
 
 class NavBar extends Component {
 
     onLogoutClick(e) {
         e.preventDefault();
+        this.props.clearProfile();
         this.props.userLogout();
     }
 
@@ -69,7 +71,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        userLogout: () => { dispatch(userLogout()) }
+        userLogout: () => { dispatch(userLogout()) },
+        clearProfile: () => { dispatch(clearCurrentUserProfile()) }
     };
 };
 

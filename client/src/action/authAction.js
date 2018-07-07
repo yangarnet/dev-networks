@@ -39,15 +39,16 @@ export const setCurrentLoggedInUser = decoded => {
     };
 };
 
-// async action
+// async action user login, this will set user information in the localStorage
+// identify who is logged in
 export const userLogin = userData => dispatch => {
     dispatch({ type: USER_LOGIN_PENDING });
     axios.post('/api/user/login', userData)
         .then(res => {
             const { token } = res.data;
-            //save to local storage
+            //save to local storage, so subsequent request will know who is logged in.
             localStorage.setItem('jwt', token);
-            // set auth header
+            // set auth header, so subsequent request will who is logged in.
             setAuthToken(token);
             // decode the token and set current logged in user
             const decoded = jwt_decode(token);
