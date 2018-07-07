@@ -1,11 +1,16 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import _ from 'lodash';
-import profile from '../models/profile';
-import validateNewProfiles from '../validation/profile';
-import validateExperience from '../validation/experience';
-import validateEducation from '../validation/education';
-import { setProfilesToUpdate, updateExperienceForProfile, updateEducationForProfile, deleteFromProfile } from './helper/helper';
+import express from "express";
+import mongoose from "mongoose";
+import _ from "lodash";
+import profile from "../models/profile";
+import validateNewProfiles from "../validation/profile";
+import validateExperience from "../validation/experience";
+import validateEducation from "../validation/education";
+import {
+    setProfilesToUpdate,
+    updateExperienceForProfile,
+    updateEducationForProfile,
+    deleteFromProfile
+} from "./helper/helper";
 
 class ProfileController {
     /*
@@ -16,15 +21,19 @@ class ProfileController {
     async getProfileByHandle(req, res) {
         const error = {};
         try {
-            const result = await profile.findOne({ handle: req.params.handle }).populate('user', ['name', 'avatar']);
+            const result = await profile
+                .findOne({ handle: req.params.handle })
+                .populate("user", ["name", "avatar"]);
             if (result) {
                 return res.status(200).json(result);
             } else {
-                error.notfound = `cannot find any profile with handle: ${req.params.handle}`;
+                error.notfound = `cannot find any profile with handle: ${
+                    req.params.handle
+                }`;
                 res.status(404).json(error);
             }
         } catch (err) {
-            error.cannot = 'cannot perform mongo db search';
+            error.cannot = "cannot perform mongo db search";
             res.status(400).json(error);
         }
     }
@@ -37,15 +46,19 @@ class ProfileController {
         const error = {};
         try {
             // the populate method is used to fetch details from ref defined in the profile schema
-            const result = await profile.findById(req.params.id).populate('user', ['name', 'avatar']);
+            const result = await profile
+                .findById(req.params.id)
+                .populate("user", ["name", "avatar"]);
             if (result) {
                 return res.status(200).json(result);
             } else {
-                error.notfound = `cannot find any profile by id: ${req.params.id}`;
+                error.notfound = `cannot find any profile by id: ${
+                    req.params.id
+                }`;
                 res.status(404).json(error);
             }
         } catch (err) {
-            error.cannot = 'invalid id';
+            error.cannot = "invalid id";
             res.status(400).json(error);
         }
     }
@@ -57,11 +70,13 @@ class ProfileController {
     async listAllProfile(req, res) {
         const error = {};
         try {
-            const profiles = await profile.find().populate('user', ['name', 'avatar']);
+            const profiles = await profile
+                .find()
+                .populate("user", ["name", "avatar"]);
             if (profiles) {
                 res.status(200).json(profiles);
             } else {
-                error.none = 'there is not any profile';
+                error.none = "there is not any profile";
                 res.status(200).json(error);
             }
         } catch (err) {
@@ -76,7 +91,9 @@ class ProfileController {
     async getCurrentUserProfile(req, res) {
         const errors = {};
         try {
-            const result = await profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
+            const result = await profile
+                .findOne({ user: req.user.id })
+                .populate("user", ["name", "avatar"]);
             console.log(`req userid :${req.user.id}`);
             if (!result) {
                 return res.status(200).json({});
@@ -96,15 +113,25 @@ class ProfileController {
         if (!isValid) {
             return res.status(400).json(errors);
         }
-        const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
+        const payloads = _.pick(req.body, [
+            "handle",
+            "company",
+            "webSite",
+            "location",
+            "status",
+            "skills",
+            "bio",
+            "githubusername",
+            "social"
+        ]);
         try {
             if (await profile.findOne({ user: req.user.id })) {
-                errors.unable = 'user profile already exists';
+                errors.unable = "user profile already exists";
                 return res.status(400).json(errors);
             } else {
                 payloads.user = req.user.id;
-                if (typeof (payloads.skills) === 'string') {
-                    payloads.skills = payloads.skills.split(',');
+                if (typeof payloads.skills === "string") {
+                    payloads.skills = payloads.skills.split(",");
                 }
                 payloads.dateAdded = Date.now();
                 const newProfle = new profile(payloads);
@@ -112,7 +139,7 @@ class ProfileController {
                 if (result) {
                     return res.status(201).json(result);
                 } else {
-                    errors.cannotsave = 'fail to save new user profles';
+                    errors.cannotsave = "fail to save new user profles";
                     res.status(400).json(errors);
                 }
             }
@@ -127,21 +154,35 @@ class ProfileController {
     */
     async updateUserProfile(req, res) {
         const errors = {};
-        const payloads = _.pick(req.body, ['handle', 'company', 'webSite', 'location', 'status', 'skills', 'bio', 'githubusername', 'social']);
+        const payloads = _.pick(req.body, [
+            "handle",
+            "company",
+            "webSite",
+            "location",
+            "status",
+            "skills",
+            "bio",
+            "githubusername",
+            "social"
+        ]);
         try {
             const result = await profile.findOne({ user: req.user.id });
             if (result) {
                 const payloadToUpdate = setProfilesToUpdate(payloads, result);
-                const updatedProfiles = await profile.findOneAndUpdate({ user: req.user.id }, { $set: payloadToUpdate }, { new: true });
+                const updatedProfiles = await profile.findOneAndUpdate(
+                    { user: req.user.id },
+                    { $set: payloadToUpdate },
+                    { new: true }
+                );
                 if (updatedProfiles) {
                     return res.status(200).json(updatedProfiles);
                 } else {
-                    errors.cannotupdate = 'fail to update user profile';
+                    errors.cannotupdate = "fail to update user profile";
                     return res.status(400).json(errors);
                 }
             }
         } catch (err) {
-            errors.notfound = 'user profile not found';
+            errors.notfound = "user profile not found";
             return res.status(404).json(err);
         }
     }
@@ -154,16 +195,19 @@ class ProfileController {
     async deleteUserProfile(req, res) {
         const error = {};
         try {
-            if (await profile.findOneAndRemove({ user: req.user.id }) && await user.findByIdAndRemove(req.user.id)) {
+            if (
+                (await profile.findOneAndRemove({ user: req.user.id })) &&
+                (await user.findByIdAndRemove(req.user.id))
+            ) {
                 return res.status(200).json({
-                    status: 'success'
+                    status: "success"
                 });
             } else {
-                error.notfound = 'cannot found any profile';
+                error.notfound = "cannot found any profile";
                 return res.status(404).json(error);
             }
         } catch (err) {
-            error.cannot = 'cannot delete user and linked profile';
+            error.cannot = "cannot delete user and linked profile";
             res.status(400).json(error);
         }
     }
@@ -173,7 +217,15 @@ class ProfileController {
     @access private
     */
     async addExperienceForProfile(req, res) {
-        const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
+        const payload = _.pick(req.body, [
+            "title",
+            "company",
+            "location",
+            "from",
+            "to",
+            "current",
+            "description"
+        ]);
         const { errors, isValid } = validateExperience(payload);
         if (!isValid) {
             return res.status(400).json(errors);
@@ -182,15 +234,21 @@ class ProfileController {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (userProfile) {
                 userProfile.experiences.unshift(payload);
-                const newProfle = await profile.findOneAndUpdate({ user: req.user.id }, { $set: userProfile }, { new: true });
+                const newProfle = await profile.findOneAndUpdate(
+                    { user: req.user.id },
+                    { $set: userProfile },
+                    { new: true }
+                );
                 if (newProfle) {
                     return res.status(200).json(newProfle);
                 } else {
-                    errors.cannot = `cannot add new experience for user: ${req.user.id}`;
+                    errors.cannot = `cannot add new experience for user: ${
+                        req.user.id
+                    }`;
                     res.status(400).json(errors);
                 }
             } else {
-                errors.notfound = 'user profile not found';
+                errors.notfound = "user profile not found";
                 return res.status(404).json(errors);
             }
         } catch (err) {
@@ -203,7 +261,15 @@ class ProfileController {
     @access private
     */
     async updateExperienceForProfile(req, res) {
-        const payload = _.pick(req.body, ['title', 'company', 'location', 'from', 'to', 'current', 'description']);
+        const payload = _.pick(req.body, [
+            "title",
+            "company",
+            "location",
+            "from",
+            "to",
+            "current",
+            "description"
+        ]);
         payload.id = req.params.exp_id;
         const { errors, isValid } = validateExperience(payload);
         if (!isValid) {
@@ -212,7 +278,9 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
                 updateExperienceForProfile(userProfile.experiences, payload);
@@ -220,7 +288,7 @@ class ProfileController {
                 if (newExperience) {
                     return res.status(200).json(newExperience);
                 } else {
-                    errors.cannot = 'cannot update experience for user';
+                    errors.cannot = "cannot update experience for user";
                     return res.status(400).json(errors);
                 }
             }
@@ -238,16 +306,21 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
-                const deleted = deleteFromProfile(userProfile.experiences, req.params.exp_id);
+                const deleted = deleteFromProfile(
+                    userProfile.experiences,
+                    req.params.exp_id
+                );
                 await userProfile.save();
                 if (deleted) {
-                    deleted.status = 'deleted exp success';
+                    deleted.status = "deleted exp success";
                     return res.status(200).json(deleted);
                 } else {
-                    errors.cannot = 'cannot delete experience for user';
+                    errors.cannot = "cannot delete experience for user";
                     return res.status(400).json(errors);
                 }
             }
@@ -262,7 +335,15 @@ class ProfileController {
     @access private
     */
     async addEducationForProfile(req, res) {
-        const payload = _.pick(req.body, ['school', 'degree', 'fieldOfStudy', 'from', 'to', 'current', 'description']);
+        const payload = _.pick(req.body, [
+            "school",
+            "degree",
+            "fieldOfStudy",
+            "from",
+            "to",
+            "current",
+            "description"
+        ]);
         const { errors, isValid } = validateEducation(payload);
         if (!isValid) {
             return res.status(400).json(errors);
@@ -275,11 +356,13 @@ class ProfileController {
                 if (newProfle) {
                     return res.status(200).json(newProfle);
                 } else {
-                    errors.cannot = `cannot add new education for user: ${req.user.id}`;
+                    errors.cannot = `cannot add new education for user: ${
+                        req.user.id
+                    }`;
                     res.status(400).json(errors);
                 }
             } else {
-                errors.notfound = 'user profile not found';
+                errors.notfound = "user profile not found";
                 return res.status(404).json(errors);
             }
         } catch (err) {
@@ -292,13 +375,23 @@ class ProfileController {
     @access private
     */
     async updateEducationForProfile(req, res) {
-        const payload = _.pick(req.body, ['school', 'degree', 'fieldOfStudy', 'from', 'to', 'current', 'description']);
+        const payload = _.pick(req.body, [
+            "school",
+            "degree",
+            "fieldOfStudy",
+            "from",
+            "to",
+            "current",
+            "description"
+        ]);
         payload.id = req.params.edu_id;
         const errors = {};
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
                 updateEducationForProfile(userProfile.education, payload);
@@ -306,7 +399,7 @@ class ProfileController {
                 if (newEducation) {
                     return res.status(200).json(newEducation);
                 } else {
-                    errors.cannot = 'cannot update education for user';
+                    errors.cannot = "cannot update education for user";
                     return res.status(400).json(errors);
                 }
             }
@@ -325,10 +418,15 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
-                const deleted = deleteFromProfile(userProfile.education, req.params.edu_id);
+                const deleted = deleteFromProfile(
+                    userProfile.education,
+                    req.params.edu_id
+                );
                 try {
                     await userProfile.save();
                     return res.status(200).json(deleted);

@@ -4,7 +4,10 @@ import {
     GET_PROFILE_PENDING,
     GET_PROFILE_RESOLVE,
     GET_PROFILE_REJECT,
-    CLEAR_CURRENT_USER_PROFILE
+    CLEAR_CURRENT_USER_PROFILE,
+    CREATE_PROFILE_PENDING,
+    CREATE_PROFILE_RESOLVE,
+    CREATE_PROFILE_REJECT
 } from "./types";
 
 export const getCurrentProfile = () => dispatch => {
@@ -20,7 +23,26 @@ export const getCurrentProfile = () => dispatch => {
         err => {
             dispatch({
                 type: GET_PROFILE_REJECT,
-                payload: err
+                payload: err.response.data
+            });
+        }
+    );
+};
+
+export const createUserProfile = (profile, history) => dispatch => {
+    dispatch({ type: CREATE_PROFILE_PENDING });
+    axios.post("/api/profile", profile).then(
+        res => {
+            dispatch({
+                type: CREATE_PROFILE_RESOLVE,
+                payload: res.data
+            });
+            history.push("/dashboard");
+        },
+        err => {
+            dispatch({
+                type: CREATE_PROFILE_REJECT,
+                payload: err.response.data
             });
         }
     );

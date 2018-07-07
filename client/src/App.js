@@ -10,6 +10,7 @@ import UserRegisterContainer from "./components/containers/UserRegister";
 import UserLogin from "./components/containers/UserLogin";
 import DashBoard from "./components/dashboard/DashBoard";
 import PrivateRoute from "./components/common/PrivateRoute";
+import CreateProfile from "./components/profile/CreateProfile";
 import appStore from "./store/store";
 import { setAuthToken } from "./utils/helper";
 import { setCurrentLoggedInUser, userLogout } from "./action/authAction";
@@ -52,6 +53,13 @@ class App extends Component {
                                     exact
                                     path="/dashboard"
                                     component={DashBoard}
+                                />
+                            </Switch>
+                            <Switch>
+                                <PrivateRoute
+                                    exact
+                                    path="/create-profile"
+                                    component={CreateProfile}
                                 />
                             </Switch>
                         </div>
