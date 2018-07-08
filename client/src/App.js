@@ -9,8 +9,10 @@ import Footer from "./components/presentation/layout/Footer";
 import UserRegisterContainer from "./components/containers/UserRegister";
 import UserLogin from "./components/containers/UserLogin";
 import DashBoard from "./components/dashboard/DashBoard";
-import PrivateRoute from "./components/common/PrivateRoute";
+import PrivateRoute from "./components/security/PrivateRoute";
 import CreateProfile from "./components/profile/CreateProfile";
+import EditProfile from "./components/profile/EditProfile";
+import AddExperience from "./components/profile/AddExperience";
 import appStore from "./store/store";
 import { setAuthToken } from "./utils/helper";
 import { setCurrentLoggedInUser, userLogout } from "./action/authAction";
@@ -47,6 +49,7 @@ class App extends Component {
                                 path="/register"
                                 component={UserRegisterContainer}
                             />
+
                             {/* wrap private route in the Switch*/}
                             <Switch>
                                 <PrivateRoute
@@ -60,6 +63,20 @@ class App extends Component {
                                     exact
                                     path="/create-profile"
                                     component={CreateProfile}
+                                />
+                            </Switch>
+                            <Switch>
+                                <PrivateRoute
+                                    exact
+                                    path="/edit-profile"
+                                    component={EditProfile}
+                                />
+                            </Switch>
+                            <Switch>
+                                <PrivateRoute
+                                    exact
+                                    path="/add-experience"
+                                    component={AddExperience}
                                 />
                             </Switch>
                         </div>

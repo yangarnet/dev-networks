@@ -14,7 +14,6 @@ export const getCurrentProfile = () => dispatch => {
     dispatch({ type: GET_PROFILE_PENDING });
     axios.get("/api/profile").then(
         res => {
-            console.log(res);
             dispatch({
                 type: GET_PROFILE_RESOLVE,
                 payload: res.data
@@ -52,4 +51,9 @@ export const clearCurrentUserProfile = () => {
     return {
         type: CLEAR_CURRENT_USER_PROFILE
     };
+};
+
+export const deleteUserAccount = () => dispatch => {
+    if (window.confirm("Are you sure? this cannot be undone")) {
+    }
 };

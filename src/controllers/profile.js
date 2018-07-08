@@ -9,7 +9,8 @@ import {
     setProfilesToUpdate,
     updateExperienceForProfile,
     updateEducationForProfile,
-    deleteFromProfile
+    deleteFromProfile,
+    joinStringWithHyphen
 } from "./helper/helper";
 
 class ProfileController {
@@ -133,6 +134,7 @@ class ProfileController {
                 if (typeof payloads.skills === "string") {
                     payloads.skills = payloads.skills.split(",");
                 }
+                payloads.handle = joinStringWithHyphen(payloads.handle);
                 payloads.dateAdded = Date.now();
                 const newProfle = new profile(payloads);
                 const result = await newProfle.save();
