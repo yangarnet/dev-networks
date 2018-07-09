@@ -19,8 +19,12 @@ class AddExperience extends Component {
             errors: {},
             disabled: false
         };
+        // need to bind stuff here
     }
 
+    componentWillReceiveProps(nextProps) {
+        // add life cyle here
+    }
     render() {
         const { errors } = this.state;
         return (
