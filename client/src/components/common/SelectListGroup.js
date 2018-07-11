@@ -16,6 +16,7 @@ const SelectListGroup = props => {
                     "is-invalid": props.errors[props.name]
                 })}
                 name={props.name}
+                value={props.value}
                 onChange={props.onChange}
             >
                 {selectOptions}

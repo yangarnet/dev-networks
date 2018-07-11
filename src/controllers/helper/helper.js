@@ -2,6 +2,9 @@ import isEmpty from "../../validation/IsEmpty";
 
 // FIXME  what about remove skill?
 const updateSkillSet = (currentSkills, newSkills) => {
+    if (typeof newSkills == "string") {
+        newSkills = newSkills.split(",");
+    }
     newSkills.forEach(skill => {
         if (currentSkills.indexOf(skill) === -1) {
             currentSkills.push(skill);

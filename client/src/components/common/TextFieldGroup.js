@@ -12,6 +12,7 @@ const TextFieldGroup = props => {
                 })}
                 placeholder={props.placeholder}
                 name={props.name}
+                value={props.value}
                 onChange={props.onChange}
             />
             {props.info && (

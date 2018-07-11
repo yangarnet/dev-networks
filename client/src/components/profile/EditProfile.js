@@ -6,7 +6,11 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import InputGroup from "../common/InputGroup";
 import SelectListGroup from "../common/SelectListGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import { createUserProfile } from "../../action/profileAction";
+import {
+    updateUserProfile,
+    getCurrentUserProfileIfNecessary
+} from "../../action/profileAction";
+import { isEmpty } from "../../utils/helper";
 
 class EditProfile extends Component {
     constructor(props) {
@@ -34,7 +38,33 @@ class EditProfile extends Component {
     }
 
     componentDidMount() {
-        // to-do: load current profile after login
+        const { profile } = this.props;
+        let userProfile = profile.profile;
+        if (!userProfile) {
+            this.props.loadProfile();
+        }
+        this.initStateFromStore(userProfile);
+    }
+
+    initStateFromStore(userProfile) {
+        if (userProfile) {
+            this.setState({
+                displaySocialInputs: !isEmpty(userProfile.social),
+                handle: userProfile.handle,
+                company: userProfile.company,
+                website: userProfile.website,
+                location: userProfile.location,
+                status: userProfile.status,
+                skills: userProfile.skills.join(),
+                githubusername: userProfile.githubusername,
+                bio: userProfile.bio,
+                twitter: userProfile.twitter,
+                facebook: userProfile.facebook,
+                linkedin: userProfile.linkedin,
+                youtube: userProfile.youtube,
+                instagram: userProfile.instagram
+            });
+        }
     }
     componentWillReceiveProps(nextProps) {
         // to-do: need to prepopulate props after receiving data from reducer
@@ -47,24 +77,42 @@ class EditProfile extends Component {
     onSubmit(e) {
         e.preventDefault();
         const profileData = {
-            handle: this.state.handle,
-            company: this.state.company,
-            website: this.state.website,
-            location: this.state.location,
-            status: this.state.status,
-            skills: this.state.skills,
-            githubusername: this.state.githubusername,
-            bio: this.state.bio,
-            twitter: this.state.twitter,
-            facebook: this.state.facebook,
-            linkedin: this.state.linkedin,
-            youtube: this.state.youtube,
+            handle: this.state.handle ? this.state.handle : this.props.handle,
+            company: this.state.company
+                ? this.state.company
+                : this.props.company,
+            website: this.state.website
+                ? this.state.website
+                : this.props.website,
+            location: this.state.location
+                ? this.state.location
+                : this.props.location,
+            status: this.state.status ? this.state.status : this.props.status,
+            skills: this.state.skills ? this.state.skills : this.props.skills,
+            githubusername: this.state.githubusername
+                ? this.state.githubusername
+                : this.props.githubusername,
+            bio: this.state.bio ? this.state.bio : this.props.bio,
+            twitter: this.state.twitter
+                ? this.state.twitter
+                : this.props.twitter,
+            facebook: this.state.facebook
+                ? this.state.facebook
+                : this.props.facebook,
+            linkedin: this.state.linkedin
+                ? this.state.linkedin
+                : this.props.linkedin,
+            youtube: this.state.youtube
+                ? this.state.youtube
+                : this.props.youtube,
             instagram: this.state.instagram
+                ? this.state.instagram
+                : this.props.instagram
         };
 
         console.log(profileData);
         // passing the history here for later redirection.
-        this.props.createProfile(profileData, this.props.history);
+        this.props.updateProfile(profileData, this.props.history);
     }
 
     onChange(e) {
@@ -89,6 +137,7 @@ class EditProfile extends Component {
                         name="twitter"
                         icon="fab fa-twitter"
                         onChange={this.onChange}
+                        value={this.state.twitter}
                         errors={this.props.errors}
                     />
                     <InputGroup
@@ -96,6 +145,7 @@ class EditProfile extends Component {
                         name="facebook"
                         icon="fab fa-facebook"
                         onChange={this.onChange}
+                        value={this.state.facebook}
                         errors={this.props.errors}
                     />
                     <InputGroup
@@ -103,6 +153,7 @@ class EditProfile extends Component {
                         name="linkedin"
                         icon="fab fa-linkedin"
                         onChange={this.onChange}
+                        value={this.state.linkedin}
                         errors={this.props.errors}
                     />
                     <InputGroup
@@ -110,6 +161,7 @@ class EditProfile extends Component {
                         name="youtube"
                         icon="fab fa-youtube"
                         onChange={this.onChange}
+                        value={this.state.youtube}
                         errors={this.props.errors}
                     />
                     <InputGroup
@@ -117,6 +169,7 @@ class EditProfile extends Component {
                         name="instagram"
                         icon="fab fa-instagram"
                         onChange={this.onChange}
+                        value={this.state.instagram}
                         errors={this.props.errors}
                     />
                 </div>
@@ -153,14 +206,16 @@ class EditProfile extends Component {
                                     placeholder="* Profile Handle"
                                     name="handle"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.handle}
+                                    errors={this.state.errors}
                                     info="A unique handle for your profile"
                                 />
                                 <SelectListGroup
                                     placeholder=" Status"
                                     name="status"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.status}
+                                    errors={this.state.errors}
                                     info="Tell us where you are at in the your career"
                                     options={options}
                                 />
@@ -168,42 +223,48 @@ class EditProfile extends Component {
                                     placeholder="Company"
                                     name="company"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.company}
+                                    errors={this.state.errors}
                                     info="could be your own company or one your work for"
                                 />
                                 <TextFieldGroup
                                     placeholder="Website"
                                     name="website"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.website}
+                                    errors={this.state.errors}
                                     info="URL, could be your own website or a company one"
                                 />
                                 <TextFieldGroup
                                     placeholder="location"
                                     name="location"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.location}
+                                    errors={this.state.errors}
                                     info="city or city&state"
                                 />
                                 <TextFieldGroup
                                     placeholder="* Skills"
                                     name="skills"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.skills}
+                                    errors={this.state.errors}
                                     info="please input comma separated values (e.g. HTML,JavaScript,Nodejs)"
                                 />
                                 <TextFieldGroup
                                     placeholder="Github username"
                                     name="githubusername"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.githubusername}
+                                    errors={this.state.errors}
                                     info="If you want your latest repos, and a github link, include your uername"
                                 />
                                 <TextAreaFieldGroup
                                     placeholder="short bio"
                                     name="bio"
                                     onChange={this.onChange}
-                                    errors={this.props.errors}
+                                    value={this.state.bio}
+                                    errors={this.state.errors}
                                     info="Tell us a littel bit about yourself"
                                 />
                                 <div className="mb-3">
@@ -239,15 +300,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        editProfile: (profileData, history) =>
-            dispatch(createUserProfile(profileData, history))
+        loadProfile: () => dispatch(getCurrentUserProfileIfNecessary()),
+        updateProfile: (profileData, history) =>
+            dispatch(updateUserProfile(profileData, history))
     };
 };
 
 EditProfile.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object,
-    createProfile: PropTypes.func.isRequired
+    loadProfile: PropTypes.func.isRequired,
+    updateProfile: PropTypes.func.isRequired
 };
 
 export default connect(

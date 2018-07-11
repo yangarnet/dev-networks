@@ -5,7 +5,9 @@ import {
     CLEAR_CURRENT_USER_PROFILE,
     CREATE_PROFILE_PENDING,
     CREATE_PROFILE_RESOLVE,
-    CREATE_PROFILE_REJECT
+    CREATE_PROFILE_REJECT,
+    EDIT_PROFILE_RESOLVE,
+    EDIT_PROFILE_REJECT
 } from "../action/types";
 
 const initState = {
@@ -31,6 +33,13 @@ const profileReducer = (state = initState, action) => {
                 profile: action.payload,
                 loading: false
             });
+        case EDIT_PROFILE_RESOLVE:
+            return Object.assign({}, state, {
+                profile: action.payload,
+                loading: false
+            });
+        case EDIT_PROFILE_REJECT:
+            return Object.assign({}, state, { loading: false });
         default:
             return state;
     }
