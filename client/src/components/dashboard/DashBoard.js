@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getCurrentProfile } from "../../action/profileAction";
 import { Spinner } from "../common/Spinner";
-import Profile from "./Profile";
+import EditProfile from "./EditProfile";
 
 class DashBoard extends Component {
     constructor() {
@@ -34,7 +34,7 @@ class DashBoard extends Component {
                                 {user.name}
                             </Link>
                         </p>
-                        <Profile />
+                        <EditProfile />
                         <div style={{ marginButtono: "60px" }} />
                         <button
                             className="btn btn-danger"

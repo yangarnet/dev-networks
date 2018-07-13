@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Profile = props => {
+const EditProfile = props => {
     return (
         <div className="btn-group mb-4" role="group">
             <Link to="/edit-profile" className="btn btn-light">
@@ -19,4 +19,4 @@ const Profile = props => {
     );
 };
 
-export default Profile;
+export default EditProfile;

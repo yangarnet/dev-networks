@@ -48,8 +48,9 @@ class EditProfile extends Component {
 
     initStateFromStore(userProfile) {
         if (userProfile) {
+            const isSocialLinksEmpty = !isEmpty(userProfile.social)
             this.setState({
-                displaySocialInputs: !isEmpty(userProfile.social),
+                displaySocialInputs: isSocialLinksEmpty,
                 handle: userProfile.handle,
                 company: userProfile.company,
                 website: userProfile.website,
@@ -58,11 +59,11 @@ class EditProfile extends Component {
                 skills: userProfile.skills.join(),
                 githubusername: userProfile.githubusername,
                 bio: userProfile.bio,
-                twitter: userProfile.twitter,
-                facebook: userProfile.facebook,
-                linkedin: userProfile.linkedin,
-                youtube: userProfile.youtube,
-                instagram: userProfile.instagram
+                twitter: isSocialLinksEmpty ? userProfile.social.twitter : '',
+                facebook: isSocialLinksEmpty ? userProfile.social.facebook : '',
+                linkedin: isSocialLinksEmpty ? userProfile.social.linkedin : '',
+                youtube: isSocialLinksEmpty ? userProfile.social.youtube : '',
+                instagram: isSocialLinksEmpty ? userProfile.social.instagram : ''
             });
         }
     }
@@ -226,14 +227,6 @@ class EditProfile extends Component {
                                     value={this.state.company}
                                     errors={this.state.errors}
                                     info="could be your own company or one your work for"
-                                />
-                                <TextFieldGroup
-                                    placeholder="Website"
-                                    name="website"
-                                    onChange={this.onChange}
-                                    value={this.state.website}
-                                    errors={this.state.errors}
-                                    info="URL, could be your own website or a company one"
                                 />
                                 <TextFieldGroup
                                     placeholder="location"

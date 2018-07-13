@@ -14,6 +14,14 @@ const updateSkillSet = (currentSkills, newSkills) => {
 };
 
 export const setProfilesToUpdate = (payload, currentProfile) => {
+    payload.social = {
+        facebook: payload.facebook,
+        twitter: payload.twitter,
+        linkedin: payload.linkedin,
+        youtube: payload.youtube,
+        instagram: payload.instagram
+    };
+
     return {
         handle: !isEmpty(payload.handle)
             ? payload.handle
