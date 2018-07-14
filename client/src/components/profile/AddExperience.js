@@ -28,7 +28,16 @@ class AddExperience extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        this.props.addExp(this.state, this.props.history);
+        const payload = {
+            company: this.state.company,
+            title: this.state.title,
+            location: this.state.location,
+            from: this.state.from,
+            to: this.state.to,
+            current: this.state.current,
+            description: this.state.description
+        };
+        this.props.addExp(payload, this.props.history);
     }
 
     // as componentWillReceiveProps() will be depcated
@@ -137,7 +146,7 @@ class AddExperience extends Component {
                                     name="description"
                                     value={this.state.description}
                                     onChange={this.onChange}
-                                    info="Tell us about the the position"
+                                    info="Tell us about this position"
                                     errors={this.state.errors}
                                 />
                                 <input

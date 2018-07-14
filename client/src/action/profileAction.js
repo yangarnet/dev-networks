@@ -80,7 +80,7 @@ export const getCurrentUserProfileIfNecessary = () => (dispatch, getState) => {
 export const addUserExperience = (userExperience, history) => async dispatch => {
     try {
         dispatch({ type: PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING });
-        const response = await axios.post('/api/profile/experience/', userExperience);
+        const response = await axios.post('/api/profile/experience', userExperience);
         // resolve
         dispatch({
             type: PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE,
@@ -92,6 +92,27 @@ export const addUserExperience = (userExperience, history) => async dispatch => 
         dispatch({
             type: PROFILE_ACTION.ADD_USER_EXPERIENCE_REJECT,
             payload: errorData
+        });
+    }
+};
+//  the code here is bit of duplicate, can be better.
+export const addUserEducation = (userEducation, history) => async dispatch => {
+    try {
+        dispatch({
+            type: PROFILE_ACTION.ADD_USER_EDUCATION_PENDING
+        });
+
+        const response = await axios.post('/api/profile/education', userEducation);
+        dispatch({
+            type: PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE,
+            payload: response.data
+        });
+
+        history.push('/dashboard');
+    } catch (error) {
+        dispatch({
+            type: PROFILE_ACTION.ADD_USER_EDUCATION_REJECT,
+            payload: error.response.data
         });
     }
 };

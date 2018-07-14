@@ -8,6 +8,7 @@ export const errorReducer = (state = initState, action) => {
         case PROFILE_ACTION.USER_LOGIN_REJECT:
         case PROFILE_ACTION.CREATE_PROFILE_REJECT:
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_REJECT:
+        case PROFILE_ACTION.ADD_USER_EDUCATION_REJECT:
             return action.payload;
         case PROFILE_ACTION.CLEAR_ERRORS:
             return {};
