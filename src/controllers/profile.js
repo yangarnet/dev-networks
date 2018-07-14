@@ -169,7 +169,7 @@ class ProfileController {
             "twitter",
             "youtube",
             "instagram",
-            "linkedin"
+            "linkedIn"
         ]);
         try {
             const result = await profile.findOne({ user: req.user.id });

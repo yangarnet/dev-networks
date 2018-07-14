@@ -1,47 +1,35 @@
 import axios from "axios";
 
-import {
-    GET_PROFILE_PENDING,
-    GET_PROFILE_RESOLVE,
-    GET_PROFILE_REJECT,
-    CLEAR_CURRENT_USER_PROFILE,
-    CREATE_PROFILE_PENDING,
-    CREATE_PROFILE_RESOLVE,
-    CREATE_PROFILE_REJECT,
-    EDIT_PROFILE_PENDING,
-    EDIT_PROFILE_RESOLVE,
-    EDIT_PROFILE_REJECT,
-    REFETCH_USER_PROFILE
-} from "./types";
+import * as PROFILE_ACTION from "./types";
 
 export const getCurrentProfile = () => async dispatch => {
-    dispatch({ type: GET_PROFILE_PENDING });
+    dispatch({ type: PROFILE_ACTION.GET_PROFILE_PENDING });
     try {
         const res = await axios.get("/api/profile");
         dispatch({
-            type: GET_PROFILE_RESOLVE,
+            type: PROFILE_ACTION.GET_PROFILE_RESOLVE,
             payload: res.data
         });
     } catch (error) {
         dispatch({
-            type: GET_PROFILE_REJECT,
+            type: PROFILE_ACTION.GET_PROFILE_REJECT,
             payload: error.response.data
         });
     }
 };
 
 export const createUserProfile = (profile, history) => async dispatch => {
-    dispatch({ type: CREATE_PROFILE_PENDING });
+    dispatch({ type: PROFILE_ACTION.CREATE_PROFILE_PENDING });
     try {
         const res = await axios.post("/api/profile", profile);
         dispatch({
-            type: CREATE_PROFILE_RESOLVE,
+            type: PROFILE_ACTION.CREATE_PROFILE_RESOLVE,
             payload: res.data
         });
         history.push("/dashboard");
     } catch (error) {
         dispatch({
-            type: CREATE_PROFILE_REJECT,
+            type: PROFILE_ACTION.CREATE_PROFILE_REJECT,
             payload: error.response.data
         });
     }
@@ -49,7 +37,7 @@ export const createUserProfile = (profile, history) => async dispatch => {
 
 export const clearCurrentUserProfile = () => {
     return {
-        type: CLEAR_CURRENT_USER_PROFILE
+        type: PROFILE_ACTION.CLEAR_CURRENT_USER_PROFILE
     };
 };
 
@@ -60,7 +48,7 @@ export const deleteUserAccount = () => dispatch => {
 };
 
 export const updateUserProfile = (profile, history) => async dispatch => {
-    dispatch({ type: EDIT_PROFILE_PENDING });
+    dispatch({ type: PROFILE_ACTION.EDIT_PROFILE_PENDING });
     try {
         const newProfile = await axios.put("/api/profile", profile, {
             headers: {
@@ -70,12 +58,12 @@ export const updateUserProfile = (profile, history) => async dispatch => {
             }
         });
         dispatch({
-            type: EDIT_PROFILE_RESOLVE,
+            type: PROFILE_ACTION.EDIT_PROFILE_RESOLVE,
             payload: newProfile.data
         });
         history.push("/dashboard");
     } catch (err) {
-        dispatch({ type: EDIT_PROFILE_REJECT, payload: err.response.data });
+        dispatch({ type: PROFILE_ACTION.EDIT_PROFILE_REJECT, payload: err.response.data });
         history.push("/edit-profile");
     }
 };
@@ -84,7 +72,26 @@ export const getCurrentUserProfileIfNecessary = () => (dispatch, getState) => {
     if (getState().profile.profile) {
         return;
     } else {
-        dispatch({ type: REFETCH_USER_PROFILE });
+        dispatch({ type: PROFILE_ACTION.REFETCH_USER_PROFILE });
         dispatch(getCurrentProfile());
+    }
+};
+
+export const addUserExperience = (userExperience, history) => async dispatch => {
+    try {
+        dispatch({ type: PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING });
+        const response = await axios.post('/api/profile/experience/', userExperience);
+        // resolve
+        dispatch({
+            type: PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE,
+            payload: response.data
+        });
+        history.push('/dashboard');
+    } catch (error) {
+        const errorData = error.response.data;
+        dispatch({
+            type: PROFILE_ACTION.ADD_USER_EXPERIENCE_REJECT,
+            payload: errorData
+        });
     }
 };

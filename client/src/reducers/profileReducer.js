@@ -1,14 +1,5 @@
-import {
-    GET_PROFILE_PENDING,
-    GET_PROFILE_RESOLVE,
-    GET_PROFILE_REJECT,
-    CLEAR_CURRENT_USER_PROFILE,
-    CREATE_PROFILE_PENDING,
-    CREATE_PROFILE_RESOLVE,
-    CREATE_PROFILE_REJECT,
-    EDIT_PROFILE_RESOLVE,
-    EDIT_PROFILE_REJECT
-} from "../action/types";
+
+import * as PROFILE_ACTION from "../action/types";
 
 const initState = {
     profile: null,
@@ -18,28 +9,30 @@ const initState = {
 
 const profileReducer = (state = initState, action) => {
     switch (action.type) {
-        case GET_PROFILE_PENDING:
+        case PROFILE_ACTION.GET_PROFILE_PENDING:
             return Object.assign({}, state, { loading: true });
-        case GET_PROFILE_RESOLVE:
+        case PROFILE_ACTION.GET_PROFILE_RESOLVE:
             return Object.assign({}, state, {
                 profile: action.payload,
                 loading: false
             });
-        case GET_PROFILE_REJECT:
-        case CLEAR_CURRENT_USER_PROFILE:
+        case PROFILE_ACTION.GET_PROFILE_REJECT:
+        case PROFILE_ACTION.CLEAR_CURRENT_USER_PROFILE:
             return Object.assign({}, state, { profile: null, loading: false });
-        case CREATE_PROFILE_RESOLVE:
+        case PROFILE_ACTION.CREATE_PROFILE_RESOLVE:
             return Object.assign({}, state, {
                 profile: action.payload,
                 loading: false
             });
-        case EDIT_PROFILE_RESOLVE:
+        case PROFILE_ACTION.EDIT_PROFILE_RESOLVE:
             return Object.assign({}, state, {
                 profile: action.payload,
                 loading: false
             });
-        case EDIT_PROFILE_REJECT:
+        case PROFILE_ACTION.EDIT_PROFILE_REJECT:
             return Object.assign({}, state, { loading: false });
+        case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
+            return Object.assign({}, state, { profile: action.payload, loading: false });
         default:
             return state;
     }

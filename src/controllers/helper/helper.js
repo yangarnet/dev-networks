@@ -17,7 +17,7 @@ export const setProfilesToUpdate = (payload, currentProfile) => {
     payload.social = {
         facebook: payload.facebook,
         twitter: payload.twitter,
-        linkedin: payload.linkedin,
+        linkedIn: payload.linkedIn,
         youtube: payload.youtube,
         instagram: payload.instagram
     };

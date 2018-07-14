@@ -27,7 +27,7 @@ class EditProfile extends Component {
             bio: "",
             twitter: "",
             facebook: "",
-            linkedin: "",
+            linkedIn: "",
             youtube: "",
             instagram: "",
             errors: {}
@@ -61,7 +61,7 @@ class EditProfile extends Component {
                 bio: userProfile.bio,
                 twitter: isSocialLinksEmpty ? userProfile.social.twitter : '',
                 facebook: isSocialLinksEmpty ? userProfile.social.facebook : '',
-                linkedin: isSocialLinksEmpty ? userProfile.social.linkedin : '',
+                linkedIn: isSocialLinksEmpty ? userProfile.social.linkedIn : '',
                 youtube: isSocialLinksEmpty ? userProfile.social.youtube : '',
                 instagram: isSocialLinksEmpty ? userProfile.social.instagram : ''
             });
@@ -100,9 +100,9 @@ class EditProfile extends Component {
             facebook: this.state.facebook
                 ? this.state.facebook
                 : this.props.facebook,
-            linkedin: this.state.linkedin
-                ? this.state.linkedin
-                : this.props.linkedin,
+            linkedIn: this.state.linkedIn
+                ? this.state.linkedIn
+                : this.props.linkedIn,
             youtube: this.state.youtube
                 ? this.state.youtube
                 : this.props.youtube,
@@ -151,10 +151,10 @@ class EditProfile extends Component {
                     />
                     <InputGroup
                         placeholder="LinkedIn Profile URL"
-                        name="linkedin"
+                        name="linkedIn"
                         icon="fab fa-linkedin"
                         onChange={this.onChange}
-                        value={this.state.linkedin}
+                        value={this.state.linkedIn}
                         errors={this.props.errors}
                     />
                     <InputGroup

@@ -57,8 +57,6 @@ class CreateProfile extends Component {
             youtube: this.state.youtube,
             instagram: this.state.instagram
         };
-
-        console.log(profileData);
         // passing the history here for later redirection.
         this.props.createProfile(profileData, this.props.history);
     }
