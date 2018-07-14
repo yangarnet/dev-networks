@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { getCurrentProfile } from "../../action/profileAction";
 import { Spinner } from "../common/Spinner";
 import EditProfile from "./EditProfile";
+import Experience from "./Experience";
+import Education from "./Education";
 
 class DashBoard extends Component {
     constructor() {
@@ -16,7 +18,7 @@ class DashBoard extends Component {
         this.props.getCUrrentUserProfile();
     }
 
-    onDelete() {}
+    onDelete() { }
 
     render() {
         const { user } = this.props.auth;
@@ -35,6 +37,8 @@ class DashBoard extends Component {
                             </Link>
                         </p>
                         <EditProfile />
+                        <Experience experience={profile.experiences} />
+                        <Education education={profile.education} />
                         <div style={{ marginButtono: "60px" }} />
                         <button
                             className="btn btn-danger"
