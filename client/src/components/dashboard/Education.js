@@ -22,13 +22,15 @@ class Education extends Component {
         return (
             <div className="mb-4">
                 <table className="table">
-                    <tr>
-                        <th>school</th>
-                        <th>degree</th>
-                        <th>years</th>
-                        <th></th>
-                    </tr>
-                    {education}
+                    <tbody>
+                        <tr>
+                            <th>school</th>
+                            <th>degree</th>
+                            <th>years</th>
+                            <th></th>
+                        </tr>
+                        {education}
+                    </tbody>
                 </table>
             </div>
         );

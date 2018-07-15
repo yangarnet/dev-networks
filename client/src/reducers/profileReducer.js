@@ -34,12 +34,17 @@ const profileReducer = (state = initState, action) => {
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING:
         case PROFILE_ACTION.ADD_USER_EDUCATION_PENDING:
+        case PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING:
+        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING:
             return Object.assign({}, state, { loading: true });
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
         case PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE:
             return Object.assign({}, state, { profile: action.payload, loading: false });
 
+        case PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE:
+        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE:
+            return Object.assign({}, state, { profile: action.payload, loading: false });
         default:
             return state;
     }

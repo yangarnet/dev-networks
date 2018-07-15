@@ -309,22 +309,21 @@ class ProfileController {
     @access private
     */
     async deleteExperienceFromProfile(req, res) {
+        const errors = {};
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${
-                    req.user.id
-                    }`;
+                errors.notfound = `user profile not found for id:${req.user.id}`;
                 return res.status(404).json(errors);
             } else {
                 const deleted = deleteFromProfile(
                     userProfile.experiences,
                     req.params.exp_id
                 );
-                await userProfile.save();
                 if (deleted) {
+                    await userProfile.save();
                     deleted.status = "deleted exp success";
-                    return res.status(200).json(deleted);
+                    return res.status(200).json(userProfile);
                 } else {
                     errors.cannot = "cannot delete experience for user";
                     return res.status(400).json(errors);
@@ -332,7 +331,7 @@ class ProfileController {
             }
         } catch (err) {
             errors.notfound = `cannot find user by id: ${req.user.id}`;
-            res.status(404).json(errors);
+            return res.status(404).json(errors);
         }
     }
     /*
@@ -365,14 +364,14 @@ class ProfileController {
                     errors.cannot = `cannot add new education for user: ${
                         req.user.id
                         }`;
-                    res.status(400).json(errors);
+                    return res.status(400).json(errors);
                 }
             } else {
                 errors.notfound = "user profile not found";
                 return res.status(404).json(errors);
             }
         } catch (err) {
-            res.status(400).json(err);
+            return res.status(400).json(err);
         }
     }
     /*
@@ -411,7 +410,7 @@ class ProfileController {
             }
         } catch (err) {
             errors.notfound = `cannot find user by id: ${req.user.id}`;
-            res.status(404).json(errors);
+            return res.status(404).json(errors);
         }
     }
     /*
@@ -442,7 +441,7 @@ class ProfileController {
             }
         } catch (err) {
             errors.notfound = `cannot find user by id: ${req.user.id}`;
-            res.status(404).json(errors);
+            return res.status(404).json(errors);
         }
     }
 }

@@ -116,3 +116,24 @@ export const addUserEducation = (userEducation, history) => async dispatch => {
         });
     }
 };
+
+// a bit ducplicate here
+export const deleteUserExperience = (expId) => async dispatch => {
+    try {
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING });
+        const response = await axios.delete(`/api/profile/experience/${expId}`);
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE, payload: response.data });
+    } catch (error) {
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT, payload: error.response.data });
+    }
+};
+
+export const deleteUserEducation = (eduId) => async dispatch => {
+    try {
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING });
+        const response = await axios.delete(`/api/profile/education/${eduId}`);
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE, payload: response.data });
+    } catch (error) {
+        dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_REJECT, payload: error.response.data });
+    }
+};
