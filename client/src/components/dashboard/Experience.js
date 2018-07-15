@@ -33,12 +33,13 @@ class Experience extends Component {
             <div className="mb-4">
                 <table className="table">
                     <tbody>
-                        <tr>
-                            <th>company</th>
-                            <th>title</th>
-                            <th>years</th>
-                            <th></th>
-                        </tr>
+                        {this.props.experience.length > 0 ? (
+                            <tr>
+                                <th>company</th>
+                                <th>title</th>
+                                <th>years</th>
+                                <th></th>
+                            </tr>) : null}
                         {experience}
                     </tbody>
                 </table>

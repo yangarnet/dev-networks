@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { deleteUserEducation } from '../../action/profileAction';
 
 class Education extends Component {
+    constructor(props) {
+        super(props);
+        this.onDelete = this.onDelete.bind(this);
+    }
+
+    onDelete(eduId) {
+        this.props.deleteEducation(eduId);
+    }
+
     render() {
         const education = this.props.education.map(edu => (
             <tr key={edu._id}>
@@ -15,7 +25,7 @@ class Education extends Component {
                     {edu.to === null ? 'Now' : <Moment format="DD/MM/YYYY">{edu.to}</Moment>}
                 </td>
                 <td>
-                    <button className="btn btn-danger">Delete Education</button>
+                    <button className="btn btn-danger" onClick={() => this.onDelete(edu._id)}>Delete Education</button>
                 </td>
             </tr>
         ));
@@ -23,12 +33,12 @@ class Education extends Component {
             <div className="mb-4">
                 <table className="table">
                     <tbody>
-                        <tr>
+                        {this.props.education.length > 0 ? (<tr>
                             <th>school</th>
                             <th>degree</th>
                             <th>years</th>
                             <th></th>
-                        </tr>
+                        </tr>) : null}
                         {education}
                     </tbody>
                 </table>
@@ -39,8 +49,7 @@ class Education extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        // to do
-        deleteEducation: (expId) => dispatch()
+        deleteEducation: (eduId) => dispatch(deleteUserEducation(eduId))
     };
 };
 export default connect(null, mapDispatchToProps)(Education);

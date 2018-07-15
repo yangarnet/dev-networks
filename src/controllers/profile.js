@@ -284,9 +284,7 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${
-                    req.user.id
-                    }`;
+                errors.notfound = `user profile not found for id:${req.user.id}`;
                 return res.status(404).json(errors);
             } else {
                 updateExperienceForProfile(userProfile.experiences, payload);
@@ -423,9 +421,7 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${
-                    req.user.id
-                    }`;
+                errors.notfound = `user profile not found for id:${req.user.id}`;
                 return res.status(404).json(errors);
             } else {
                 const deleted = deleteFromProfile(
@@ -434,7 +430,7 @@ class ProfileController {
                 );
                 try {
                     await userProfile.save();
-                    return res.status(200).json(deleted);
+                    return res.status(200).json(userProfile);
                 } catch (err) {
                     return res.status(400).json(err);
                 }
