@@ -18,6 +18,26 @@ export const getCurrentProfile = () => async dispatch => {
     }
 };
 
+export const fetchAllUsersProfile = () => async (dispatch, getState) => {
+    if (getState().profile.profileList) {
+        return;
+    } else {
+        dispatch({ type: PROFILE_ACTION.GET_ALL_PROFILE_PENDING });
+        try {
+            const response = await axios.get("/api/profile/all");
+            dispatch({
+                type: PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE,
+                payload: response.data
+            });
+        } catch (error) {
+            dispatch({
+                type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
+                payload: error.response.data
+            });
+        }
+    }
+};
+
 export const createUserProfile = (profile, history) => async dispatch => {
     dispatch({ type: PROFILE_ACTION.CREATE_PROFILE_PENDING });
     try {

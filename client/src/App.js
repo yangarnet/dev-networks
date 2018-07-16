@@ -17,6 +17,7 @@ import AddEducation from "./components/profile/AddEducation";
 import appStore from "./store/store";
 import { setAuthToken } from "./utils/helper";
 import { setCurrentLoggedInUser, userLogout } from "./action/authAction";
+import Profiles from "./components/profile/Profiles";
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
@@ -50,6 +51,7 @@ class App extends Component {
                                 path="/register"
                                 component={UserRegisterContainer}
                             />
+                            <Route exact path="/profiles" component={Profiles} />
 
                             {/* wrap private route in the Switch*/}
                             <Switch>
