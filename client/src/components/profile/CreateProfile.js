@@ -62,11 +62,13 @@ class CreateProfile extends Component {
     }
 
     onChange(e) {
+        e.preventDefault();
         // set the target value by name.
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    onClickSocialInputs() {
+    onClickSocialInputs(e) {
+        e.preventDefault();
         this.setState(preState => ({
             displaySocialInputs: !preState.displaySocialInputs
         }));

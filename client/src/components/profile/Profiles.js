@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Spinner } from "../common/Spinner";
 import { fetchAllUsersProfile } from "../../action/profileAction";
+import ProfileItems from "./ProfileItems";
 
 class Profiles extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class Profiles extends Component {
             profileItems = <Spinner />;
         } else {
             if (profiles.length > 0) {
-                profileItems = <h1>profiles list here</h1>;
+                profileItems = profiles.map(((profile, index) => (<ProfileItems key={index} profile={profile}/>)));
             } else {
                 profileItems = <h4>No profiles found ....</h4>;
             }
@@ -59,6 +60,16 @@ const mapStateToProps = (state, ownProps) => {
 const mapDistpatchToProps = (dispatch, ownProps) => ({
     fetchProfiles: () => dispatch(fetchAllUsersProfile())
 });
+
+Profiles.propTypes = {
+    profiles: PropTypes.array,
+    loading: PropTypes.bool
+};
+
+Profiles.defaultProps = {
+    profiles: [],
+    loading: true
+};
 
 export default connect(
     mapStateToProps,

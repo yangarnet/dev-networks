@@ -20,6 +20,7 @@ export const getCurrentProfile = () => async dispatch => {
 
 export const fetchAllUsersProfile = () => async (dispatch, getState) => {
     if (getState().profile.profileList) {
+        console.log('current profile', getState().profile.profileList);
         return;
     } else {
         dispatch({ type: PROFILE_ACTION.GET_ALL_PROFILE_PENDING });
@@ -30,11 +31,29 @@ export const fetchAllUsersProfile = () => async (dispatch, getState) => {
                 payload: response.data
             });
         } catch (error) {
+            const payload = error.response;
             dispatch({
                 type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
                 payload: error.response.data
             });
         }
+    }
+};
+
+const reloadAllUserProfiles = () => async dispatch => {
+    dispatch({ type: PROFILE_ACTION.RELOAD_ALL_USER_PROFILES });
+    try {
+        const response = await axios.get("/api/profile/all");
+        dispatch({
+            type: PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE,
+            payload: response.data
+        });
+    } catch (error) {
+        const payload = error.response;
+        dispatch({
+            type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
+            payload: error.response.data
+        });
     }
 };
 
@@ -47,6 +66,7 @@ export const createUserProfile = (profile, history) => async dispatch => {
             payload: res.data
         });
         history.push("/dashboard");
+        dispatch(reloadAllUserProfiles());
     } catch (error) {
         dispatch({
             type: PROFILE_ACTION.CREATE_PROFILE_REJECT,

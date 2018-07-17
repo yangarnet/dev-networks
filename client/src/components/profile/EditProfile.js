@@ -118,10 +118,12 @@ class EditProfile extends Component {
 
     onChange(e) {
         // set the target value by name.
+        e.preventDefault();
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    onClickSocialInputs() {
+    onClickSocialInputs(e) {
+        e.preventDefault();
         this.setState(preState => ({
             displaySocialInputs: !preState.displaySocialInputs
         }));

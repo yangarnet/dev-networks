@@ -9,7 +9,14 @@
       "request": "launch",
       "name": "Launch React App",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client"
+      "webRoot": "${workspaceFolder}/client/src"
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Chrome",
+      "port": 3000,
+      "webRoot": "${workspaceFolder}/client/src"
     },
     {
       "type": "node",
