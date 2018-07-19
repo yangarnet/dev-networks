@@ -20,7 +20,6 @@ export const getCurrentProfile = () => async dispatch => {
 
 export const fetchAllUsersProfile = () => async (dispatch, getState) => {
     if (getState().profile.profileList) {
-        console.log('current profile', getState().profile.profileList);
         return;
     } else {
         dispatch({ type: PROFILE_ACTION.GET_ALL_PROFILE_PENDING });
@@ -103,7 +102,10 @@ export const updateUserProfile = (profile, history) => async dispatch => {
         });
         history.push("/dashboard");
     } catch (err) {
-        dispatch({ type: PROFILE_ACTION.EDIT_PROFILE_REJECT, payload: err.response.data });
+        dispatch({
+            type: PROFILE_ACTION.EDIT_PROFILE_REJECT,
+            payload: err.response.data
+        });
         history.push("/edit-profile");
     }
 };
@@ -117,16 +119,22 @@ export const getCurrentUserProfileIfNecessary = () => (dispatch, getState) => {
     }
 };
 
-export const addUserExperience = (userExperience, history) => async dispatch => {
+export const addUserExperience = (
+    userExperience,
+    history
+) => async dispatch => {
     try {
         dispatch({ type: PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING });
-        const response = await axios.post('/api/profile/experience', userExperience);
+        const response = await axios.post(
+            "/api/profile/experience",
+            userExperience
+        );
         // resolve
         dispatch({
             type: PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE,
             payload: response.data
         });
-        history.push('/dashboard');
+        history.push("/dashboard");
     } catch (error) {
         const errorData = error.response.data;
         dispatch({
@@ -142,13 +150,16 @@ export const addUserEducation = (userEducation, history) => async dispatch => {
             type: PROFILE_ACTION.ADD_USER_EDUCATION_PENDING
         });
 
-        const response = await axios.post('/api/profile/education', userEducation);
+        const response = await axios.post(
+            "/api/profile/education",
+            userEducation
+        );
         dispatch({
             type: PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE,
             payload: response.data
         });
 
-        history.push('/dashboard');
+        history.push("/dashboard");
     } catch (error) {
         dispatch({
             type: PROFILE_ACTION.ADD_USER_EDUCATION_REJECT,
@@ -158,22 +169,34 @@ export const addUserEducation = (userEducation, history) => async dispatch => {
 };
 
 // a bit ducplicate here
-export const deleteUserExperience = (expId) => async dispatch => {
+export const deleteUserExperience = expId => async dispatch => {
     try {
         dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING });
         const response = await axios.delete(`/api/profile/experience/${expId}`);
-        dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE, payload: response.data });
+        dispatch({
+            type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE,
+            payload: response.data
+        });
     } catch (error) {
-        dispatch({ type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT, payload: error.response.data });
+        dispatch({
+            type: PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT,
+            payload: error.response.data
+        });
     }
 };
 
-export const deleteUserEducation = (eduId) => async dispatch => {
+export const deleteUserEducation = eduId => async dispatch => {
     try {
         dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING });
         const response = await axios.delete(`/api/profile/education/${eduId}`);
-        dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE, payload: response.data });
+        dispatch({
+            type: PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE,
+            payload: response.data
+        });
     } catch (error) {
-        dispatch({ type: PROFILE_ACTION.DELETE_USER_EDUCATION_REJECT, payload: error.response.data });
+        dispatch({
+            type: PROFILE_ACTION.DELETE_USER_EDUCATION_REJECT,
+            payload: error.response.data
+        });
     }
 };

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { isEmpty } from "../../utils/helper";
 
-
 const ProfileItems = props => {
     const { profile, location } = props;
 
@@ -31,23 +30,24 @@ const ProfileItems = props => {
                         )}
                     </p>
                     <Link
-                        to={`/profiles/${profile.handle}`}
+                        to={`/profile/${profile.handle}`}
                         className="btn btn-info"
                     >
                         view profile details
                     </Link>
                 </div>
                 <div className="col-md-4 none d-md-block">
-                    <h4>Skill set</h4>
+                    <h4>Highlight Skill set</h4>
                     <ul className="list-group">
-                        {profile.skills
-                            .slice(0, 4)
-                            .map((skill, index) => {
-                                return (<li key={index} className="list-group-item">
+                        {/*will just display top 4 skills */}
+                        {profile.skills.slice(0, 4).map((skill, index) => {
+                            return (
+                                <li key={index} className="list-group-item">
                                     <i className="fa fa-check pr-1" />
                                     {skill}
-                            </li>);
-                            })}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

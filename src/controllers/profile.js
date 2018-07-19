@@ -30,7 +30,7 @@ class ProfileController {
             } else {
                 error.notfound = `cannot find any profile with handle: ${
                     req.params.handle
-                    }`;
+                }`;
                 res.status(404).json(error);
             }
         } catch (err) {
@@ -55,7 +55,7 @@ class ProfileController {
             } else {
                 error.notfound = `cannot find any profile by id: ${
                     req.params.id
-                    }`;
+                }`;
                 res.status(404).json(error);
             }
         } catch (err) {
@@ -250,7 +250,7 @@ class ProfileController {
                 } else {
                     errors.cannot = `cannot add new experience for user: ${
                         req.user.id
-                        }`;
+                    }`;
                     res.status(400).json(errors);
                 }
             } else {
@@ -284,7 +284,9 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
                 updateExperienceForProfile(userProfile.experiences, payload);
@@ -311,7 +313,9 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
                 const deleted = deleteFromProfile(
@@ -361,7 +365,7 @@ class ProfileController {
                 } else {
                     errors.cannot = `cannot add new education for user: ${
                         req.user.id
-                        }`;
+                    }`;
                     return res.status(400).json(errors);
                 }
             } else {
@@ -394,7 +398,7 @@ class ProfileController {
             if (!userProfile) {
                 errors.notfound = `user profile not found for id:${
                     req.user.id
-                    }`;
+                }`;
                 return res.status(404).json(errors);
             } else {
                 updateEducationForProfile(userProfile.education, payload);
@@ -421,7 +425,9 @@ class ProfileController {
         try {
             const userProfile = await profile.findOne({ user: req.user.id });
             if (!userProfile) {
-                errors.notfound = `user profile not found for id:${req.user.id}`;
+                errors.notfound = `user profile not found for id:${
+                    req.user.id
+                }`;
                 return res.status(404).json(errors);
             } else {
                 const deleted = deleteFromProfile(
