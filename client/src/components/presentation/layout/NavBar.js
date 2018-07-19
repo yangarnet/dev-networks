@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { userLogout } from "../../../action/authAction";
 import { clearCurrentUserProfile } from "../../../action/profileAction";
-
 class NavBar extends Component {
     onLogoutClick(e) {
         e.preventDefault();
