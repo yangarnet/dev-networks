@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import { deleteUserExperience } from '../../action/profileAction';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Moment from "react-moment";
+import { deleteUserExperience } from "../../action/profileAction";
 
 class Experience extends Component {
     constructor(props) {
@@ -20,12 +20,20 @@ class Experience extends Component {
                 <td>{exp.company}</td>
                 <td>{exp.title}</td>
                 <td>
-                    <Moment format="DD/MM/YYYY">{exp.from}</Moment>
-                    {' '}~{' '}
-                    {exp.to === null ? 'Now' : <Moment format="DD/MM/YYYY">{exp.to}</Moment>}
+                    <Moment format="DD/MM/YYYY">{exp.from}</Moment> ~{" "}
+                    {exp.to === null ? (
+                        "Now"
+                    ) : (
+                        <Moment format="DD/MM/YYYY">{exp.to}</Moment>
+                    )}
                 </td>
                 <td>
-                    <button className="btn btn-danger" onClick={() => this.onDelete(exp._id)}>Delete Experience</button>
+                    <button
+                        className="btn btn-danger"
+                        onClick={() => this.onDelete(exp._id)}
+                    >
+                        Delete Experience
+                    </button>
                 </td>
             </tr>
         ));
@@ -38,8 +46,9 @@ class Experience extends Component {
                                 <th>company</th>
                                 <th>title</th>
                                 <th>years</th>
-                                <th></th>
-                            </tr>) : null}
+                                <th />
+                            </tr>
+                        ) : null}
                         {experience}
                     </tbody>
                 </table>
@@ -50,7 +59,15 @@ class Experience extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        deleteExperience: (expId) => dispatch(deleteUserExperience(expId))
+        deleteExperience: expId => dispatch(deleteUserExperience(expId))
     };
 };
-export default connect(null, mapDispatchToProps)(Experience);
+
+Experience.propTypes = {
+    deleteExperience: PropTypes.func.isRequired
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Experience);

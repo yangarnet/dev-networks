@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import TextFieldGroup from '../../common/TextFieldGroup';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import TextFieldGroup from "../../common/TextFieldGroup";
 
 class UserRegister extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            email: '',
-            password: '',
-            confirmedPassword: ''
+            name: "",
+            email: "",
+            password: "",
+            confirmedPassword: ""
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -35,7 +34,7 @@ class UserRegister extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticated) {
-            this.props.history.push('/dashboard');
+            this.props.history.push("/dashboard");
         }
     }
     // when receive new props from redux, this will get called
@@ -53,7 +52,9 @@ class UserRegister extends Component {
                     <div className="row">
                         <div className="col-md-8 m-auto">
                             <h1 className="display-4 text-center">Sign Up</h1>
-                            <p className="lead text-center">Create your DevConnector account</p>
+                            <p className="lead text-center">
+                                Create your DevConnector account
+                            </p>
                             <form onSubmit={this.onSubmit}>
                                 <TextFieldGroup
                                     type="text"
@@ -83,7 +84,10 @@ class UserRegister extends Component {
                                     onChange={this.onChange}
                                     errors={errors}
                                 />
-                                <input type="submit" className="btn btn-info btn-block mt-4" />
+                                <input
+                                    type="submit"
+                                    className="btn btn-info btn-block mt-4"
+                                />
                             </form>
                         </div>
                     </div>
@@ -97,7 +101,6 @@ UserRegister.propTypes = {
     performRegister: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
 };
-
 
 // just use connect to link any component that need data feeds from redux
 //export default connect(mapStateToProps, { registerUser })(withRouter(Register));

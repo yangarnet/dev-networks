@@ -1,13 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Login from '../presentation/auth/Login';
-import { userLogin } from '../../action/authAction';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Login from "../presentation/auth/Login";
+import { userLogin } from "../../action/authAction";
 
-const UserLogin = (props) => {
-    return (<Login auth={props.auth} errors={props.errors} userLogin={props.userLogin} />)
+const UserLogin = props => {
+    return (
+        <Login
+            auth={props.auth}
+            errors={props.errors}
+            userLogin={props.userLogin}
+        />
+    );
 };
-
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -18,10 +23,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        userLogin: (userData) => { dispatch(userLogin(userData)) }
+        userLogin: userData => {
+            dispatch(userLogin(userData));
+        }
     };
 };
-
 
 UserLogin.propTypes = {
     auth: PropTypes.object.isRequired,
@@ -29,4 +35,7 @@ UserLogin.propTypes = {
     userLogin: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserLogin);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserLogin);

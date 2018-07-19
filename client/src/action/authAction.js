@@ -35,28 +35,48 @@ export const setCurrentLoggedInUser = decoded => {
 
 // async action user login, this will set user information in the localStorage
 // identify who is logged in
-export const userLogin = userData => dispatch => {
+export const userLogin = userData => async dispatch => {
     dispatch({ type: AUTH_ACTION.USER_LOGIN_PENDING });
-    axios.post("/api/user/login", userData).then(
-        res => {
-            const { token } = res.data;
-            //save to local storage, so subsequent request will know who is logged in.
-            localStorage.setItem("jwt", token);
-            // set auth header, so subsequent request will who is logged in.
-            setAuthToken(token);
-            // decode the token and set current logged in user
-            const decoded = jwt_decode(token);
-            // set the current login user.
-            dispatch(setCurrentLoggedInUser(decoded));
-            dispatch({ type: AUTH_ACTION.USER_LOGIN_RESOLVE });
-        },
-        err => {
-            dispatch({
-                type: AUTH_ACTION.USER_LOGIN_REJECT,
-                payload: err.response.data
-            });
-        }
-    );
+
+    try {
+        const res = await axios.post("/api/user/login", userData);
+        const { token } = res.data;
+        //save to local storage, so subsequent request will know who is logged in.
+        localStorage.setItem("jwt", token);
+        // set auth header, so subsequent request will who is logged in.
+        setAuthToken(token);
+        // decode the token and set current logged in user
+        const decoded = jwt_decode(token);
+        // set the current login user.
+        dispatch(setCurrentLoggedInUser(decoded));
+        dispatch({ type: AUTH_ACTION.USER_LOGIN_RESOLVE });
+    } catch (error) {
+        const data = error.response.data;
+        dispatch({
+            type: AUTH_ACTION.USER_LOGIN_REJECT,
+            payload: data
+        });
+    }
+    // axios.post("/api/user/login", userData).then(
+    //     res => {
+    //         const { token } = res.data;
+    //         //save to local storage, so subsequent request will know who is logged in.
+    //         localStorage.setItem("jwt", token);
+    //         // set auth header, so subsequent request will who is logged in.
+    //         setAuthToken(token);
+    //         // decode the token and set current logged in user
+    //         const decoded = jwt_decode(token);
+    //         // set the current login user.
+    //         dispatch(setCurrentLoggedInUser(decoded));
+    //         dispatch({ type: AUTH_ACTION.USER_LOGIN_RESOLVE });
+    //     },
+    //     err => {
+    //         dispatch({
+    //             type: AUTH_ACTION.USER_LOGIN_REJECT,
+    //             payload: err.response.data
+    //         });
+    //     }
+    // );
 };
 
 export const userLogout = () => dispatch => {

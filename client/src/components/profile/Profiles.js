@@ -6,10 +6,6 @@ import { fetchAllUsersProfile } from "../../action/profileAction";
 import ProfileItems from "./ProfileItems";
 
 class Profiles extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.fetchProfiles();
     }
@@ -21,7 +17,9 @@ class Profiles extends Component {
             profileItems = <Spinner />;
         } else {
             if (profiles.length > 0) {
-                profileItems = profiles.map(((profile, index) => (<ProfileItems key={index} profile={profile}/>)));
+                profileItems = profiles.map((profile, index) => (
+                    <ProfileItems key={index} profile={profile} />
+                ));
             } else {
                 profileItems = <h4>No profiles found ....</h4>;
             }

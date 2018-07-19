@@ -30,7 +30,6 @@ export const fetchAllUsersProfile = () => async (dispatch, getState) => {
                 payload: response.data
             });
         } catch (error) {
-            const payload = error.response;
             dispatch({
                 type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
                 payload: error.response.data
@@ -48,7 +47,6 @@ const reloadAllUserProfiles = () => async dispatch => {
             payload: response.data
         });
     } catch (error) {
-        const payload = error.response;
         dispatch({
             type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
             payload: error.response.data

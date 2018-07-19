@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
-import { addUserExperience } from '../../action/profileAction';
-import { isEmpty } from '../../utils/helper';
+import { addUserExperience } from "../../action/profileAction";
+import { isEmpty } from "../../utils/helper";
 class AddExperience extends Component {
     constructor(props) {
         super(props);
@@ -46,13 +46,13 @@ class AddExperience extends Component {
         if (!isEmpty(nextProps.errors)) {
             this.setState({
                 errors: nextProps.errors
-            })
+            });
         }
     }
 
     onChange(e) {
         e.preventDefault();
-        this.setState({ [e.target.name]: e.target.value })
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     onCheck(e) {
@@ -89,7 +89,7 @@ class AddExperience extends Component {
                                     name="company"
                                     value={this.state.company}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <TextFieldGroup
                                     type="text"
@@ -97,7 +97,7 @@ class AddExperience extends Component {
                                     name="title"
                                     value={this.state.title}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <TextFieldGroup
                                     type="text"
@@ -105,7 +105,7 @@ class AddExperience extends Component {
                                     name="location"
                                     value={this.state.location}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <h6>From Date</h6>
                                 <TextFieldGroup
@@ -113,7 +113,7 @@ class AddExperience extends Component {
                                     type="date"
                                     value={this.state.from}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <h6>To Date</h6>
                                 <TextFieldGroup
@@ -124,7 +124,7 @@ class AddExperience extends Component {
                                     disabled={
                                         this.state.disabled ? "disabled" : ""
                                     }
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <div className="form-check mb-4">
                                     <input
@@ -149,7 +149,7 @@ class AddExperience extends Component {
                                     value={this.state.description}
                                     onChange={this.onChange}
                                     info="Tell us about this position"
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <input
                                     type="submit"
@@ -175,13 +175,19 @@ const mapStateToProps = (state, ownProps) => {
     } else {
         return {};
     }
-
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        addExp: (experience, history) => dispatch(addUserExperience(experience, history))
+        addExp: (experience, history) =>
+            dispatch(addUserExperience(experience, history))
     };
+};
+
+AddExperience.propTypes = {
+    addExp: PropTypes.func.isRequired,
+    userExperice: PropTypes.object,
+    errors: PropTypes.object
 };
 
 export default connect(

@@ -13,7 +13,6 @@ class AddEducation extends Component {
         this.state = {
             school: "",
             degree: "",
-            degree: "",
             from: "",
             to: "",
             current: false,
@@ -24,7 +23,6 @@ class AddEducation extends Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onCheck = this.onCheck.bind(this);
-
     }
 
     // this componentWillReceiveProps() will be deprecated
@@ -92,7 +90,7 @@ class AddEducation extends Component {
                                     name="school"
                                     value={this.state.school}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <TextFieldGroup
                                     type="text"
@@ -100,7 +98,7 @@ class AddEducation extends Component {
                                     name="degree"
                                     value={this.state.degree}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <TextFieldGroup
                                     type="text"
@@ -108,7 +106,7 @@ class AddEducation extends Component {
                                     name="fieldOfStudy"
                                     value={this.state.location}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <h6>From Date</h6>
                                 <TextFieldGroup
@@ -116,7 +114,7 @@ class AddEducation extends Component {
                                     type="date"
                                     value={this.state.from}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                 />
                                 <h6>To Date</h6>
                                 <TextFieldGroup
@@ -124,7 +122,7 @@ class AddEducation extends Component {
                                     type="date"
                                     value={this.state.to}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                     disabled={
                                         this.state.disabled ? "disabled" : ""
                                     }
@@ -151,7 +149,7 @@ class AddEducation extends Component {
                                     name="description"
                                     value={this.state.description}
                                     onChange={this.onChange}
-                                    errors={this.state.errors}
+                                    errors={errors}
                                     info="Tell us about your education"
                                 />
                                 <input
@@ -183,9 +181,20 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         addEducation: (education, history) => {
-            dispatch(addUserEducation(education, history))
+            dispatch(addUserEducation(education, history));
         }
-    }
+    };
+};
+
+AddEducation.propTypes = {
+    addEducation: PropTypes.func.isRequired,
+    userEducation: PropTypes.object,
+    errors: PropTypes.object
+};
+
+AddEducation.defaultProps = {
+    userEducation: {},
+    errors: {}
 };
 
 export default connect(

@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import TextFieldGroup from '../../common/TextFieldGroup';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import TextFieldGroup from "../../common/TextFieldGroup";
 
 class Login extends Component {
     constructor() {
         super();
         this.state = {
-            email: '',
-            password: ''
+            email: "",
+            password: ""
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -16,14 +15,14 @@ class Login extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticated) {
-            this.props.history.push('/dashboard');
+            this.props.history.push("/dashboard");
         }
     }
     // add the change to the react life cicle
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
             // the this.props.history become available because withRouter() wrapper
-            this.props.history.push('/dashboard');
+            this.props.history.push("/dashboard");
         }
     }
 
@@ -32,7 +31,7 @@ class Login extends Component {
         const logins = {
             email: this.state.email,
             password: this.state.password
-        }
+        };
         this.props.userLogin(logins);
     }
 
@@ -48,7 +47,9 @@ class Login extends Component {
                     <div className="row">
                         <div className="col-md-8 m-auto">
                             <h1 className="display-4 text-center">Log In</h1>
-                            <p className="lead text-center">Sign in to your DevConnector account</p>
+                            <p className="lead text-center">
+                                Sign in to your DevConnector account
+                            </p>
                             <form onSubmit={this.onSubmit}>
                                 <TextFieldGroup
                                     type="email"
@@ -64,13 +65,16 @@ class Login extends Component {
                                     onChange={this.onChange}
                                     errors={errors}
                                 />
-                                <input type="submit" className="btn btn-info btn-block mt-4" />
+                                <input
+                                    type="submit"
+                                    className="btn btn-info btn-block mt-4"
+                                />
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 

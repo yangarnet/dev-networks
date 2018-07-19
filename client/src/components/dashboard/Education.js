@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import { deleteUserEducation } from '../../action/profileAction';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Moment from "react-moment";
+import { deleteUserEducation } from "../../action/profileAction";
 
 class Education extends Component {
     constructor(props) {
@@ -20,12 +20,20 @@ class Education extends Component {
                 <td>{edu.school}</td>
                 <td>{edu.degree}</td>
                 <td>
-                    <Moment format="DD/MM/YYYY">{edu.from}</Moment>
-                    {' '}~{' '}
-                    {edu.to === null ? 'Now' : <Moment format="DD/MM/YYYY">{edu.to}</Moment>}
+                    <Moment format="DD/MM/YYYY">{edu.from}</Moment> ~{" "}
+                    {edu.to === null ? (
+                        "Now"
+                    ) : (
+                        <Moment format="DD/MM/YYYY">{edu.to}</Moment>
+                    )}
                 </td>
                 <td>
-                    <button className="btn btn-danger" onClick={() => this.onDelete(edu._id)}>Delete Education</button>
+                    <button
+                        className="btn btn-danger"
+                        onClick={() => this.onDelete(edu._id)}
+                    >
+                        Delete Education
+                    </button>
                 </td>
             </tr>
         ));
@@ -33,12 +41,14 @@ class Education extends Component {
             <div className="mb-4">
                 <table className="table">
                     <tbody>
-                        {this.props.education.length > 0 ? (<tr>
-                            <th>school</th>
-                            <th>degree</th>
-                            <th>years</th>
-                            <th></th>
-                        </tr>) : null}
+                        {this.props.education.length > 0 ? (
+                            <tr>
+                                <th>school</th>
+                                <th>degree</th>
+                                <th>years</th>
+                                <th />
+                            </tr>
+                        ) : null}
                         {education}
                     </tbody>
                 </table>
@@ -49,7 +59,15 @@ class Education extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        deleteEducation: (eduId) => dispatch(deleteUserEducation(eduId))
+        deleteEducation: eduId => dispatch(deleteUserEducation(eduId))
     };
 };
-export default connect(null, mapDispatchToProps)(Education);
+
+Education.propTypes = {
+    deleteEducation: PropTypes.func.isRequired
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Education);
