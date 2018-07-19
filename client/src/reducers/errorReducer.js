@@ -1,4 +1,4 @@
-import * as PROFILE_ACTION from "../action/types";
+import { PROFILE_ACTION, CLEAR_ERRORS } from "../action/types";
 
 const initState = {};
 
@@ -14,7 +14,7 @@ export const errorReducer = (state = initState, action) => {
         case PROFILE_ACTION.GET_ALL_PROFILE_REJECT:
         case PROFILE_ACTION.EDIT_PROFILE_REJECT:
             return action.payload;
-        case PROFILE_ACTION.CLEAR_ERRORS:
+        case CLEAR_ERRORS:
             return {};
         default:
             return state;

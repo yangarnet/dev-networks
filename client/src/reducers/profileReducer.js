@@ -1,5 +1,4 @@
-
-import * as PROFILE_ACTION from "../action/types";
+import { PROFILE_ACTION } from "../action/types";
 
 const initState = {
     profile: null,
@@ -49,14 +48,23 @@ const profileReducer = (state = initState, action) => {
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
         case PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE:
-            return Object.assign({}, state, { profile: action.payload, loading: false });
+            return Object.assign({}, state, {
+                profile: action.payload,
+                loading: false
+            });
 
         case PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE:
-            return Object.assign({}, state, { profileList: action.payload, loading: false });
+            return Object.assign({}, state, {
+                profileList: action.payload,
+                loading: false
+            });
 
         case PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE:
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE:
-            return Object.assign({}, state, { profile: action.payload, loading: false });
+            return Object.assign({}, state, {
+                profile: action.payload,
+                loading: false
+            });
         default:
             return state;
     }

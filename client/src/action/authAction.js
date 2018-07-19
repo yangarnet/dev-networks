@@ -2,25 +2,15 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { setAuthToken } from "../utils/helper";
 
-import {
-    USER_REGISTER_PENDING,
-    USER_REGISTER_REJECT,
-    USER_REGISTER_RESOLVE,
-    USER_LOGIN_PENDING,
-    USER_LOGIN_RESOLVE,
-    USER_LOGIN_REJECT,
-    SET_CURRENT_USER,
-    USER_LOGOUT,
-    CLEAR_ERRORS
-} from "./types";
+import { AUTH_ACTION, CLEAR_ERRORS } from "./types";
 
 const userRegisterResolve = payload => ({
-    type: USER_REGISTER_RESOLVE,
+    type: AUTH_ACTION.USER_REGISTER_RESOLVE,
     payload
 });
 
 export const registerUser = (userData, history) => dispatch => {
-    dispatch({ type: USER_REGISTER_PENDING });
+    dispatch({ type: AUTH_ACTION.USER_REGISTER_PENDING });
     dispatch({ type: CLEAR_ERRORS });
     axios.post("/api/user/register", userData).then(
         res => {
@@ -29,7 +19,7 @@ export const registerUser = (userData, history) => dispatch => {
         },
         err => {
             dispatch({
-                type: USER_REGISTER_REJECT,
+                type: AUTH_ACTION.USER_REGISTER_REJECT,
                 payload: err.response.data
             });
         }
@@ -38,7 +28,7 @@ export const registerUser = (userData, history) => dispatch => {
 
 export const setCurrentLoggedInUser = decoded => {
     return {
-        type: SET_CURRENT_USER,
+        type: AUTH_ACTION.SET_CURRENT_USER,
         payload: decoded
     };
 };
@@ -46,7 +36,7 @@ export const setCurrentLoggedInUser = decoded => {
 // async action user login, this will set user information in the localStorage
 // identify who is logged in
 export const userLogin = userData => dispatch => {
-    dispatch({ type: USER_LOGIN_PENDING });
+    dispatch({ type: AUTH_ACTION.USER_LOGIN_PENDING });
     axios.post("/api/user/login", userData).then(
         res => {
             const { token } = res.data;
@@ -58,11 +48,11 @@ export const userLogin = userData => dispatch => {
             const decoded = jwt_decode(token);
             // set the current login user.
             dispatch(setCurrentLoggedInUser(decoded));
-            dispatch({ type: USER_LOGIN_RESOLVE });
+            dispatch({ type: AUTH_ACTION.USER_LOGIN_RESOLVE });
         },
         err => {
             dispatch({
-                type: USER_LOGIN_REJECT,
+                type: AUTH_ACTION.USER_LOGIN_REJECT,
                 payload: err.response.data
             });
         }
@@ -70,7 +60,7 @@ export const userLogin = userData => dispatch => {
 };
 
 export const userLogout = () => dispatch => {
-    dispatch({ type: USER_LOGOUT });
+    dispatch({ type: AUTH_ACTION.USER_LOGOUT });
     // remove the token from local storage
     localStorage.removeItem("jwt");
     // remove auth header for future req
