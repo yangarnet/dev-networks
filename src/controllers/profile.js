@@ -123,7 +123,11 @@ class ProfileController {
             "skills",
             "bio",
             "githubusername",
-            "social"
+            "facebook",
+            "twitter",
+            "youtube",
+            "instagram",
+            "linkedIn"
         ]);
         try {
             if (await profile.findOne({ user: req.user.id })) {
@@ -134,6 +138,13 @@ class ProfileController {
                 if (typeof payloads.skills === "string") {
                     payloads.skills = payloads.skills.split(",");
                 }
+                payloads.social = {
+                    facebook: payloads.facebook,
+                    twitter: payloads.twitter,
+                    linkedIn: payloads.linkedIn,
+                    youtube: payloads.youtube,
+                    instagram: payloads.instagram
+                };
                 payloads.handle = joinStringWithHyphen(payloads.handle);
                 payloads.dateAdded = Date.now();
                 const newProfle = new profile(payloads);

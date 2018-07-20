@@ -1,11 +1,11 @@
-import { PROFILE_ACTION, CLEAR_ERRORS } from "../action/types";
+import { AUTH_ACTION, PROFILE_ACTION, CLEAR_ERRORS } from "../action/types";
 
 const initState = {};
 
 export const errorReducer = (state = initState, action) => {
     switch (action.type) {
-        case PROFILE_ACTION.USER_REGISTER_REJECT:
-        case PROFILE_ACTION.USER_LOGIN_REJECT:
+        case AUTH_ACTION.USER_REGISTER_REJECT:
+        case AUTH_ACTION.USER_LOGIN_REJECT:
         case PROFILE_ACTION.CREATE_PROFILE_REJECT:
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_REJECT:
         case PROFILE_ACTION.ADD_USER_EDUCATION_REJECT:

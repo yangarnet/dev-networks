@@ -123,6 +123,7 @@ export class EmailAlreadyRegisteredError extends Error {
 
 export const joinStringWithHyphen = str =>
     str
+        .trim()
         .toLowerCase()
         .split(" ")
         .join("-");
