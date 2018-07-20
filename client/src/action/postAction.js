@@ -18,3 +18,23 @@ export const addPost = (postData, history) => async dispatch => {
         });
     }
 };
+// this code is duplicate!
+export const fetchAllPosts = () => async dispatch => {
+    dispatch({
+        type: POST_ACTION.GET_ALL_POSTS_PENDING
+    });
+    try {
+        const response = await axios.get("/api/post");
+        dispatch({
+            type: POST_ACTION.GET_ALL_POSTS_RESOLVE,
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: POST_ACTION.GET_ALL_POSTS_REJECT,
+            payload: error.response.data
+        });
+    }
+};
+
+export const deletePostById = postId => async dispatch => {};
