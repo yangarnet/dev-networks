@@ -1,4 +1,9 @@
-import { AUTH_ACTION, PROFILE_ACTION, CLEAR_ERRORS } from "../action/types";
+import {
+    AUTH_ACTION,
+    PROFILE_ACTION,
+    CLEAR_ERRORS,
+    POST_ACTION
+} from "../action/types";
 
 const initState = {};
 
@@ -13,6 +18,7 @@ export const errorReducer = (state = initState, action) => {
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT:
         case PROFILE_ACTION.GET_ALL_PROFILE_REJECT:
         case PROFILE_ACTION.EDIT_PROFILE_REJECT:
+        case POST_ACTION.ADD_POST_REJECT:
             return action.payload;
         case CLEAR_ERRORS:
             return {};
