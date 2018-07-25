@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../../common/TextFieldGroup";
+import { isEmpty } from '../../../utils/helper';
+
 
 class Login extends Component {
     constructor() {
@@ -13,18 +15,32 @@ class Login extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    static getDeriveStateFromProps(nextProps, prevState) {
+        if(nextProps.auth.isAuthenticated) {
+            return {
+                path: '/dashboard'
+            }
+        }
+    }
+
     componentDidMount() {
         if (this.props.auth.isAuthenticated) {
             this.props.history.push("/dashboard");
         }
     }
-    // add the change to the react life cicle
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
-            // the this.props.history become available because withRouter() wrapper
-            this.props.history.push("/dashboard");
+
+    componentDidUpdate(nextProps, prevState) {
+        if (nextProps.auth.isAuthenticated && !isEmpty(this.state.path)) {
+            this.props.history.push(this.state.path);
         }
     }
+    // // add the change to the react life cicle
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.auth.isAuthenticated) {
+    //         // the this.props.history become available because withRouter() wrapper
+    //         this.props.history.push("/dashboard");
+    //     }
+    // }
 
     onSubmit(e) {
         e.preventDefault();
