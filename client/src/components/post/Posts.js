@@ -21,7 +21,7 @@ class Posts extends Component {
         } else {
             postContent = (
                 <UserPosts
-                    auth={auth}
+                    auth={!isEmpty(auth) ? auth : {}}
                     posts={posts}
                     deletePostById={deletePostById}
                 />

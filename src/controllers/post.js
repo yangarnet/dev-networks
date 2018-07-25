@@ -64,7 +64,7 @@ class PostController {
     */
     async fetchAllPosts(req, res) {
         try {
-            const posts = await post.find().sort({ date: -1 });
+            const posts = await post.find().sort({ date: "descending" });
             return res.status(200).json(posts);
         } catch (err) {
             return res.status(400).json(err);

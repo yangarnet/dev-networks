@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
 
 const PostItem = ({ auth, post, deleteById }) => (
     <div className="card card-body mb-3">
@@ -8,24 +9,27 @@ const PostItem = ({ auth, post, deleteById }) => (
                 <a href="profile.html">
                     <img
                         className="rounded-circle d-none d-md-block"
-                        src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
-                        alt=""
+                        src={auth.user.avatar}
+                        alt={auth.user.name}
                     />
                 </a>
                 <br />
-                <p className="text-center">John Doe</p>
+                <p className="text-center">{auth.user.name}</p>
             </div>
             <div className="col-md-10">
-                <p className="lead">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Sint possimus corporis sunt necessitatibus! Minus nesciunt
-                    soluta suscipit nobis. Amet accusamus distinctio cupiditate
-                    blanditiis dolor? Illo perferendis eveniet cum cupiditate
-                    aliquam?
-                </p>
+                <h5>{post.name}</h5>
+                <blockquote>
+                    <p>{post.text}</p>
+                </blockquote>
                 <button type="button" className="btn btn-light mr-1">
-                    <i className="text-info fas fa-thumbs-up" />
-                    <span className="badge badge-light">4</span>
+                    <i
+                        className={classnames("fas fa-thumbs-up", {
+                            "text-info": findUserLike(post.likes)
+                        })}
+                    />
+                    <span className="badge badge-light">
+                        {post.likes.length}
+                    </span>
                 </button>
                 <button type="button" className="btn btn-light mr-1">
                     <i className="text-secondary fas fa-thumbs-down" />
@@ -33,14 +37,13 @@ const PostItem = ({ auth, post, deleteById }) => (
                 <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
                     Comments
                 </Link>
-                {/* delete button if you are the post creator*/}
                 {post.user === auth.user.id ? (
                     <button
                         type="button"
-                        classNameName="btn btn-danger mr-1"
+                        className="btn btn-danger mr-1"
                         onClick={() => deleteById(post._id)}
                     >
-                        <i classNameName="fas fa-times" />
+                        <i className="fas fa-times"> Remove Post</i>
                     </button>
                 ) : null}
             </div>
