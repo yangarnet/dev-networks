@@ -145,7 +145,7 @@ class PostController {
                     ).length > 0
                 ) {
                     return res
-                        .status(200)
+                        .status(400)
                         .json({ status: "you already liked the post" });
                 }
                 result.likes.unshift({ user: req.user.id });
@@ -167,7 +167,7 @@ class PostController {
     /*
     @desc unlike post by id
     @access private
-    @route /api/post/like/:post_id
+    @route /api/post/unlike/:post_id
     */
     async unlikePostById(req, res) {
         const errors = {};

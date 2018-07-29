@@ -8,7 +8,7 @@ const ProfileCreds = ({ experiences, education }) => (
             <h3 className="text-center text-info">Experience</h3>
             <ul className="list-group">
                 {experiences.map(exp => (
-                    <li className="list-group-item">
+                    <li className="list-group-item" key={exp.id}>
                         <h4>{exp.company}</h4>
                         <p>
                             <Moment format="MM/YYYY">{exp.from}</Moment>

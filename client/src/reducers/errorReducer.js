@@ -22,6 +22,7 @@ export const errorReducer = (state = initState, action) => {
         case POST_ACTION.ADD_POST_REJECT:
         case POST_ACTION.GET_ALL_POSTS_REJECT:
         case POST_ACTION.DELETE_POST_BY_ID_REJECT:
+        case POST_ACTION.UNLIKE_POST_BY_ID_REJECT:
             return action.payload;
         case CLEAR_ERRORS:
             return {};

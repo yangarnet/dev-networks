@@ -31,11 +31,11 @@ class ProfileController {
                 error.notfound = `cannot find any profile with handle: ${
                     req.params.handle
                 }`;
-                res.status(404).json(error);
+                return res.status(404).json(error);
             }
         } catch (err) {
             error.cannot = "cannot perform mongo db search";
-            res.status(400).json(error);
+            return res.status(400).json(error);
         }
     }
     /*

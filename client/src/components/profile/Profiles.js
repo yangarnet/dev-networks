@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Spinner } from "../common/Spinner";
 import { fetchAllUsersProfile } from "../../action/profileAction";
 import ProfileItems from "./ProfileItems";
+import { isEmpty } from "../../utils/helper";
 
 class Profiles extends Component {
     componentDidMount() {
@@ -13,10 +14,10 @@ class Profiles extends Component {
     render() {
         const { profiles, loading } = this.props;
         let profileItems = null;
-        if (profiles === null || profiles === undefined || loading) {
+        if (loading) {
             profileItems = <Spinner />;
         } else {
-            if (profiles.length > 0) {
+            if (!isEmpty(profiles) && profiles.length > 0) {
                 profileItems = profiles.map((profile, index) => (
                     <ProfileItems key={index} profile={profile} />
                 ));

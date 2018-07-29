@@ -42,14 +42,14 @@ class Profile extends Component {
         const { loading } = this.props;
         const profile = getProfileByHandle(this.props.profileList, handle);
         let profileContent;
-        if (profile === null || loading) {
+        if (loading) {
             profileContent = <Spinner />;
         } else {
             const profileHeaderData = prepareHeaderData(profile);
             const profileAboutData = prepareAboutData(profile);
             const profileCredsData = prepareCreds(profile);
 
-            profileContent = (
+            profileContent = isEmpty(profile) ? null : (
                 <div>
                     <div className="row">
                         <div className="col-md-6">

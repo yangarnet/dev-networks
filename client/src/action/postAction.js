@@ -71,3 +71,22 @@ export const likePostById = (userId, postId) => async dispatch => {
         });
     }
 };
+
+export const unlikePostById = (userId, postId) => async dispatch => {
+    dispatch({ type: POST_ACTION.UNLIKE_POST_BY_ID_PENDING });
+    try {
+        await axios.post(`/api/post/unlike/${postId}`);
+        dispatch({
+            type: POST_ACTION.UNLIKE_POST_BY_ID_RESOLVE,
+            payload: {
+                postId,
+                user: userId
+            }
+        });
+    } catch (error) {
+        dispatch({
+            type: POST_ACTION.UNLIKE_POST_BY_ID_REJECT,
+            payload: error
+        });
+    }
+};

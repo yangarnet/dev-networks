@@ -10,13 +10,20 @@ const findUserLike = post => {
     return post.likes.length > 0;
 };
 
-const UserPosts = ({ auth, posts, likePostById, deletePostById }) =>
+const UserPosts = ({
+    auth,
+    posts,
+    likePostById,
+    unlikePostById,
+    deletePostById
+}) =>
     posts.map(post => (
         <PostItem
             key={post._id}
             auth={auth}
             post={post}
             likeById={likePostById}
+            unlikeById={unlikePostById}
             deleteById={deletePostById}
             findUserLike={findUserLike}
         />
@@ -25,6 +32,8 @@ const UserPosts = ({ auth, posts, likePostById, deletePostById }) =>
 UserPosts.propTypes = {
     auth: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
+    likePostById: PropTypes.func.isRequired,
+    unlikePostById: PropTypes.func.isRequired,
     deletePostById: PropTypes.func.isRequired,
     findUserLike: PropTypes.func.isRequired
 };

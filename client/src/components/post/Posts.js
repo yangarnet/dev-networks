@@ -7,13 +7,25 @@ import UserPosts from "./UserPosts";
 import {
     fetchAllPosts,
     likePostById,
+    unlikePostById,
     deletePostById
 } from "../../action/postAction";
 import { isEmpty } from "../../utils/helper";
 
 class Posts extends Component {
+    constructor(props) {
+        super(props);
+        this.findUserLike = this.findUserLike.bind(this);
+    }
     componentDidMount() {
         this.props.getAllPosts();
+    }
+
+    findUserLike(post) {
+        if (isEmpty(post)) {
+            return false;
+        }
+        return post.likes.length > 0;
     }
 
     render() {
@@ -22,6 +34,7 @@ class Posts extends Component {
             posts,
             loading,
             likePostById,
+            unlikePostById,
             deletePostById
         } = this.props;
         let postContent;
@@ -34,7 +47,9 @@ class Posts extends Component {
                     auth={!isEmpty(auth) ? auth : {}}
                     posts={posts}
                     likePostById={likePostById}
+                    unlikePostById={unlikePostById}
                     deletePostById={deletePostById}
+                    findUserLike={this.findUserLike}
                 />
             );
         }
@@ -76,6 +91,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         getAllPosts: () => dispatch(fetchAllPosts()),
         likePostById: (userId, postId) =>
             dispatch(likePostById(userId, postId)),
+        unlikePostById: (userId, postId) =>
+            dispatch(unlikePostById(userId, postId)),
         deletePostById: postId => dispatch(deletePostById(postId))
     };
 };

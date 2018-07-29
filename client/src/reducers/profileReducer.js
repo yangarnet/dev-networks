@@ -9,8 +9,15 @@ const initState = {
 
 const profileReducer = (state = initState, action) => {
     switch (action.type) {
+        case PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING:
+        case PROFILE_ACTION.ADD_USER_EDUCATION_PENDING:
+        case PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING:
+        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING:
+        case PROFILE_ACTION.GET_ALL_PROFILE_PENDING:
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_PENDING:
         case PROFILE_ACTION.GET_PROFILE_PENDING:
             return Object.assign({}, state, { loading: true });
+
         case PROFILE_ACTION.GET_PROFILE_RESOLVE:
             return Object.assign({}, state, {
                 profile: action.payload,
@@ -41,14 +48,6 @@ const profileReducer = (state = initState, action) => {
         case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_REJECT:
             return Object.assign({}, state, { loading: false });
 
-        case PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING:
-        case PROFILE_ACTION.ADD_USER_EDUCATION_PENDING:
-        case PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING:
-        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING:
-        case PROFILE_ACTION.GET_ALL_PROFILE_PENDING:
-        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_PENDING:
-            return Object.assign({}, state, { loading: true });
-
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
         case PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE:
             return Object.assign({}, state, {
@@ -72,7 +71,8 @@ const profileReducer = (state = initState, action) => {
             return Object.assign({}, state, {
                 profileList: isEmpty(state.profileList)
                     ? [action.payload]
-                    : [...state.profileList, action.payload]
+                    : [...state.profileList, action.payload],
+                loading: false
             });
         default:
             return state;
