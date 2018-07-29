@@ -18,6 +18,22 @@ export const getCurrentProfile = () => async dispatch => {
     }
 };
 
+export const getUserProfileByHandle = handle => async dispatch => {
+    dispatch({ type: PROFILE_ACTION.GET_PROFILE_BY_HANDLE_PENDING });
+    try {
+        const response = await axios.get(`/api/profile/handle/${handle}`);
+        dispatch({
+            type: PROFILE_ACTION.GET_PROFILE_BY_HANDLE_RESOLVE,
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: PROFILE_ACTION.GET_PROFILE_BY_HANDLE_REJECT,
+            payload: error.response.data
+        });
+    }
+};
+
 export const fetchAllUsersProfile = () => async (dispatch, getState) => {
     if (getState().profile.profileList) {
         return;

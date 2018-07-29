@@ -1,4 +1,5 @@
 import { PROFILE_ACTION } from "../action/types";
+import { isEmpty } from "../utils/helper";
 
 const initState = {
     profile: null,
@@ -37,6 +38,7 @@ const profileReducer = (state = initState, action) => {
         case PROFILE_ACTION.DELETE_USER_EDUCATION_REJECT:
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT:
         case PROFILE_ACTION.GET_ALL_PROFILE_REJECT:
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_REJECT:
             return Object.assign({}, state, { loading: false });
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_PENDING:
@@ -44,6 +46,7 @@ const profileReducer = (state = initState, action) => {
         case PROFILE_ACTION.DELETE_USER_EDUCATION_PENDING:
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_PENDING:
         case PROFILE_ACTION.GET_ALL_PROFILE_PENDING:
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_PENDING:
             return Object.assign({}, state, { loading: true });
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
@@ -64,6 +67,12 @@ const profileReducer = (state = initState, action) => {
             return Object.assign({}, state, {
                 profile: action.payload,
                 loading: false
+            });
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_RESOLVE:
+            return Object.assign({}, state, {
+                profileList: isEmpty(state.profileList)
+                    ? [action.payload]
+                    : [...state.profileList, action.payload]
             });
         default:
             return state;

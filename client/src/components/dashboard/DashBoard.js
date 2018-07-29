@@ -7,6 +7,7 @@ import { Spinner } from "../common/Spinner";
 import EditProfile from "./EditProfile";
 import Experience from "./Experience";
 import Education from "./Education";
+import { isEmpty } from "../../utils/helper";
 
 class DashBoard extends Component {
     constructor() {
@@ -18,16 +19,16 @@ class DashBoard extends Component {
         this.props.getCUrrentUserProfile();
     }
 
-    onDelete() { }
+    onDelete() {}
 
     render() {
         const { user } = this.props.auth;
         const { profile, loading } = this.props.profile;
         let dashBoard;
-        if (!profile || loading) {
+        if (loading) {
             dashBoard = <Spinner />;
         } else {
-            if (Object.keys(profile).length > 0) {
+            if (!isEmpty(profile) && Object.keys(profile).length > 0) {
                 dashBoard = (
                     <div>
                         <p>

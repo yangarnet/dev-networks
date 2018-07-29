@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import InputGroup from "../common/InputGroup";
@@ -48,7 +49,7 @@ class EditProfile extends Component {
 
     initStateFromStore(userProfile) {
         if (userProfile) {
-            const isSocialLinksEmpty = !isEmpty(userProfile.social)
+            const isSocialLinksEmpty = !isEmpty(userProfile.social);
             this.setState({
                 displaySocialInputs: isSocialLinksEmpty,
                 handle: userProfile.handle,
@@ -59,11 +60,13 @@ class EditProfile extends Component {
                 skills: userProfile.skills.join(),
                 githubusername: userProfile.githubusername,
                 bio: userProfile.bio,
-                twitter: isSocialLinksEmpty ? userProfile.social.twitter : '',
-                facebook: isSocialLinksEmpty ? userProfile.social.facebook : '',
-                linkedIn: isSocialLinksEmpty ? userProfile.social.linkedIn : '',
-                youtube: isSocialLinksEmpty ? userProfile.social.youtube : '',
-                instagram: isSocialLinksEmpty ? userProfile.social.instagram : ''
+                twitter: isSocialLinksEmpty ? userProfile.social.twitter : "",
+                facebook: isSocialLinksEmpty ? userProfile.social.facebook : "",
+                linkedIn: isSocialLinksEmpty ? userProfile.social.linkedIn : "",
+                youtube: isSocialLinksEmpty ? userProfile.social.youtube : "",
+                instagram: isSocialLinksEmpty
+                    ? userProfile.social.instagram
+                    : ""
             });
         }
     }
@@ -194,6 +197,9 @@ class EditProfile extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
+                            <Link to="/dashboard" className="btn btn-light">
+                                Go Back
+                            </Link>
                             <h1 className="display-4 text-center">
                                 Update Profile
                             </h1>

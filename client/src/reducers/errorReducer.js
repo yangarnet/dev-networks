@@ -18,8 +18,10 @@ export const errorReducer = (state = initState, action) => {
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_REJECT:
         case PROFILE_ACTION.GET_ALL_PROFILE_REJECT:
         case PROFILE_ACTION.EDIT_PROFILE_REJECT:
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_REJECT:
         case POST_ACTION.ADD_POST_REJECT:
         case POST_ACTION.GET_ALL_POSTS_REJECT:
+        case POST_ACTION.DELETE_POST_BY_ID_REJECT:
             return action.payload;
         case CLEAR_ERRORS:
             return {};

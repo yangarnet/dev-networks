@@ -22,6 +22,7 @@ class PostController {
             d: "mm"
         });
         payload.user = req.user.id;
+        payload.userName = req.user.name;
         const newPost = new post(payload);
         try {
             const result = await newPost.save();
@@ -144,7 +145,7 @@ class PostController {
                     ).length > 0
                 ) {
                     return res
-                        .status(400)
+                        .status(200)
                         .json({ status: "you already liked the post" });
                 }
                 result.likes.unshift({ user: req.user.id });
@@ -156,7 +157,7 @@ class PostController {
                 errors.notfound = `cannot find post by id:${
                     req.params.post_id
                 }`;
-                return res.status(400).json(errors);
+                return res.status(404).json(errors);
             }
         } catch (err) {
             errors.unknown = err;

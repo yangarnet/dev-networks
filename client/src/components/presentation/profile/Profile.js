@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -8,6 +8,7 @@ import ProfileHeader from "./ProfileHeader";
 import ProfileAbout from "./ProfileAbout";
 import ProfileCreds from "./ProfileCreds";
 import ProfileGithub from "./ProfileGithub";
+import { getUserProfileByHandle } from "../../../action/profileAction";
 
 const prepareHeaderData = raw => ({
     userName: !isEmpty(raw) && !isEmpty(raw.user) ? raw.user.name : "",
@@ -29,50 +30,59 @@ const prepareCreds = raw => ({
 });
 
 // the component
-const Profile = props => {
-    const handle = props.match.params.handle;
-    const { loading } = props;
-    const profile = getProfileByHandle(props.profileList, handle);
-    let profileContent;
-    if (profile === null || loading) {
-        profileContent = <Spinner />;
-    } else {
-        const profileHeaderData = prepareHeaderData(profile);
-        const profileAboutData = prepareAboutData(profile);
-        const profileCredsData = prepareCreds(profile);
+class Profile extends Component {
+    componentDidMount() {
+        if (isEmpty(this.props.profileList)) {
+            this.props.getProfileByHandle(this.props.match.params.handle);
+        }
+    }
 
-        profileContent = (
-            <div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <Link
-                            to="/profiles"
-                            className="btn btn-light mb-3 float-left"
-                        >
-                            Back to Profiles
-                        </Link>
+    render() {
+        const handle = this.props.match.params.handle;
+        const { loading } = this.props;
+        const profile = getProfileByHandle(this.props.profileList, handle);
+        let profileContent;
+        if (profile === null || loading) {
+            profileContent = <Spinner />;
+        } else {
+            const profileHeaderData = prepareHeaderData(profile);
+            const profileAboutData = prepareAboutData(profile);
+            const profileCredsData = prepareCreds(profile);
+
+            profileContent = (
+                <div>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Link
+                                to="/profiles"
+                                className="btn btn-light mb-3 float-left"
+                            >
+                                Back to Profiles
+                            </Link>
+                        </div>
+                        <div className="col-md-6" />
                     </div>
-                    <div className="col-md-6" />
+                    <ProfileHeader {...profileHeaderData} />
+                    <ProfileAbout {...profileAboutData} />
+                    <ProfileCreds {...profileCredsData} />
+                    {isEmpty(profile) &&
+                    isEmpty(profile.githubusername) ? null : (
+                        <ProfileGithub userName={profile.githubusername} />
+                    )}
                 </div>
-                <ProfileHeader {...profileHeaderData} />
-                <ProfileAbout {...profileAboutData} />
-                <ProfileCreds {...profileCredsData} />
-                {isEmpty(profile) && isEmpty(profile.githubusername) ? null : (
-                    <ProfileGithub userName={profile.githubusername} />
-                )}
+            );
+        }
+        return (
+            <div className="profile">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">{profileContent}</div>
+                    </div>
+                </div>
             </div>
         );
     }
-    return (
-        <div className="profile">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-12">{profileContent}</div>
-                </div>
-            </div>
-        </div>
-    );
-};
+}
 
 const mapStateToProps = (state, ownProps) => {
     const { profile } = state;
@@ -82,9 +92,16 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        getProfileByHandle: handle => dispatch(getUserProfileByHandle(handle))
+    };
+};
+
 Profile.propTypes = {
     profileList: PropTypes.array,
-    loading: PropTypes.bool
+    loading: PropTypes.bool,
+    getProfileByHandle: PropTypes.func.isRequired
 };
 
 Profile.defaultProps = {
@@ -92,4 +109,7 @@ Profile.defaultProps = {
     loading: true
 };
 
-export default connect(mapStateToProps)(Profile);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Profile);

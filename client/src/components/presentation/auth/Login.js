@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../../common/TextFieldGroup";
-import { isEmpty } from "../../../utils/helper";
 
 class Login extends Component {
     constructor() {

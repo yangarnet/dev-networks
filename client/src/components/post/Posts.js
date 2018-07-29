@@ -4,7 +4,11 @@ import { connect } from "react-redux";
 import PostForm from "./PostForm";
 import { Spinner } from "../common/Spinner";
 import UserPosts from "./UserPosts";
-import { fetchAllPosts, deletePostById } from "../../action/postAction";
+import {
+    fetchAllPosts,
+    likePostById,
+    deletePostById
+} from "../../action/postAction";
 import { isEmpty } from "../../utils/helper";
 
 class Posts extends Component {
@@ -13,16 +17,23 @@ class Posts extends Component {
     }
 
     render() {
-        const { auth, posts, loading, deletePostById } = this.props;
+        const {
+            auth,
+            posts,
+            loading,
+            likePostById,
+            deletePostById
+        } = this.props;
         let postContent;
 
-        if (isEmpty(posts) || loading) {
+        if (loading) {
             postContent = <Spinner />;
         } else {
-            postContent = (
+            postContent = isEmpty(posts) ? null : (
                 <UserPosts
                     auth={!isEmpty(auth) ? auth : {}}
                     posts={posts}
+                    likePostById={likePostById}
                     deletePostById={deletePostById}
                 />
             );
@@ -63,8 +74,25 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         getAllPosts: () => dispatch(fetchAllPosts()),
+        likePostById: (userId, postId) =>
+            dispatch(likePostById(userId, postId)),
         deletePostById: postId => dispatch(deletePostById(postId))
     };
+};
+
+Posts.propTypes = {
+    auth: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    posts: PropTypes.array.isRequired,
+    getAllPosts: PropTypes.func.isRequired,
+    likePostById: PropTypes.func.isRequired,
+    deletePostById: PropTypes.func.isRequired
+};
+
+Posts.defaultProps = {
+    auth: {},
+    loading: true,
+    posts: []
 };
 
 export default connect(

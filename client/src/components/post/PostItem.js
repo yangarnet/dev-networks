@@ -2,29 +2,33 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 
-const PostItem = ({ auth, post, deleteById }) => (
+const PostItem = ({ auth, post, likeById, findUserLike, deleteById }) => (
     <div className="card card-body mb-3">
         <div className="row">
             <div className="col-md-2">
                 <a href="profile.html">
                     <img
                         className="rounded-circle d-none d-md-block"
-                        src={auth.user.avatar}
-                        alt={auth.user.name}
+                        src={post.avatar}
+                        alt={post.userName}
                     />
                 </a>
                 <br />
-                <p className="text-center">{auth.user.name}</p>
+                <p className="text-center">{post.userName}</p>
             </div>
             <div className="col-md-10">
                 <h5>{post.name}</h5>
                 <blockquote>
                     <p>{post.text}</p>
                 </blockquote>
-                <button type="button" className="btn btn-light mr-1">
+                <button
+                    type="button"
+                    className="btn btn-light mr-1"
+                    onClick={() => likeById(auth.user.id, post._id)}
+                >
                     <i
                         className={classnames("fas fa-thumbs-up", {
-                            "text-info": findUserLike(post.likes)
+                            "text-info": findUserLike(post)
                         })}
                     />
                     <span className="badge badge-light">
@@ -41,7 +45,9 @@ const PostItem = ({ auth, post, deleteById }) => (
                     <button
                         type="button"
                         className="btn btn-danger mr-1"
-                        onClick={() => deleteById(post._id)}
+                        onClick={() => {
+                            deleteById(post._id);
+                        }}
                     >
                         <i className="fas fa-times"> Remove Post</i>
                     </button>

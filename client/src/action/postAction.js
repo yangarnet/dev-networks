@@ -1,7 +1,7 @@
 import axios from "axios";
 import { POST_ACTION } from "./types";
 
-export const addPost = (postData, history) => async dispatch => {
+export const addPost = postData => async dispatch => {
     dispatch({
         type: POST_ACTION.ADD_POST_PENDING
     });
@@ -18,7 +18,7 @@ export const addPost = (postData, history) => async dispatch => {
         });
     }
 };
-// this code is duplicate!
+
 export const fetchAllPosts = () => async dispatch => {
     dispatch({
         type: POST_ACTION.GET_ALL_POSTS_PENDING
@@ -37,4 +37,37 @@ export const fetchAllPosts = () => async dispatch => {
     }
 };
 
-export const deletePostById = postId => async dispatch => {};
+export const deletePostById = postId => async dispatch => {
+    dispatch({ type: POST_ACTION.DELETE_POST_BY_ID_PENDING });
+    try {
+        await axios.delete(`/api/post/${postId}`);
+        dispatch({
+            type: POST_ACTION.DELETE_POST_BY_ID_RESOLVE,
+            payload: postId
+        });
+    } catch (error) {
+        dispatch({
+            type: POST_ACTION.DELETE_POST_BY_ID_REJECT,
+            payload: error.response.data
+        });
+    }
+};
+
+export const likePostById = (userId, postId) => async dispatch => {
+    dispatch({ type: POST_ACTION.LIKE_POST_BY_ID_PENDING });
+    try {
+        await axios.post(`/api/post/like/${postId}`);
+        dispatch({
+            type: POST_ACTION.LIKE_POST_BY_ID_RESOLVE,
+            payload: {
+                postId,
+                user: userId
+            }
+        });
+    } catch (error) {
+        dispatch({
+            type: POST_ACTION.LIKE_POST_BY_ID_REJECT,
+            payload: error
+        });
+    }
+};
