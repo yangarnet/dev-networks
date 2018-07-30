@@ -14,13 +14,13 @@ const PostItem = ({
     <div className="card card-body mb-3">
         <div className="row">
             <div className="col-md-2">
-                <a href="profile.html">
+                <Link to="/profiles">
                     <img
                         className="rounded-circle d-none d-md-block"
                         src={post.avatar}
                         alt={post.userName}
                     />
-                </a>
+                </Link>
                 <br />
                 <p className="text-center">{post.userName}</p>
             </div>
@@ -56,7 +56,7 @@ const PostItem = ({
                             to={`/post/comments/${post._id}`}
                             className="btn btn-info mr-1"
                         >
-                            Comments
+                            Comments ({post.comments.length})
                         </Link>
                         {post.user === auth.user.id ? (
                             <button

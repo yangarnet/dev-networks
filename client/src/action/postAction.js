@@ -101,11 +101,30 @@ export const addNewComment = (postId, comment) => async dispatch => {
         );
         dispatch({
             type: COMMENT_ACTION.ADD_COMMENT_RESOLVE,
-            payload: { postId, post: response.data }
+            payload: response.data
         });
     } catch (error) {
         dispatch({
             type: COMMENT_ACTION.ADD_COMMENT_REJECT,
+            payload: error.response.data
+        });
+    }
+};
+
+export const deleteCommentById = (postId, commentId) => async dispatch => {
+    dispatch({ type: COMMENT_ACTION.DELETE_COMMENT_BY_ID_PENDING });
+
+    try {
+        const response = await axios.delete(
+            `/api/post/${postId}/comment/${commentId}`
+        );
+        dispatch({
+            type: COMMENT_ACTION.DELETE_COMMENT_BY_ID_RESOLVE,
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: COMMENT_ACTION.DELETE_COMMENT_BY_ID_REJECT,
             payload: error.response.data
         });
     }

@@ -2,18 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 
-const CommentItem = ({ auth, comment, deleteComment }) => {
+const CommentItem = ({ postId, auth, comment, deleteComment }) => {
     return (
         <div className="card card-body mb-3">
             <div className="row">
                 <div className="col-md-2">
-                    <a href="profile.html">
+                    <Link to="/profiles">
                         <img
                             className="rounded-circle d-none d-md-block"
                             src={comment.avatar}
                             alt={comment.userName}
                         />
-                    </a>
+                    </Link>
                     <br />
                     <p className="text-center">{comment.userName}</p>
                 </div>
@@ -28,7 +28,7 @@ const CommentItem = ({ auth, comment, deleteComment }) => {
                             type="button"
                             className="btn btn-danger mr-1"
                             onClick={() => {
-                                deleteComment(comment._id);
+                                deleteComment(postId, comment._id);
                             }}
                         >
                             <i className="fas fa-times" />

@@ -5,6 +5,7 @@ import PostItem from "../common/PostItem";
 import CommentForm from "./CommentForm";
 import CommentFeed from "./CommentFeed";
 import { isEmpty } from "../../../utils/helper";
+import { deleteCommentById } from "../../../action/postAction";
 
 class PostComment extends Component {
     getPostById(posts, id) {
@@ -12,7 +13,7 @@ class PostComment extends Component {
     }
 
     render() {
-        const { post, posts, auth } = this.props;
+        const { post, posts, auth, deleteCommentById } = this.props;
         const postId = this.props.match.params.postId;
         const thePost = isEmpty(post) ? this.getPostById(posts, postId) : post;
         const postContent = (
@@ -26,6 +27,7 @@ class PostComment extends Component {
                         postId={postId}
                         comments={thePost.comments}
                         auth={auth}
+                        deleteCommentById={deleteCommentById}
                     />
                 )}
             </div>
@@ -58,5 +60,14 @@ const mapStateToProps = state => {
         auth: state.myAuth
     };
 };
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteCommentById: (postId, commentId) =>
+            dispatch(deleteCommentById(postId, commentId))
+    };
+};
 
-export default connect(mapStateToProps)(PostComment);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PostComment);

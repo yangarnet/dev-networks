@@ -16,6 +16,7 @@ const postReducer = (state = initialState, action) => {
         case POST_ACTION.EDIT_POST_BY_ID_PENDING:
         case POST_ACTION.DELETE_POST_BY_ID_PENDING:
         case COMMENT_ACTION.ADD_COMMENT_PENDING:
+        case COMMENT_ACTION.DELETE_COMMENT_BY_ID_PENDING:
             return Object.assign({}, state, { loading: true });
 
         case POST_ACTION.ADD_POST_RESOLVE:
@@ -45,6 +46,7 @@ const postReducer = (state = initialState, action) => {
         case POST_ACTION.GET_POST_BY_ID_REJECT:
         case POST_ACTION.UNLIKE_POST_BY_ID_REJECT:
         case COMMENT_ACTION.ADD_COMMENT_REJECT:
+        case COMMENT_ACTION.DELETE_COMMENT_BY_ID_REJECT:
             return Object.assign({}, state, { loading: false });
 
         case POST_ACTION.LIKE_POST_BY_ID_RESOLVE:
@@ -88,15 +90,10 @@ const postReducer = (state = initialState, action) => {
             });
 
         case COMMENT_ACTION.ADD_COMMENT_RESOLVE:
-            const postBeingCommented = state.posts.find(
-                post => post._id === action.payload.postId
-            );
-            if (!isEmpty(postBeingCommented)) {
-                return Object.assign({}, state, {
-                    post: action.payload.post
-                });
-            }
-            return state;
+        case COMMENT_ACTION.DELETE_COMMENT_BY_ID_RESOLVE:
+            return Object.assign({}, state, {
+                post: action.payload
+            });
 
         default:
             return state;
