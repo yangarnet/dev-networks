@@ -1,21 +1,14 @@
 import React from "react";
 import PostItem from "./PostItem";
 import PropTypes from "prop-types";
-import { isEmpty } from "../../utils/helper";
-
-const findUserLike = post => {
-    if (isEmpty(post)) {
-        return false;
-    }
-    return post.likes.length > 0;
-};
 
 const UserPosts = ({
     auth,
     posts,
     likePostById,
     unlikePostById,
-    deletePostById
+    deletePostById,
+    findUserLike
 }) =>
     posts.map(post => (
         <PostItem

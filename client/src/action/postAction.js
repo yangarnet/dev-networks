@@ -67,7 +67,7 @@ export const likePostById = (userId, postId) => async dispatch => {
     } catch (error) {
         dispatch({
             type: POST_ACTION.LIKE_POST_BY_ID_REJECT,
-            payload: error
+            payload: error.response.data
         });
     }
 };
@@ -75,7 +75,7 @@ export const likePostById = (userId, postId) => async dispatch => {
 export const unlikePostById = (userId, postId) => async dispatch => {
     dispatch({ type: POST_ACTION.UNLIKE_POST_BY_ID_PENDING });
     try {
-        await axios.post(`/api/post/unlike/${postId}`);
+        await axios.put(`/api/post/unlike/${postId}`);
         dispatch({
             type: POST_ACTION.UNLIKE_POST_BY_ID_RESOLVE,
             payload: {
@@ -86,7 +86,7 @@ export const unlikePostById = (userId, postId) => async dispatch => {
     } catch (error) {
         dispatch({
             type: POST_ACTION.UNLIKE_POST_BY_ID_REJECT,
-            payload: error
+            payload: error.response.data
         });
     }
 };

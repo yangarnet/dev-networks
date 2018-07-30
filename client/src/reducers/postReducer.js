@@ -51,9 +51,12 @@ const postReducer = (state = initialState, action) => {
                 post => post._id === action.payload.postId
             );
             if (likedPost) {
-                likedPost.likes.unshift({
+                likedPost.likes = likedPost.likes.concat({
                     user: action.payload.user
                 });
+                // likedPost.likes.unshift({
+                //     user: action.payload.user
+                // });
             }
             return Object.assign({}, state, {
                 posts: [
@@ -70,19 +73,22 @@ const postReducer = (state = initialState, action) => {
                 post => post._id === action.payload.postId
             );
 
-            isEmpty(unlikedPost)
-                ? Object.assign({}, state, {
-                      posts: state.posts.filter(
-                          post =>
-                              post._id !== action.payload.postId &&
-                              post.likes.every(
-                                  like => like.user !== action.payload.user
-                              )
-                      ),
-                      loading: false
-                  })
-                : state;
-            break;
+            if (unlikedPost) {
+                unlikedPost.likes = unlikedPost.likes.filter(
+                    like => like.user !== action.payload.user
+                );
+            }
+
+            return Object.assign({}, state, {
+                posts: [
+                    ...state.posts.filter(
+                        post => post._id !== action.payload.postId
+                    ),
+                    unlikedPost
+                ],
+                loading: false
+            });
+
         default:
             return state;
     }

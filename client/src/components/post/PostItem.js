@@ -2,7 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 
-const PostItem = ({ auth, post, likeById, findUserLike, deleteById }) => (
+const PostItem = ({
+    auth,
+    post,
+    likeById,
+    unlikeById,
+    findUserLike,
+    deleteById
+}) => (
     <div className="card card-body mb-3">
         <div className="row">
             <div className="col-md-2">
@@ -35,7 +42,11 @@ const PostItem = ({ auth, post, likeById, findUserLike, deleteById }) => (
                         {post.likes.length}
                     </span>
                 </button>
-                <button type="button" className="btn btn-light mr-1">
+                <button
+                    type="button"
+                    className="btn btn-light mr-1"
+                    onClick={() => unlikeById(auth.user.id, post._id)}
+                >
                     <i className="text-secondary fas fa-thumbs-down" />
                 </button>
                 <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
