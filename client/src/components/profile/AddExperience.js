@@ -186,7 +186,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 AddExperience.propTypes = {
     addExp: PropTypes.func.isRequired,
-    userExperice: PropTypes.object,
+    userExperice: PropTypes.array,
     errors: PropTypes.object
 };
 

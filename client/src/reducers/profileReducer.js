@@ -50,8 +50,18 @@ const profileReducer = (state = initState, action) => {
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
         case PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE:
+        case PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE:
+        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE:
             return Object.assign({}, state, {
                 profile: action.payload,
+                profileList: isEmpty(state.profileList)
+                    ? [action.payload]
+                    : [
+                          ...state.profileList.filter(
+                              profile => profile._id !== action.payload._id
+                          ),
+                          action.payload
+                      ],
                 loading: false
             });
 
@@ -61,12 +71,6 @@ const profileReducer = (state = initState, action) => {
                 loading: false
             });
 
-        case PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE:
-        case PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE:
-            return Object.assign({}, state, {
-                profile: action.payload,
-                loading: false
-            });
         case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_RESOLVE:
             return Object.assign({}, state, {
                 profileList: isEmpty(state.profileList)

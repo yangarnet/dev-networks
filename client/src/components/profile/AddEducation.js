@@ -188,12 +188,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 AddEducation.propTypes = {
     addEducation: PropTypes.func.isRequired,
-    userEducation: PropTypes.object,
+    userEducation: PropTypes.array,
     errors: PropTypes.object
 };
 
 AddEducation.defaultProps = {
-    userEducation: {},
+    userEducation: [],
     errors: {}
 };
 

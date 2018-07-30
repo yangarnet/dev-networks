@@ -1,5 +1,4 @@
 import { POST_ACTION, COMMENT_ACTION } from "../action/types";
-import { isEmpty } from "../utils/helper";
 const initialState = {
     posts: [], // post list
     post: {}, // a selected post
