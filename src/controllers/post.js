@@ -218,6 +218,7 @@ class PostController {
         });
         // the same user can add more then one comment.
         payload.user = req.user.id;
+        payload.userName = req.user.name;
         try {
             const result = await post.findById(req.params.post_id);
             if (!result) {
@@ -236,7 +237,7 @@ class PostController {
     }
 
     /*
-    @desc add comment to post by id
+    @desc edit comment to post by id
     @access private
     @route /api/post/:post_id/comment/:cmnt_id
     */
@@ -275,7 +276,7 @@ class PostController {
     }
 
     /*
-    @desc add comment to post by id
+    @desc delete comment to post by id
     @access private
     @route /api/post/:post_id/comment/:cmnt_id
     */

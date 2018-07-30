@@ -1,9 +1,8 @@
-import { POST_ACTION } from "../action/types";
+import { POST_ACTION, COMMENT_ACTION } from "../action/types";
 import { isEmpty } from "../utils/helper";
-
 const initialState = {
-    posts: [],
-    post: {},
+    posts: [], // post list
+    post: {}, // a selected post
     loading: false
 };
 
@@ -16,6 +15,7 @@ const postReducer = (state = initialState, action) => {
         case POST_ACTION.UNLIKE_POST_BY_ID_PENDING:
         case POST_ACTION.EDIT_POST_BY_ID_PENDING:
         case POST_ACTION.DELETE_POST_BY_ID_PENDING:
+        case COMMENT_ACTION.ADD_COMMENT_PENDING:
             return Object.assign({}, state, { loading: true });
 
         case POST_ACTION.ADD_POST_RESOLVE:
@@ -44,6 +44,7 @@ const postReducer = (state = initialState, action) => {
         case POST_ACTION.GET_ALL_POSTS_REJECT:
         case POST_ACTION.GET_POST_BY_ID_REJECT:
         case POST_ACTION.UNLIKE_POST_BY_ID_REJECT:
+        case COMMENT_ACTION.ADD_COMMENT_REJECT:
             return Object.assign({}, state, { loading: false });
 
         case POST_ACTION.LIKE_POST_BY_ID_RESOLVE:
@@ -54,9 +55,6 @@ const postReducer = (state = initialState, action) => {
                 likedPost.likes = likedPost.likes.concat({
                     user: action.payload.user
                 });
-                // likedPost.likes.unshift({
-                //     user: action.payload.user
-                // });
             }
             return Object.assign({}, state, {
                 posts: [
@@ -88,6 +86,17 @@ const postReducer = (state = initialState, action) => {
                 ],
                 loading: false
             });
+
+        case COMMENT_ACTION.ADD_COMMENT_RESOLVE:
+            const postBeingCommented = state.posts.find(
+                post => post._id === action.payload.postId
+            );
+            if (!isEmpty(postBeingCommented)) {
+                return Object.assign({}, state, {
+                    post: action.payload.post
+                });
+            }
+            return state;
 
         default:
             return state;

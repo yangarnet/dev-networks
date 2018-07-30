@@ -40,6 +40,9 @@ const PostObject = {
                 type: Types.ObjectId,
                 ref: "users"
             },
+            userName: {
+                type: Types.String
+            },
             text: {
                 type: Types.String
             },

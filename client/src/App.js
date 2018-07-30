@@ -20,6 +20,7 @@ import { setCurrentLoggedInUser, userLogout } from "./action/authAction";
 import Profiles from "./components/profile/Profiles";
 import Profile from "./components/presentation/profile/Profile";
 import Posts from "./components/post/Posts";
+import PostComment from "./components/post/comments/PostComment";
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
@@ -105,6 +106,13 @@ class App extends Component {
                                     exact
                                     path="/post-feed"
                                     component={Posts}
+                                />
+                            </Switch>
+                            <Switch>
+                                <PrivateRoute
+                                    exact
+                                    path="/post/comments/:postId"
+                                    component={PostComment}
                                 />
                             </Switch>
                         </div>

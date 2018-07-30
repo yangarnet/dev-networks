@@ -2,7 +2,8 @@ import {
     AUTH_ACTION,
     PROFILE_ACTION,
     CLEAR_ERRORS,
-    POST_ACTION
+    POST_ACTION,
+    COMMENT_ACTION
 } from "../action/types";
 
 const initState = {};
@@ -23,6 +24,7 @@ export const errorReducer = (state = initState, action) => {
         case POST_ACTION.GET_ALL_POSTS_REJECT:
         case POST_ACTION.DELETE_POST_BY_ID_REJECT:
         case POST_ACTION.UNLIKE_POST_BY_ID_REJECT:
+        case COMMENT_ACTION.ADD_COMMENT_REJECT:
             return action.payload;
         case CLEAR_ERRORS:
             return {};
