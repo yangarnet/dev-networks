@@ -23,16 +23,6 @@ const middlewareConfig = app => {
             graphiql: true
         })
     );
-
-    // render react
-    if (process.env.NODE_ENV === "production") {
-        app.use(express.static("client/build"));
-        app.get("*", (req, res) => {
-            res.sendFile(
-                path.resolve(__dirname, "client", "build", "index.html")
-            );
-        });
-    }
 };
 
 export default middlewareConfig;
