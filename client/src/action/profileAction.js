@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { PROFILE_ACTION } from "./types";
+import { CLEAR_ERRORS, PROFILE_ACTION } from "./types";
 
 export const getCurrentProfile = () => async dispatch => {
     dispatch({ type: PROFILE_ACTION.GET_PROFILE_PENDING });

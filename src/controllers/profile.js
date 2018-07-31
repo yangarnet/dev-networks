@@ -134,7 +134,11 @@ class ProfileController {
                 errors.unable = "user profile already exists";
                 return res.status(400).json(errors);
             } else {
-                payloads.user = req.user.id;
+                payloads.user = {
+                    _id: req.user.id,
+                    name: req.user.name,
+                    avatar: req.user.avatar
+                };
                 if (typeof payloads.skills === "string") {
                     payloads.skills = payloads.skills.split(",");
                 }
@@ -248,7 +252,9 @@ class ProfileController {
             return res.status(400).json(errors);
         }
         try {
-            const userProfile = await profile.findOne({ user: req.user.id });
+            const userProfile = await profile
+                .findOne({ user: req.user.id })
+                .populate("user", ["name", "avatar"]);
             if (userProfile) {
                 userProfile.experiences.unshift(payload);
                 const newProfle = await profile.findOneAndUpdate(
@@ -322,7 +328,9 @@ class ProfileController {
     async deleteExperienceFromProfile(req, res) {
         const errors = {};
         try {
-            const userProfile = await profile.findOne({ user: req.user.id });
+            const userProfile = await profile
+                .findOne({ user: req.user.id })
+                .populate("user", ["name", "avatar"]);
             if (!userProfile) {
                 errors.notfound = `user profile not found for id:${
                     req.user.id
@@ -367,7 +375,9 @@ class ProfileController {
             return res.status(400).json(errors);
         }
         try {
-            const userProfile = await profile.findOne({ user: req.user.id });
+            const userProfile = await profile
+                .findOne({ user: req.user.id })
+                .populate("user", ["name", "avatar"]);
             if (userProfile) {
                 userProfile.education.unshift(payload);
                 const newProfle = await userProfile.save();
@@ -434,7 +444,9 @@ class ProfileController {
     async deleteEducationFromProfile(req, res) {
         const errors = {};
         try {
-            const userProfile = await profile.findOne({ user: req.user.id });
+            const userProfile = await profile
+                .findOne({ user: req.user.id })
+                .populate("user", ["name", "avatar"]);
             if (!userProfile) {
                 errors.notfound = `user profile not found for id:${
                     req.user.id

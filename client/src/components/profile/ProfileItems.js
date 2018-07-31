@@ -6,7 +6,7 @@ import { isEmpty } from "../../utils/helper";
 const ProfileItems = props => {
     const { profile, location } = props;
 
-    return (
+    return isEmpty(profile) ? null : (
         <div className="card card-body bg-light mb-3">
             <div className="row">
                 <div className="col-2">

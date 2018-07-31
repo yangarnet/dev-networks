@@ -18,11 +18,6 @@ const profileReducer = (state = initState, action) => {
         case PROFILE_ACTION.GET_PROFILE_PENDING:
             return Object.assign({}, state, { loading: true });
 
-        case PROFILE_ACTION.GET_PROFILE_RESOLVE:
-            return Object.assign({}, state, {
-                profile: action.payload,
-                loading: false
-            });
         case PROFILE_ACTION.GET_PROFILE_REJECT:
         case PROFILE_ACTION.CLEAR_CURRENT_USER_PROFILE:
             return Object.assign({}, state, { profile: null, loading: false });
@@ -50,6 +45,21 @@ const profileReducer = (state = initState, action) => {
 
         case PROFILE_ACTION.ADD_USER_EXPERIENCE_RESOLVE:
         case PROFILE_ACTION.ADD_USER_EDUCATION_RESOLVE:
+        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_RESOLVE:
+        case PROFILE_ACTION.GET_PROFILE_RESOLVE:
+            return Object.assign({}, state, {
+                profile: action.payload,
+                profileList: isEmpty(state.profileList)
+                    ? [action.payload]
+                    : [
+                          ...state.profileList.filter(
+                              profile => profile._id !== action.payload._id
+                          ),
+                          action.payload
+                      ],
+                loading: false
+            });
+
         case PROFILE_ACTION.DELETE_USER_EDUCATION_RESOLVE:
         case PROFILE_ACTION.DELETE_USER_EXPERIENCE_RESOLVE:
             return Object.assign({}, state, {
@@ -68,14 +78,6 @@ const profileReducer = (state = initState, action) => {
         case PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE:
             return Object.assign({}, state, {
                 profileList: action.payload,
-                loading: false
-            });
-
-        case PROFILE_ACTION.GET_PROFILE_BY_HANDLE_RESOLVE:
-            return Object.assign({}, state, {
-                profileList: isEmpty(state.profileList)
-                    ? [action.payload]
-                    : [...state.profileList, action.payload],
                 loading: false
             });
         default:
