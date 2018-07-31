@@ -1,7 +1,7 @@
 import { expect, assert } from "chai";
 import { ObjectID } from "mongodb";
 import request from "supertest";
-import server from "../server";
+import server from "../../../server";
 import user from "../models/user";
 import profile from "../models/profile";
 import post from "../models/post";

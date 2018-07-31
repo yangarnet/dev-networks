@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import serverConfig from "./config/server-config";
+import serverConfig from "./src/config/server-config";
 
 const server = express();
 serverConfig(server);
@@ -8,18 +8,16 @@ serverConfig(server);
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
     // Set static folder
-    server.use(express.static("../client/build"));
+    server.use(express.static("client/build"));
 
     server.get("/service-worker.js", (req, res) => {
         res.sendFile(
-            path.resolve(__dirname, "../client", "build", "service-worker.js")
+            path.resolve(__dirname, "client", "build", "service-worker.js")
         );
     });
 
     server.get("*", (req, res) => {
-        res.sendFile(
-            path.resolve(__dirname, "../client", "build", "index.html")
-        );
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
 }
 
