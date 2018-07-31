@@ -1,5 +1,3 @@
-import path from "path";
-import express from "express";
 import graphqlHTTP from "express-graphql";
 import passport from "passport";
 import bodyParser from "body-parser";

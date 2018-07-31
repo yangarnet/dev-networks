@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import serverConfig from "./config/server-config";
 
 const server = express();
