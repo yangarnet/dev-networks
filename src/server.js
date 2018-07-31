@@ -1,11 +1,20 @@
-import express from 'express';
-import serverConfig from './config/server-config';
+import express from "express";
+import serverConfig from "./config/server-config";
 
 const server = express();
 serverConfig(server);
 
-server.get('/', (req, res) => {
-    res.status(200).json({ greeting: 'hello', env: process.env.NODE_ENV });
+if (process.env.NODE_ENV === "production") {
+    server.use(express.static("../client/build"));
+    server.get("*", (req, res) => {
+        res.sendFile(
+            path.resolve(__dirname, "../client", "build", "index.html")
+        );
+    });
+}
+
+server.get("/", (req, res) => {
+    res.status(200).json({ greeting: "hello", env: process.env.NODE_ENV });
 });
 
 server.listen(process.env.PORT, () => {
