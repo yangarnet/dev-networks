@@ -11,10 +11,25 @@ if (process.env.NODE_ENV === "production") {
     server.use(express.static("../client/build"));
 
     server.get("/service-worker.js", (req, res) => {
+        const filePath = path.resolve(
+            __dirname,
+            "../client",
+            "build",
+            "service-worker.js"
+        );
+        console.log("the path", filePath);
         res.sendFile(
             path.resolve(__dirname, "../client", "build", "service-worker.js")
         );
     });
+
+    const htmlPath = path.resolve(
+        __dirname,
+        "../client",
+        "build",
+        "index.html"
+    );
+    console.log("html path", htmlPath);
 
     server.get("*", (req, res) => {
         res.sendFile(
