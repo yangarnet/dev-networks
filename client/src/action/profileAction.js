@@ -35,22 +35,18 @@ export const getUserProfileByHandle = handle => async dispatch => {
 };
 
 export const fetchAllUsersProfile = () => async (dispatch, getState) => {
-    if (getState().profile.profileList) {
-        return;
-    } else {
-        dispatch({ type: PROFILE_ACTION.GET_ALL_PROFILE_PENDING });
-        try {
-            const response = await axios.get("/api/profile/all");
-            dispatch({
-                type: PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE,
-                payload: response.data
-            });
-        } catch (error) {
-            dispatch({
-                type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
-                payload: error.response.data
-            });
-        }
+    dispatch({ type: PROFILE_ACTION.GET_ALL_PROFILE_PENDING });
+    try {
+        const response = await axios.get("/api/profile/all");
+        dispatch({
+            type: PROFILE_ACTION.GET_ALL_PROFILE_RESOLVE,
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: PROFILE_ACTION.GET_ALL_PROFILE_REJECT,
+            payload: error.response.data
+        });
     }
 };
 

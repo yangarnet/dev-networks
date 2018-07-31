@@ -1,3 +1,4 @@
+import express from "express";
 import serverConfig from "./src/config/server-config";
 
 const server = express();
