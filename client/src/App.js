@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux"; // this is where the redux store
 import jwt_decode from "jwt-decode";
@@ -38,90 +38,77 @@ if (localStorage.jwt) {
         window.location.href = "/login";
     }
 }
-class App extends Component {
-    render() {
-        //{/*the Provider here provides redux store to the app*/ }
-        return (
-            <Provider store={appStore}>
-                <BrowserRouter>
-                    <div className="App">
-                        <NavBar />
-                        <Route exact path="" component={Landing} />
-                        <div className="container">
-                            <Route exact path="/login" component={UserLogin} />
-                            <Route
-                                exact
-                                path="/register"
-                                component={UserRegisterContainer}
-                            />
-                            <Route
-                                exact
-                                path="/profiles"
-                                component={Profiles}
-                            />
-                            <Route
-                                exact
-                                path="/profile/:handle"
-                                component={Profile}
-                            />
+const App = () => (
+    <Provider store={appStore}>
+        <BrowserRouter>
+            <div className="App">
+                <NavBar />
+                <Route exact path="" component={Landing} />
+                <div className="container">
+                    <Route exact path="/login" component={UserLogin} />
+                    <Route
+                        exact
+                        path="/register"
+                        component={UserRegisterContainer}
+                    />
+                    <Route exact path="/profiles" component={Profiles} />
+                    <Route exact path="/profile/:handle" component={Profile} />
 
-                            {/* wrap private route in the Switch*/}
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/dashboard"
-                                    component={DashBoard}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/create-profile"
-                                    component={CreateProfile}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/edit-profile"
-                                    component={EditProfile}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/add-experience"
-                                    component={AddExperience}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/add-education"
-                                    component={AddEducation}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/post-feed"
-                                    component={Posts}
-                                />
-                            </Switch>
-                            <Switch>
-                                <PrivateRoute
-                                    exact
-                                    path="/post/comments/:postId"
-                                    component={PostComment}
-                                />
-                            </Switch>
-                        </div>
-                        <Footer />
-                    </div>
-                </BrowserRouter>
-            </Provider>
-        );
-    }
-}
+                    {/* wrap private route in the Switch*/}
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/dashboard"
+                            component={DashBoard}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/create-profile"
+                            component={CreateProfile}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/edit-profile"
+                            component={EditProfile}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/add-experience"
+                            component={AddExperience}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/add-education"
+                            component={AddEducation}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/post-feed"
+                            component={Posts}
+                        />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/post/comments/:postId"
+                            component={PostComment}
+                        />
+                    </Switch>
+                </div>
+                <Footer />
+            </div>
+        </BrowserRouter>
+    </Provider>
+);
 
 export default App;
