@@ -24,20 +24,23 @@ import PostComment from "./components/post/comments/PostComment";
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
-if (localStorage.jwt) {
-    // set token in the auth header
-    setAuthToken(localStorage.jwt);
-    // decode the token to get user info
-    const decoded = jwt_decode(localStorage.jwt);
-    appStore.dispatch(setCurrentLoggedInUser(decoded));
+if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
+    if (localStorage.jwt) {
+        // set token in the auth header
+        setAuthToken(localStorage.jwt);
+        // decode the token to get user info
+        const decoded = jwt_decode(localStorage.jwt);
+        appStore.dispatch(setCurrentLoggedInUser(decoded));
 
-    // check for expire token
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp < currentTime) {
-        appStore.dispatch(userLogout());
-        window.location.href = "/login";
+        // check for expire token
+        const currentTime = Date.now() / 1000;
+        if (decoded.exp < currentTime) {
+            appStore.dispatch(userLogout());
+            window.location.href = "/login";
+        }
     }
 }
+
 const App = () => (
     <Provider store={appStore}>
         <BrowserRouter>
