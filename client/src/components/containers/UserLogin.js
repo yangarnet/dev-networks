@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Login from "../presentation/auth/Login";
 import { userLogin } from "../../action/authAction";
+import { CLEAR_ERRORS } from "../../action/types";
 
 const UserLogin = props => {
     return (
@@ -10,6 +11,7 @@ const UserLogin = props => {
             auth={props.auth}
             errors={props.errors}
             userLogin={props.userLogin}
+            clearError={props.clearError}
         />
     );
 };
@@ -25,7 +27,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         userLogin: userData => {
             dispatch(userLogin(userData));
-        }
+        },
+        clearError: () => dispatch({ type: CLEAR_ERRORS })
     };
 };
 

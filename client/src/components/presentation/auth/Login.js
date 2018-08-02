@@ -22,17 +22,12 @@ class Login extends Component {
     // }
 
     componentDidMount() {
+        this.props.clearError();
         if (this.props.auth.isAuthenticated) {
             this.props.history.push("/dashboard");
         }
     }
 
-    // componentDidUpdate(nextProps, prevState) {
-    //     if (nextProps.auth.isAuthenticated && !isEmpty(this.state.path)) {
-    //         this.props.history.push(this.state.path);
-    //     }
-    // }
-    // // add the change to the react life cicle
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
             // the this.props.history become available because withRouter() wrapper
