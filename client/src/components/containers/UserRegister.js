@@ -1,11 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { registerUser } from '../../action/authAction';
-import UserRegister from '../presentation/auth/UserRegister';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { registerUser } from "../../action/authAction";
+import UserRegister from "../presentation/auth/UserRegister";
 
 // this is higher order component(HOC): receives one component and return another one
-const UserRegisterContainer = (props) => {
+const UserRegisterContainer = props => {
     return (
         <UserRegister
             performRegister={props.performRegister}
@@ -16,7 +16,7 @@ const UserRegisterContainer = (props) => {
 };
 const mapStateToProps = (state, ownProps) => ({
     auth: state.myAuth,
-    errors: state.errors.errors
+    errors: state.errors
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -33,4 +33,7 @@ UserRegisterContainer.propTypes = {
 };
 
 //Higher Order Component(HOC): a function takes a component and returns a new component.
-export default connect(mapStateToProps, mapDispatchToProps)(UserRegisterContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserRegisterContainer);

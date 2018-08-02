@@ -11,7 +11,7 @@ import {
     deletePostById
 } from "../../action/postAction";
 import { isEmpty } from "../../utils/helper";
-
+import requireAuth from "../security/requireAuth";
 class Posts extends Component {
     constructor(props) {
         super(props);
@@ -115,4 +115,4 @@ Posts.defaultProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Posts);
+)(requireAuth(Posts));

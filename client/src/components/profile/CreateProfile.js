@@ -7,6 +7,7 @@ import InputGroup from "../common/InputGroup";
 import SelectListGroup from "../common/SelectListGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { createUserProfile } from "../../action/profileAction";
+import requireAuth from "../security/requireAuth";
 
 class CreateProfile extends Component {
     constructor(props) {
@@ -249,4 +250,4 @@ CreateProfile.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(CreateProfile));
+)(withRouter(requireAuth(CreateProfile)));

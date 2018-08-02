@@ -6,6 +6,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addUserExperience } from "../../action/profileAction";
 import { isEmpty } from "../../utils/helper";
+import requireAuth from "../security/requireAuth";
 class AddExperience extends Component {
     constructor(props) {
         super(props);
@@ -193,4 +194,4 @@ AddExperience.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(AddExperience));
+)(withRouter(requireAuth(AddExperience)));

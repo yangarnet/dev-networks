@@ -10,7 +10,6 @@ const postReducer = (state = initialState, action) => {
         case POST_ACTION.ADD_POST_PENDING:
         case POST_ACTION.LIKE_POST_BY_ID_PENDING:
         case POST_ACTION.GET_ALL_POSTS_PENDING:
-        case POST_ACTION.LIKE_POST_BY_ID_PENDING:
         case POST_ACTION.UNLIKE_POST_BY_ID_PENDING:
         case POST_ACTION.EDIT_POST_BY_ID_PENDING:
         case POST_ACTION.DELETE_POST_BY_ID_PENDING:

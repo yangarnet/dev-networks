@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux"; // this is where the redux store
 import jwt_decode from "jwt-decode";
 import "./App.css";
@@ -9,7 +9,6 @@ import Footer from "./components/presentation/layout/Footer";
 import UserRegisterContainer from "./components/containers/UserRegister";
 import UserLogin from "./components/containers/UserLogin";
 import DashBoard from "./components/dashboard/DashBoard";
-import PrivateRoute from "./components/security/PrivateRoute";
 import CreateProfile from "./components/profile/CreateProfile";
 import EditProfile from "./components/profile/EditProfile";
 import AddExperience from "./components/profile/AddExperience";
@@ -24,7 +23,7 @@ import PostComment from "./components/post/comments/PostComment";
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
-if (process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "development") {
     if (localStorage.jwt) {
         // set token in the auth header
         setAuthToken(localStorage.jwt);
@@ -57,56 +56,32 @@ const App = () => (
                     <Route exact path="/profiles" component={Profiles} />
                     <Route exact path="/profile/:handle" component={Profile} />
 
-                    {/* wrap private route in the Switch*/}
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/dashboard"
-                            component={DashBoard}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/create-profile"
-                            component={CreateProfile}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/edit-profile"
-                            component={EditProfile}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/add-experience"
-                            component={AddExperience}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/add-education"
-                            component={AddEducation}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/post-feed"
-                            component={Posts}
-                        />
-                    </Switch>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/post/comments/:postId"
-                            component={PostComment}
-                        />
-                    </Switch>
+                    {/* private routes below, needs requireAuth*/}
+                    <Route exact path="/dashboard" component={DashBoard} />
+                    <Route
+                        exact
+                        path="/create-profile"
+                        component={CreateProfile}
+                    />
+                    <Route exact path="/edit-profile" component={EditProfile} />
+                    <Route
+                        exact
+                        path="/add-experience"
+                        component={AddExperience}
+                    />
+                    <Route
+                        exact
+                        path="/add-education"
+                        component={AddEducation}
+                    />
+
+                    <Route exact path="/post-feed" component={Posts} />
+
+                    <Route
+                        exact
+                        path="/post/comments/:postId"
+                        component={PostComment}
+                    />
                 </div>
                 <Footer />
             </div>

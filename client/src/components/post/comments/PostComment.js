@@ -6,7 +6,7 @@ import CommentForm from "./CommentForm";
 import CommentFeed from "./CommentFeed";
 import { isEmpty } from "../../../utils/helper";
 import { deleteCommentById } from "../../../action/postAction";
-
+import requireAuth from "../../security/requireAuth";
 class PostComment extends Component {
     getPostById(posts, id) {
         return posts.find(post => post._id === id);
@@ -70,4 +70,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(PostComment);
+)(requireAuth(PostComment));

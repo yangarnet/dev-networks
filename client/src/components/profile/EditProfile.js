@@ -12,7 +12,7 @@ import {
     getCurrentUserProfileIfNecessary
 } from "../../action/profileAction";
 import { isEmpty } from "../../utils/helper";
-
+import requireAuth from "../security/requireAuth";
 class EditProfile extends Component {
     constructor(props) {
         super(props);
@@ -317,4 +317,4 @@ EditProfile.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(EditProfile));
+)(withRouter(requireAuth(EditProfile)));

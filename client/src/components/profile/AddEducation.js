@@ -6,7 +6,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addUserEducation } from "../../action/profileAction";
 import { isEmpty } from "../../utils/helper";
-
+import requireAuth from "../security/requireAuth";
 class AddEducation extends Component {
     constructor(props) {
         super(props);
@@ -200,4 +200,4 @@ AddEducation.defaultProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(AddEducation));
+)(withRouter(requireAuth(AddEducation)));

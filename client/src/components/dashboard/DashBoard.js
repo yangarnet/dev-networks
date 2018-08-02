@@ -8,6 +8,7 @@ import EditProfile from "./EditProfile";
 import Experience from "./Experience";
 import Education from "./Education";
 import { isEmpty } from "../../utils/helper";
+import requireAuth from "../security/requireAuth";
 
 class DashBoard extends Component {
     constructor() {
@@ -108,4 +109,4 @@ DashBoard.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DashBoard);
+)(requireAuth(DashBoard));
