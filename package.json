@@ -13,7 +13,7 @@
     "clean": "npm run clean:build",
     "copy:build": "cp src/config/settings.json build/src/config/",
     "copy": "npm run copy:build",
-    "build": "npm run clean && babel server.js -d build && babel src -d build/src --presets es2015,stage-0 --ignore *.spec.js && npm run copy",
+    "build": "npm run clean && babel server.js client-render.js -d build && babel src -d build/src --presets es2015,stage-0 --ignore *.spec.js && npm run copy",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha **/**/*.spec.js **/**/**/*.spec.js --require babel-core/register --require babel-polyfill",
     "test-watch": "nodemon --exec 'npm test'",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
