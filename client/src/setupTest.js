@@ -6,6 +6,7 @@ require("ignore-styles");
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const chai = require("chai");
+const chaiEnzyme = require("chai-enzyme");
 const sinonChai = require("sinon-chai");
 const chaiAsPromised = require("chai-as-promised");
 const chaiString = require("chai-string");
@@ -18,8 +19,10 @@ Enzyme.configure({ adapter: new Adapter() });
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 chai.use(chaiString);
+chai.use(chaiEnzyme());
 
 global.expect = chai.expect;
+global.assert = chai.assert;
 const url = "http://localhost";
 const { document } = new JSDOM("", { url }).window;
 global.document = document;

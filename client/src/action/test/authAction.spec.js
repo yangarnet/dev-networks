@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { setCurrentLoggedInUser } from "../authAction";
 import { AUTH_ACTION } from "../types";
 
