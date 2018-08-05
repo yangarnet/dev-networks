@@ -6,7 +6,7 @@ import Footer from "./components/presentation/layout/Footer";
 import NavBar from "./components/presentation/layout/NavBar";
 
 describe("test cases for APP", () => {
-    it("the APP should be rendered without crashing", () => {
+    it("should render the react APP", () => {
         const wrapped = shallow(<App />);
 
         expect(wrapped).to.contain(<NavBar />, <Footer />);
@@ -19,10 +19,11 @@ describe("test cases for APP", () => {
         expect(wrapped).to.have.html().to.be.not.empty;
     });
 
-    it("shouldd mount the footer", () => {
+    it("should mount the footer", () => {
         const wrapped = mount(<Footer />);
         expect(wrapped.find(Footer)).to.have.lengthOf(1);
         expect(wrapped.html()).to.not.empty;
         expect(wrapped.html()).to.contain(`Copyright © 2018 Dev Connector`);
+        wrapped.unmount();
     });
 });
