@@ -12,7 +12,8 @@ const userRegisterResolve = payload => ({
 export const registerUser = (userData, history) => dispatch => {
     dispatch({ type: AUTH_ACTION.USER_REGISTER_PENDING });
     dispatch({ type: CLEAR_ERRORS });
-    axios.post("/api/user/register", userData).then(
+    // return the result, for easier testing
+    return axios.post("/api/user/register", userData).then(
         res => {
             dispatch(userRegisterResolve(res.data));
             history.push("/login");
@@ -57,26 +58,6 @@ export const userLogin = userData => async dispatch => {
             payload: data
         });
     }
-    // axios.post("/api/user/login", userData).then(
-    //     res => {
-    //         const { token } = res.data;
-    //         //save to local storage, so subsequent request will know who is logged in.
-    //         localStorage.setItem("jwt", token);
-    //         // set auth header, so subsequent request will who is logged in.
-    //         setAuthToken(token);
-    //         // decode the token and set current logged in user
-    //         const decoded = jwt_decode(token);
-    //         // set the current login user.
-    //         dispatch(setCurrentLoggedInUser(decoded));
-    //         dispatch({ type: AUTH_ACTION.USER_LOGIN_RESOLVE });
-    //     },
-    //     err => {
-    //         dispatch({
-    //             type: AUTH_ACTION.USER_LOGIN_REJECT,
-    //             payload: err.response.data
-    //         });
-    //     }
-    // );
 };
 
 export const userLogout = () => dispatch => {
