@@ -1,5 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
+import sinon from "sinon";
 import InputGroup from "../InputGroup";
 
 let wrapped;
@@ -12,8 +13,9 @@ describe("InputGroup Component", () => {
                 placeholder={email}
                 name={email}
                 icon="your-name"
+                value=""
                 onChange={e => {
-                    console.log(e.target.value);
+                    return e.target.value;
                 }}
                 errors={errors}
             />
@@ -36,6 +38,17 @@ describe("InputGroup Component", () => {
         expect(input.props().name).to.be.equal("email");
         expect(input.prop("placeholder")).to.be.equal("email");
         expect(wrapped.find("div.invalid-feedback")).to.have.length(0);
+    });
+
+    it("should allow user input text", () => {
+        const inputBox = wrapped.find("input.form-control.form-control-lg");
+        expect(inputBox).to.have.length(1);
+        inputBox.simulate("change", {
+            target: { value: "hey, you have new input here" }
+        });
+        // for component to update
+        wrapped.update();
+        // check the component props
     });
 
     it("should render errror information", () => {
