@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import { Provider } from "react-redux"; // this is where the redux store
 import jwt_decode from "jwt-decode";
 import "./App.css";
+import ReduxRoot from "./ReduxRoot";
 import NavBar from "./components/presentation/layout/NavBar";
 import Landing from "./components/presentation/layout/Landing";
 import Footer from "./components/presentation/layout/Footer";
@@ -23,25 +23,27 @@ import PostComment from "./components/post/comments/PostComment";
 
 // the jwt was set in async action userLogin() : localStorage.setItem('jwt', token);
 // check if active token exists
+
+const initialState = {};
 if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "development") {
     if (localStorage.jwt) {
         // set token in the auth header
         setAuthToken(localStorage.jwt);
         // decode the token to get user info
         const decoded = jwt_decode(localStorage.jwt);
-        appStore.dispatch(setCurrentLoggedInUser(decoded));
+        appStore(initialState).dispatch(setCurrentLoggedInUser(decoded));
 
         // check for expire token
         const currentTime = Date.now() / 1000;
         if (decoded.exp < currentTime) {
-            appStore.dispatch(userLogout());
+            appStore(initialState).dispatch(userLogout());
             window.location.href = "/login";
         }
     }
 }
 
 const App = () => (
-    <Provider store={appStore}>
+    <ReduxRoot>
         <BrowserRouter>
             <div className="App">
                 <NavBar />
@@ -86,7 +88,7 @@ const App = () => (
                 <Footer />
             </div>
         </BrowserRouter>
-    </Provider>
+    </ReduxRoot>
 );
 
 export default App;
