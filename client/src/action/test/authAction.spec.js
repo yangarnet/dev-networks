@@ -11,7 +11,7 @@ import { AUTH_ACTION, CLEAR_ERRORS } from "../types";
 import { registerUserSuccess, registerUserFailure } from "./registerUserMock";
 
 describe("Auth action unit test", () => {
-    describe("[Sync authentication Action] test suite", () => {
+    describe("[Sync authentication Action]", () => {
         it("should return correct action type", () => {
             const action = setCurrentLoggedInUser();
             expect(action).to.have.property("type");
@@ -34,7 +34,7 @@ describe("Auth action unit test", () => {
         });
     });
 
-    describe("[Async authentication Actions - User Register] test suite", () => {
+    describe("[Async authentication Actions - User Register]", () => {
         const middleware = [thunk, reduxPromise];
         const mockStore = configureMockStore(middleware);
 
@@ -73,13 +73,15 @@ describe("Auth action unit test", () => {
                 confirmedPassword: "password"
             };
 
+            // 5: kick off user regiester action
             const history = createMemoryHistory("/login");
-            const response = await store.dispatch(
-                registerUser(newUser, history)
-            );
+            await store.dispatch(registerUser(newUser, history));
+
+            // 6: now get the resulted action
             const dispatchedActions = store.getActions();
             const actionTypes = dispatchedActions.map(action => action.type);
 
+            // 7: test the result with expected result
             expect(actionTypes).to.deep.equal(
                 expectedActions.map(action => action.type)
             );
@@ -91,6 +93,56 @@ describe("Auth action unit test", () => {
             ).to.deep.equal(
                 expectedActions.filter(
                     action => action.type === AUTH_ACTION.USER_REGISTER_RESOLVE
+                ).payload
+            );
+        });
+
+        it("should dispatch USER_REGISTER_REJECT", async () => {
+            // 1: stub the reponse
+            moxios.stubRequest("/api/user/register", {
+                status: 400,
+                response: JSON.stringify(registerUserFailure())
+            });
+
+            // 2: set expected response
+            const expectedActions = [
+                { type: AUTH_ACTION.USER_REGISTER_PENDING },
+                { type: CLEAR_ERRORS },
+                {
+                    type: AUTH_ACTION.USER_REGISTER_REJECT,
+                    payload: JSON.stringify(registerUserFailure())
+                }
+            ];
+
+            // 3: new user to register
+            const newUser = {
+                name: "test01",
+                email: "test01@gmail.com",
+                password: "password",
+                confirmedPassword: "password"
+            };
+
+            // 3: mock the store
+            const store = mockStore({});
+
+            // 4: dispatch user register
+            const history = createMemoryHistory("/login");
+            await store.dispatch(registerUser(newUser, history));
+
+            const actions = store.getActions();
+            const actionTypes = actions.map(action => action.type);
+
+            expect(actionTypes).to.deep.equal(
+                expectedActions.map(action => action.type)
+            );
+
+            expect(
+                actions.filter(
+                    action => action.type === AUTH_ACTION.USER_REGISTER_REJECT
+                ).payload
+            ).to.deep.equal(
+                expectedActions.filter(
+                    action => action.type === AUTH_ACTION.USER_REGISTER_REJECT
                 ).payload
             );
         });
