@@ -4,47 +4,49 @@ import thunk from "redux-thunk";
 import axios from "axios";
 import moxios from "moxios";
 import { createMemoryHistory } from "history";
-import reduxPromise from "redux-promise";
-import { setCurrentLoggedInUser, registerUser } from "../authAction";
+import { setCurrentLoggedInUser, registerUser, userLogin } from "../authAction";
 
 import { AUTH_ACTION, CLEAR_ERRORS } from "../types";
-import { registerUserSuccess, registerUserFailure } from "./registerUserMock";
+import {
+    registerUserSuccess,
+    registerUserFailure,
+    userLoginSuccess,
+    userNotFound,
+    userPasswordInvalid
+} from "./registerUserMock";
 
-describe("Auth action unit test", () => {
-    describe("[Sync authentication Action]", () => {
-        it("should return correct action type", () => {
-            const action = setCurrentLoggedInUser();
-            expect(action).to.have.property("type");
-            expect(action.type).to.be.eq(AUTH_ACTION.SET_CURRENT_USER);
-            expect(action.payload).to.be.undefined;
-        });
-
-        it("should return correct payload", () => {
-            const decoded = { user: "abc", email: "abc@gmail.com" };
-
-            const action = setCurrentLoggedInUser(decoded);
-
-            expect(action).to.be.not.null;
-            expect(action).to.have.property(
-                "type",
-                AUTH_ACTION.SET_CURRENT_USER
-            );
-            expect(action.payload).to.be.not.undefined;
-            expect(action.payload).to.be.deep.equal(decoded);
-        });
+describe("[Sync authentication Action]", () => {
+    it("should return correct action type", () => {
+        const action = setCurrentLoggedInUser();
+        expect(action).to.have.property("type");
+        expect(action.type).to.be.eq(AUTH_ACTION.SET_CURRENT_USER);
+        expect(action.payload).to.be.undefined;
     });
 
-    describe("[Async authentication Actions - User Register]", () => {
-        const middleware = [thunk, reduxPromise];
-        const mockStore = configureMockStore(middleware);
+    it("should return correct payload", () => {
+        const decoded = { user: "abc", email: "abc@gmail.com" };
 
-        beforeEach(() => {
-            moxios.install();
-        });
-        afterEach(() => {
-            moxios.uninstall();
-        });
+        const action = setCurrentLoggedInUser(decoded);
 
+        expect(action).to.be.not.null;
+        expect(action).to.have.property("type", AUTH_ACTION.SET_CURRENT_USER);
+        expect(action.payload).to.be.not.undefined;
+        expect(action.payload).to.be.deep.equal(decoded);
+    });
+});
+
+describe("Async Auth action unit test", () => {
+    const middleware = [thunk];
+    const mockStore = configureMockStore(middleware);
+
+    beforeEach(() => {
+        moxios.install();
+    });
+    afterEach(() => {
+        moxios.uninstall();
+    });
+
+    describe("[authentication Actions - User Register]", () => {
         it("should dispatch USER_REGISTER_RESOLVE after success", async () => {
             // 1: set stub the response for the given url
             moxios.stubRequest("/api/user/register", {
@@ -143,6 +145,147 @@ describe("Auth action unit test", () => {
             ).to.deep.equal(
                 expectedActions.filter(
                     action => action.type === AUTH_ACTION.USER_REGISTER_REJECT
+                ).payload
+            );
+        });
+    });
+
+    describe("[user login]", () => {
+        it("should dispatch USER_LOGIN_RESOLVE", async () => {
+            // stub request result
+            moxios.stubRequest("/api/user/login", {
+                status: 200,
+                response: userLoginSuccess()
+            });
+
+            // user login
+            const login = {
+                email: "test01@gmail.com",
+                password: "passw0rd"
+            };
+            // expected actions
+            const expectedActions = [
+                { type: "USER_LOGIN_PENDING" },
+                { type: "SET_CURRENT_USER" },
+                { type: "USER_LOGIN_RESOLVE" }
+            ];
+            const store = mockStore({});
+
+            // dispatch user login
+            await store.dispatch(userLogin(login));
+
+            const actions = store.getActions();
+
+            expect(actions.map(action => action.type)).to.deep.equal(
+                expectedActions.map(action => action.type)
+            );
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.SET_CURRENT_USER
+                )
+            ).to.be.not.null;
+
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.SET_CURRENT_USER
+                ).payload
+            ).to.be.not.null;
+        });
+
+        it("should dispatch USER_LOGIN_REJECT when user not found", async () => {
+            // stub request result
+            moxios.stubRequest("/api/user/login", {
+                status: 404,
+                response: userNotFound()
+            });
+
+            //login user
+            const login = {
+                email: "test01@gmail.com",
+                password: "passw0rd"
+            };
+
+            // expected actions
+            const expectedActions = [
+                { type: "USER_LOGIN_PENDING" },
+                {
+                    type: "USER_LOGIN_REJECT",
+                    payload: { email: "User not found" }
+                }
+            ];
+
+            // mock store
+            const store = mockStore({});
+            // dispatch user login
+            await store.dispatch(userLogin(login));
+            const actions = store.getActions();
+
+            expect(actions).to.be.not.null;
+            expect(actions.map(action => action.type)).to.deep.equal(
+                expectedActions.map(action => action.type)
+            );
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
+                )
+            ).to.be.not.undefined;
+
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
+                ).payload
+            ).to.be.deep.equal(
+                expectedActions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
+                ).payload
+            );
+        });
+
+        it("should dispatch USER_LOGIN_REJECT when user password invalid", async () => {
+            // stub request result
+            moxios.stubRequest("/api/user/login", {
+                status: 400,
+                response: userPasswordInvalid()
+            });
+
+            //login user
+            const login = {
+                email: "test01@gmail.com",
+                password: "passw0rd00"
+            };
+
+            // expected actions
+            const expectedActions = [
+                { type: "USER_LOGIN_PENDING" },
+                {
+                    type: "USER_LOGIN_REJECT",
+                    payload: { password: "invalid password" }
+                }
+            ];
+
+            // mock store
+            const store = mockStore({});
+            // dispatch user login
+            await store.dispatch(userLogin(login));
+            const actions = store.getActions();
+
+            expect(actions).to.be.not.null;
+            expect(actions.map(action => action.type)).to.deep.equal(
+                expectedActions.map(action => action.type)
+            );
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
+                )
+            ).to.be.not.undefined;
+
+            expect(
+                actions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
+                ).payload
+            ).to.be.deep.equal(
+                expectedActions.find(
+                    action => action.type === AUTH_ACTION.USER_LOGIN_REJECT
                 ).payload
             );
         });
