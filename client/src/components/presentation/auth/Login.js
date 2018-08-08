@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../../common/TextFieldGroup";
+import { Spinner } from "../../common/Spinner";
 
 class Login extends Component {
     constructor() {
@@ -50,6 +51,7 @@ class Login extends Component {
 
     render() {
         const errors = this.props.errors ? this.props.errors : {};
+        const { loading } = this.props.auth;
         return (
             <div className="login">
                 <div className="container">
@@ -59,6 +61,7 @@ class Login extends Component {
                             <p className="lead text-center">
                                 Sign in to your DevConnector account
                             </p>
+                            {loading && <Spinner />}
                             <form onSubmit={this.onSubmit}>
                                 <TextFieldGroup
                                     type="email"
