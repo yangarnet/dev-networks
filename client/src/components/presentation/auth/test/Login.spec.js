@@ -1,6 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-import { MemoryRouter as Router, withRouter } from "react-router-dom";
+import { MemoryRouter as Router } from "react-router-dom";
 import Login from "../Login";
 import TextFieldGroup from "../../../common/TextFieldGroup";
 

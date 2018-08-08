@@ -42,11 +42,10 @@ describe("TextAreaFieldGroup unit test", () => {
 
         wrapped.update();
 
-        expect(wrapped.props().errors).to.be.an("object");
-        expect(wrapped.props().errors).to.be.not.empty;
-        expect(wrapped.props().errors.email).to.be.equal(
-            "your input email is invalid"
-        );
+        const props = wrapped.props();
+        expect(props.errors).to.be.an("object");
+        expect(props.errors).to.be.not.empty;
+        expect(props.errors.email).to.be.equal("your input email is invalid");
         expect(wrapped.find("div.invalid-feedback")).to.have.lengthOf(1);
         expect(wrapped.find("div.invalid-feedback").text()).to.be.equal(
             "your input email is invalid"
