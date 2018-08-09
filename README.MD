@@ -1,9 +1,11 @@
-## this is a node express app
+## this is a MERN js fullstack App
 
-### how to check logs on prod
+### to get started
 
-#### do the following on terminal: $heroku logs -t --app you-app-name, i.e.: $ heroku logs -t --app test-my-to-do
+#### just do git clone https://github.com/yangarnet/dev-networks.git
 
-#### to see your app file after deploy on heroku: do this:
+##### then $npm install
 
-##### $heroku login ; then, $heroku run bash --app developer-networks
+##### and cd client, npm install
+
+##### go to root dir and do $npm run dev
