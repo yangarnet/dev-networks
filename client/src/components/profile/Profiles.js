@@ -8,7 +8,9 @@ import { isEmpty } from "../../utils/helper";
 
 class Profiles extends Component {
     componentDidMount() {
-        this.props.fetchProfiles();
+        if(process.env.NODE_ENV !== 'test') {
+            this.props.fetchProfiles();
+        }
     }
 
     render() {

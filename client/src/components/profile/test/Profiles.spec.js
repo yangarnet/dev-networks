@@ -1,17 +1,59 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import { Link} from 'react-router-dom';
 import sinon from "sinon";
 import { MemoryRouter as Router } from "react-router-dom";
 import ReduxRoot from "../../../ReduxRoot";
 import Profiles from "../Profiles";
 import ProfileItems from "../ProfileItems";
 
-import { wrap } from "module";
-
-let ShallowWrapper;
-
 describe("Test Redux Connected Component", () => {
-    beforeEach(() => {
+
+    it("should render nothing when user profile list is empty", ()=>{
+        const initialState = {
+            myAuth: {
+                isAuthenticated: true,
+                user: {
+                    id: "5b5ff3526c8f840054e6293a",
+                    name: "Garnet Yang",
+                    avatar:
+                        "//www.gravatar.com/avatar/70f641ccefc65afc2b820ba36b7a1815?s=200&r=pg&d=mm",
+                    iat: 1533691046,
+                    exp: 1533694646
+                }
+            },
+            errors: {},
+            profile: {
+                profile: {
+
+                },
+                profileList: [
+
+                ],
+                loading: false
+            },
+            post: {
+                posts: [],
+                post: {},
+                loading: false
+            }
+        };
+
+        let wrapped = mount(
+            <ReduxRoot initialState={initialState}>
+                <Router>
+                    <Profiles />
+                </Router>
+            </ReduxRoot>
+        );
+
+        expect(wrapped.find(ProfileItems)).to.have.length(0);
+        expect(wrapped.find("div.container")).to.have.lengthOf(1);
+        expect(wrapped.find('h4').text()).to.be.equal('No profiles found ....');
+    });
+
+    it("should load redux connected component properly", () => {
+
         const initialState = {
             myAuth: {
                 isAuthenticated: true,
@@ -210,19 +252,29 @@ describe("Test Redux Connected Component", () => {
             }
         };
 
-        ShallowWrapper = shallow(
+        let wrapped = mount(
             <ReduxRoot initialState={initialState}>
                 <Router>
                     <Profiles />
                 </Router>
             </ReduxRoot>
         );
-    });
+        expect(wrapped.find("div.container")).to.have.lengthOf(1);
+        expect(wrapped.find(ProfileItems)).to.have.length(2);
 
-    it("should load redux connected component properly", () => {
-        console.log(ShallowWrapper.html());
-        expect(ShallowWrapper.find("div.container")).to.have.lengthOf(1);
+        expect(wrapped.find('div.col-lg-6.col-md-4.col-8')
+                             .at(0).contains(
+                                <Link
+                                to={`/profile/test`}
+                                className="btn btn-info"
+                                >view profile details</Link>)).to.be.true;
 
-        //expect(ShallowWrapper.find(ProfileItems)).to.have.length(2);
+        expect(wrapped.find('div.col-lg-6.col-md-4.col-8')
+                                .at(1).contains(
+                                   <Link
+                                   to={`/profile/john-doe`}
+                                   className="btn btn-info"
+                                   >view profile details</Link>)).to.be.true;
+
     });
 });
