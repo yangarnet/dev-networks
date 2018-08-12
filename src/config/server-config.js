@@ -1,11 +1,7 @@
-import config from './settings.json';
-import mongoose from 'mongoose';
-import middlewareConfig from '../middleware/config';
-import routeConfig from '../routes/route-config';
-
-const mongoDb = {
-    production: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}${process.env.MONGODB}`
-};
+import config from "./settings.json";
+import mongoose from "mongoose";
+import middlewareConfig from "../middleware/config";
+import routeConfig from "../routes/route-config";
 
 const envConfig = env => {
     const currentEnv = config[env];
@@ -15,23 +11,22 @@ const envConfig = env => {
             process.env[key] = currentEnv[key];
         });
     }
-    mongoose.connect(mongoDb[env] || process.env.MONGODB_URL).then(
+    mongoose.connect(process.env.MONGODB_URL).then(
         () => {
-            console.log('you are connected to mongodb!');
+            console.log("you are connected to mongodb!");
         },
         err => {
-            console.log('[Sorry] - mongodb connection error');
+            console.log("[Sorry] - mongodb connection error");
         }
     );
 };
 
-const serverConfig = (server) => {
-    const dev = 'development';
+const serverConfig = server => {
+    const dev = "development";
     const env = process.env.NODE_ENV || dev;
     envConfig(env);
     middlewareConfig(server);
     routeConfig(server);
-}
-
+};
 
 export default serverConfig;
