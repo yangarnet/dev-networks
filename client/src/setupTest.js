@@ -2,6 +2,7 @@ process.env.ENV = "dev";
 process.env.NODE_ENV = "test";
 
 require("ignore-styles");
+require("babel-core/register");
 
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
