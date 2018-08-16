@@ -31,3 +31,20 @@ export const getProfileByHandle = (profileList, handle) => {
     }
     return {};
 };
+
+export const getDeveloperTop4Skills = skills => {
+    const top4Skills = ['javascript', 'reactjs', 'redux', 'nodejs'];
+    let top4 = skills.reduce( (accumulator, currentValue) => {
+        if (top4Skills.indexOf(currentValue.trim().toLowerCase()) !== -1) {
+            return accumulator.concat(currentValue);
+        }
+        return accumulator;
+    }, []).sort();
+    skills.forEach(currentValue => {
+        if (top4.length < 4 && top4.indexOf(currentValue) === -1) {
+            top4.push(currentValue);
+        }
+    });
+
+    return top4;
+};
