@@ -33,6 +33,7 @@ class UserRegister extends Component {
     }
 
     componentDidMount() {
+        this.props.clearError();
         if (this.props.auth.isAuthenticated) {
             this.props.history.push("/dashboard");
         }

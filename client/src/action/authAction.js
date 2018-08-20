@@ -9,6 +9,10 @@ const userRegisterResolve = payload => ({
     payload
 });
 
+export const clearError = () => {
+    return { type: CLEAR_ERRORS };
+};
+
 export const registerUser = (userData, history) => dispatch => {
     dispatch({ type: AUTH_ACTION.USER_REGISTER_PENDING });
     dispatch({ type: CLEAR_ERRORS });
