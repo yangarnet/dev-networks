@@ -16,11 +16,15 @@ class PostController {
         if (!isValid) {
             return res.status(400).json(errors);
         }
-        payload.avatar = gravatar.url(payload.email, {
-            s: "300",
-            r: "pg",
-            d: "mm"
-        }, true);
+        payload.avatar = gravatar.url(
+            req.user.email.trim(),
+            {
+                s: "300",
+                r: "pg",
+                d: "mm"
+            },
+            true
+        );
         payload.user = req.user.id;
         payload.userName = req.user.name;
         const newPost = new post(payload);
@@ -211,11 +215,15 @@ class PostController {
     async addComment(req, res) {
         const errors = {};
         const payload = _.pick(req.body, ["text", "name"]);
-        payload.avatar = gravatar.url(payload.email, {
-            s: "300",
-            r: "pg",
-            d: "mm"
-        }, true);
+        payload.avatar = gravatar.url(
+            req.user.email.trim(),
+            {
+                s: "300",
+                r: "pg",
+                d: "mm"
+            },
+            true
+        );
         // the same user can add more then one comment.
         payload.user = req.user.id;
         payload.userName = req.user.name;

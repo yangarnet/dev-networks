@@ -43,7 +43,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Node Server",
-      "program": "${workspaceFolder}/src/server.js",
+      "program": "${workspaceFolder}/server.js",
       "stopOnEntry": false,
       "sourceMaps": false,
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/babel-node",
