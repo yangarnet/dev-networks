@@ -17,10 +17,10 @@ class PostController {
             return res.status(400).json(errors);
         }
         payload.avatar = gravatar.url(payload.email, {
-            s: "200",
+            s: "300",
             r: "pg",
             d: "mm"
-        });
+        }, true);
         payload.user = req.user.id;
         payload.userName = req.user.name;
         const newPost = new post(payload);
@@ -212,10 +212,10 @@ class PostController {
         const errors = {};
         const payload = _.pick(req.body, ["text", "name"]);
         payload.avatar = gravatar.url(payload.email, {
-            s: "200",
+            s: "300",
             r: "pg",
             d: "mm"
-        });
+        }, true);
         // the same user can add more then one comment.
         payload.user = req.user.id;
         payload.userName = req.user.name;

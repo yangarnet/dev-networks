@@ -19,10 +19,10 @@ class UserController {
             return res.status(400).json(result);
         }
         const avatar = gravatar.url(payload.email, {
-            s: '200',
+            s: '300',
             r: 'pg',
             d: 'mm'
-        });
+        }, true);
         try {
             const result = await user.findOne({ email: payload.email });
             if (result) {
