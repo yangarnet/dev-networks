@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import TextFieldGroup from "../../common/TextFieldGroup";
-
+import { Spinner } from "../../common/Spinner";
 class UserRegister extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +47,7 @@ class UserRegister extends Component {
 
     render() {
         const errors = this.props.errors ? this.props.errors : {};
+        const { loading } = this.props.auth;
         return (
             <div className="register">
                 <div className="container">
@@ -56,6 +57,7 @@ class UserRegister extends Component {
                             <p className="lead text-center">
                                 Create your DevConnector account
                             </p>
+                            {loading && <Spinner />}
                             <form onSubmit={this.onSubmit}>
                                 <TextFieldGroup
                                     type="text"

@@ -17,7 +17,7 @@ const UserRegisterContainer = props => {
 };
 const mapStateToProps = (state, ownProps) => ({
     auth: state.myAuth,
-    errors: state.errors
+    errors: state.errors.errors
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {
