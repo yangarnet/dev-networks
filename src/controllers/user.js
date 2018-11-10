@@ -1,21 +1,16 @@
-import express from "express";
-import user from "../models/user";
-import _ from "lodash";
-import gravatar from "gravatar";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import validateRegisterInput from "../validation/user-register";
-import validateUserLogin from "../validation/user-login";
-import { EmailAlreadyRegisteredError } from "./helper/helper";
+import express from 'express';
+import user from '../models/user';
+import _ from 'lodash';
+import gravatar from 'gravatar';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import validateRegisterInput from '../validation/user-register';
+import validateUserLogin from '../validation/user-login';
+import { EmailAlreadyRegisteredError } from './helper/helper';
 
 class UserController {
     async register(req, res) {
-        const payload = _.pick(req.body, [
-            "name",
-            "email",
-            "password",
-            "confirmedPassword"
-        ]);
+        const payload = _.pick(req.body, ['name', 'email', 'password', 'confirmedPassword']);
 
         const result = validateRegisterInput(payload);
         if (!result.isValid) {
@@ -25,18 +20,16 @@ class UserController {
         const avatar = gravatar.url(
             payload.email,
             {
-                s: "300",
-                r: "pg",
-                d: "mm"
+                s: '300',
+                r: 'pg',
+                d: 'mm'
             },
             true
         );
         try {
             const result = await user.findOne({ email: payload.email });
             if (result) {
-                throw new EmailAlreadyRegisteredError(
-                    `Error: email ${result.email} already registered`
-                );
+                throw new EmailAlreadyRegisteredError(`Error: email ${result.email} already registered`);
             } else {
                 const newUser = new user({
                     name: payload.name,
@@ -74,7 +67,7 @@ class UserController {
     }
 
     async login(req, res) {
-        const payload = _.pick(req.body, ["email", "password"]);
+        const payload = _.pick(req.body, ['email', 'password']);
         const { errors, isValid } = validateUserLogin(payload);
         if (!isValid) {
             return res.status(400).json(errors);
@@ -84,14 +77,11 @@ class UserController {
             // user logs in by email and password.
             const result = await user.findOne({ email: payload.email });
             if (!result) {
-                errors.email = "User not found";
+                errors.email = 'User not found';
                 return res.status(404).json(errors);
             }
             // compare the user input pwd with hashed password.
-            const isMatch = bcrypt.compareSync(
-                payload.password,
-                result.password
-            );
+            const isMatch = bcrypt.compareSync(payload.password, result.password);
             if (isMatch) {
                 const tokenPayload = {
                     id: result.id,
@@ -100,22 +90,18 @@ class UserController {
                 };
 
                 // now sign the token after success login, this is the key to verify all other authorized req.
-                const token = await jwt.sign(
-                    tokenPayload,
-                    process.env.JWT_SECRET,
-                    { expiresIn: "1h" }
-                );
+                const token = await jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: '1h' });
                 if (token) {
                     return res.status(200).json({
                         success: true,
                         token: `Bearer ${token}`
                     });
                 } else {
-                    errors.genToken = "Errors occurs when generation the token";
+                    errors.genToken = 'Errors occurs when generation the token';
                     return res.status(500).json(errors);
                 }
             } else {
-                errors.password = "invalid password";
+                errors.password = 'invalid password';
                 return res.status(400).json(errors);
             }
         } catch (err) {

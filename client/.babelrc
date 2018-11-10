@@ -1,12 +1,6 @@
 {
-  "presets": [
-    "es2015",
-    "stage-0",
-    "react-app"
-  ],
-  "plugins": [
-    "transform-es2015-modules-commonjs"
-  ],
+  "presets": ["es2015", "stage-0", "react-app"],
+  "plugins": ["transform-es2015-modules-commonjs", "styled-components"],
   "env": {
     "development": {
       "sourceMaps": false,

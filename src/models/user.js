@@ -2,27 +2,44 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const Schema = mongoose.Schema;
-
+const STRING = mongoose.SchemaTypes.String;
 const userObject = {
     name: {
-        type: mongoose.SchemaTypes.String,
+        type: STRING,
         required: true,
         unique: true,
         minlength: 2,
-        maxlength: 15
+        maxlength: 15,
+        validate: {
+            validator(v) {
+                return v.length >= 2 && v.length <= 15;
+            },
+            message(props) {
+                return `${props.value} length should between 2 and 15 characters`;
+            }
+        }
     },
     email: {
-        type: mongoose.SchemaTypes.String,
+        type: STRING,
         required: true,
-        unique: true
+        unique: true,
+        validate: {
+            validator(v) {
+                const emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                return v.match(emailformat);
+            },
+            message(props) {
+                return `${props.value} is not valid email address`;
+            }
+        }
     },
     password: {
-        type: mongoose.SchemaTypes.String,
+        type: STRING,
         minlength: 7,
         required: true
     },
     avatar: {
-        type: mongoose.SchemaTypes.String,
+        type: STRING,
         required: false
     },
     DateAdded: {
@@ -34,7 +51,7 @@ const userObject = {
 const UserSchema = new Schema(userObject);
 
 // cannot use arrow function in this cb
-UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function(next) {
     let currentUser = this;
     if (currentUser.isModified('password')) {
         try {

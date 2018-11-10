@@ -4,12 +4,10 @@
     "es6": true,
     "browser": true
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2017,
     "ecmaFeatures": {
       "jsx": true,
       "modules": true
